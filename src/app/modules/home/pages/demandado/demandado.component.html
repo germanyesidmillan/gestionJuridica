@@ -1,0 +1,63 @@
+<div class="div-container">
+    <h1>Demandado</h1>
+    <form [formGroup]="formDemandado" (submit)="onSubmit()">
+        
+        <section>
+
+            <mat-form-field>
+                <mat-label>Identificacion:</mat-label>
+                <input matInput formControlName="Ident">
+                @if (formDemandado.get('ident')?.invalid && formDemandado.get('ident')?.touched) {
+                }
+              </mat-form-field>
+            
+              <mat-form-field >
+                <mat-label>Nombre:</mat-label>
+                <input matInput formControlName="nombre">  
+                @if (formDemandado.get('nombre')?.invalid && formDemandado.get('nombre')?.touched) {
+                    <small>Nombre requerido</small>
+                }
+              </mat-form-field>
+
+              <mat-form-field >
+                <mat-label>Email:</mat-label>
+                <input matInput formControlName="email">  
+                @if (formDemandado.get('email')?.invalid && formDemandado.get('email')?.touched) {
+                }
+              </mat-form-field> 
+              
+              <mat-form-field >
+                <mat-label>Copropiedad:</mat-label>
+                <mat-select formControlName="">
+                    @for (d of demandantes; track d.id_demandante) {
+                      <mat-option [value]="d.id_demandante">{{d.id_demandante}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formDemandado.get('demate')?.invalid && formDemandado.get('demate')?.touched) {
+                    <small>admin requerido</small>
+                }
+              </mat-form-field>
+              <mat-form-field >
+                <mat-label>Numero Inmueble:</mat-label>
+                <input matInput formControlName="inm">  
+                @if (formDemandado.get('inm')?.invalid && formDemandado.get('inm')?.touched) {
+                    <small>Nombre requerido</small>
+                }
+              </mat-form-field>
+
+            <mat-form-field >
+              <mat-label>Etapa Demandado:</mat-label>
+              <input matInput formControlName="inm">  
+              @if (formDemandado.get('etaDemand')?.invalid && formDemandado.get('etaDemand')?.touched) {
+                  <small>Nombre requerido</small>
+              }
+            </mat-form-field>
+
+
+    
+    
+                             
+        </section>
+        <button mat-flat-button color="primary" [disabled]="formDemandado.invalid" >Guardar</button>  
+        </form>
+</div>

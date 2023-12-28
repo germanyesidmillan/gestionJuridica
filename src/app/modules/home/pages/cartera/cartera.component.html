@@ -1,13 +1,37 @@
 <div class="div-container">
-    <h1>Copropiedad</h1>
-    <form [formGroup]="formCopropiedad" (submit)="onSubmit()">
+    <h1>Cartera</h1>
+    <form [formGroup]="formCartera" (submit)="onSubmit()">
         
         <section>
 
-            <mat-form-field>
+            <mat-form-field >
+                <mat-label>Propietario:</mat-label>
+                <mat-select formControlName="demado">
+                    @for (d of demandados; track d.id_demandado) {
+                      <mat-option [value]="d.id_demandado">{{d.nombre_demandado}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formCartera.get('demado')?.invalid && formCartera.get('demado')?.touched) {
+                    <small>Nit requerido</small>
+                }
+            </mat-form-field>
+
+              <mat-form-field >
+                <mat-label>Propietario:</mat-label>
+                <mat-select formControlName="demado">
+                    @for (d of demandados; track d.id_demandado) {
+                      <mat-option [value]="d.id_demandado">{{d.nombre_demandado}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formCartera.get('demado')?.invalid && formCartera.get('demado')?.touched) {
+                    <small>Nit requerido</small>
+                }
+              </mat-form-field>
+              
+              <mat-form-field>
                 <mat-label>Nit:</mat-label>
                 <input matInput formControlName="nit">
-                @if (formCopropiedad.get('nit')?.invalid && formCopropiedad.get('nit')?.touched) {
+                @if (formCartera.get('nit')?.invalid && formCartera.get('nit')?.touched) {
                     <small>Nit requerido</small>
                 }
               </mat-form-field>
@@ -15,7 +39,7 @@
               <mat-form-field >
                 <mat-label>Nombre:</mat-label>
                 <input matInput formControlName="nombre">  
-                @if (formCopropiedad.get('nombre')?.invalid && formCopropiedad.get('nombre')?.touched) {
+                @if (formCartera.get('nombre')?.invalid && formCartera.get('nombre')?.touched) {
                     <small>Nombre requerido</small>
                 }
               </mat-form-field>
@@ -24,7 +48,7 @@
               <mat-form-field >
                 <mat-label>Direccion:</mat-label>
                 <input matInput formControlName="dir">  
-                @if (formCopropiedad.get('dir')?.invalid && formCopropiedad.get('dir')?.touched) {
+                @if (formCartera.get('dir')?.invalid && formCartera.get('dir')?.touched) {
                     <small>direccion requerida</small>
                 }
               </mat-form-field>
@@ -36,7 +60,7 @@
                       <mat-option [value]="m.id_municipio">{{m.nombre_municipio}}</mat-option>
                     }
                   </mat-select>
-                  @if (formCopropiedad.get('municipio')?.invalid && formCopropiedad.get('municipio')?.touched) {
+                  @if (formCartera.get('municipio')?.invalid && formCartera.get('municipio')?.touched) {
                     <small>Nit requerido</small>
                 }
               </mat-form-field>
@@ -48,7 +72,7 @@
                       <mat-option [value]="b.id_banco">{{b.nombre_banco}}</mat-option>
                     }
                   </mat-select>
-                  @if (formCopropiedad.get('banco')?.invalid && formCopropiedad.get('banco')?.touched) {
+                  @if (formCartera.get('banco')?.invalid && formCartera.get('banco')?.touched) {
                     <small>banco requerido</small>
                 }
               </mat-form-field>
@@ -60,7 +84,7 @@
                       <mat-option [value]="tc.id_tipo_cuenta">{{tc.nombre_tipo_cuenta}}</mat-option>
                     }
                   </mat-select>
-                  @if (formCopropiedad.get('tipoCuenta')?.invalid && formCopropiedad.get('tipocuenta')?.touched) {
+                  @if (formCartera.get('tipoCuenta')?.invalid && formCartera.get('tipocuenta')?.touched) {
                     <small>tipoCuenta requerido</small>
                 }
               </mat-form-field>
@@ -68,7 +92,7 @@
               <mat-form-field >
                 <mat-label>Número de cuenta:</mat-label>
                 <input matInput formControlName="numCuenta" type="number">  
-                @if (formCopropiedad.get('numCuenta')?.invalid && formCopropiedad.get('numCuenta')?.touched) {
+                @if (formCartera.get('numCuenta')?.invalid && formCartera.get('numCuenta')?.touched) {
                     <small>numCuenta requerido</small>
                 }
               </mat-form-field>
@@ -80,7 +104,7 @@
                       <mat-option [value]="adm.id_admin_copropiedad">{{adm.nombre_admin_copropiedad}}</mat-option>
                     }
                   </mat-select>
-                  @if (formCopropiedad.get('admin')?.invalid && formCopropiedad.get('admin')?.touched) {
+                  @if (formCartera.get('admin')?.invalid && formCartera.get('admin')?.touched) {
                     <small>admin requerido</small>
                 }
               </mat-form-field>
@@ -92,14 +116,14 @@
                <!--  <mat-hint>MM/DD/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                @if (formCopropiedad.get('fechaPersoneria')?.invalid && formCopropiedad.get('fechaPersoneria')?.touched) {
+                @if (formCartera.get('fechaPersoneria')?.invalid && formCartera.get('fechaPersoneria')?.touched) {
                     <small>fechaPersoneria requerido</small>
                 }
               </mat-form-field>
         </section>
 
 
-        <button mat-flat-button color="primary" [disabled]="formCopropiedad.invalid" >Guardar</button>  
+        <button mat-flat-button color="primary" [disabled]="formCartera.invalid" >Guardar</button>  
     
     </form>
 
