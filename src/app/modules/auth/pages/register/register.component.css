@@ -1,0 +1,54 @@
+.div-container{
+    display: flex;
+    /* flex-grow: 1; */
+ /*    justify-content: center; */
+    width: 90%;
+    flex-direction: column;
+    align-content: center;
+    /* align-items: center; */ 
+    border: 5px solid blueviolet;
+}
+
+/* .div-container div{
+    flex-grow: 1;
+}
+ */
+
+/* .div-container > :nth-child(odd){
+    background-color: aqua;
+} */
+
+section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid blueviolet;
+  /*   flex-basis: 500px; */
+   /*  margin: 10px; */
+   gap: 25px;
+   /* align-items: center; */
+   justify-content: center;
+}
+
+/* section div{
+    background-color: red;
+    flex-grow: 0;
+} */
+
+.caja{
+    display: flex;
+    justify-content: center;
+    flex-grow: 0 !important;
+    background-color: aqua;
+}
+
+.cajax {
+    display: flex;
+    flex-direction: row;
+    background-color: salmon;
+    gap: 15px;
+}
+
+.cajaj{
+    flex-grow: 1;
+}

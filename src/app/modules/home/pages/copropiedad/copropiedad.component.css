@@ -25,5 +25,14 @@ small{
 }
 
 section{
-    gap: 5px;
-}
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    gap: 5px 55px;
+ }
+
+section > :nth-child(9){
+    display: flex;
+    width: 260px;
+} 
+
