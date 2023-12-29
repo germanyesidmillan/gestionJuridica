@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { IGestionJuridica } from '../../models/gestion-juridica-interface';
 
@@ -33,7 +32,7 @@ export class CopropiedadComponent implements OnInit {
     this.formCopropiedad = this.fb.group({
       nit: ['', [Validators.required]],
       nombre: ['', [Validators.required]],
-      dir: ['', [Validators.required]],
+      direccion: ['', [Validators.required]],
       municipio: ['', [Validators.required]],
       banco: ['', [Validators.required]],
       tipoCuenta: ['', [Validators.required]],
@@ -44,11 +43,10 @@ export class CopropiedadComponent implements OnInit {
   }
   ngOnInit(): void {
    
-    this.getmunicipios();
+    this.getMunicipios();
     this.getTipoCuentas();
     this.getBancos();
     this.getAdministradores();
-    
   }
 
   onSubmit(){
@@ -58,11 +56,11 @@ export class CopropiedadComponent implements OnInit {
 
   }
 
-  getmunicipios(){
+  getMunicipios(){
 
     this.gestJur.getMunicipios().subscribe((resp:IGestionJuridica)=>{
       this.municipios = resp;
-      console.log('MUNICIPIOS',this.municipios);
+      console.log('municipios',this.municipios);
     }, error=>{
       console.log('error',error);
     }); 

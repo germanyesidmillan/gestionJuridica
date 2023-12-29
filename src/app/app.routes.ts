@@ -3,23 +3,20 @@ import { HomeComponent } from './modules/home/pages/home/home.component';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { WompiComponent } from './modules/home/pages/wompi/wompi.component';
 import { CopropiedadComponent } from './modules/home/pages/copropiedad/copropiedad.component';
-import { RegisterComponent } from './modules/auth/pages/register/register.component';
+import { DemandadoComponent } from './modules/home/pages/demandado/demandado.component';
+import { CarteraComponent } from './modules/home/pages/cartera/cartera.component';
+import { RecaudoComponent } from './modules/home/pages/recaudo/recaudo.component';
 
 export const routes: Routes = [
     
     {
         path:'',
-        component:HomeComponent,
+        component:CarteraComponent,
         title:'Home page'
     },
     {
         path:'login',
         component:LoginComponent,
-        title:'Registro'
-    },
-    {
-        path:'registro',
-        component:RegisterComponent,
         title:'Registro'
     },
     {
@@ -30,7 +27,22 @@ export const routes: Routes = [
     {
         path:'copropiedad',
         component:CopropiedadComponent,
-        title:'wompi',
+        title:'copropiedad',
     },
-
+    {
+        path:'demandado',
+        component:DemandadoComponent,
+        title:'demandado',
+    },
+    {
+        path:'cartera',
+        component:CarteraComponent,
+        title:'cartera',
+    },
+    {
+        path:'recaudo',
+        component:RecaudoComponent,
+        title:'Recaudo',
+    },
+    
 ];

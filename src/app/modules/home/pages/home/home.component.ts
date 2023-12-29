@@ -7,12 +7,15 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { Router, RouterLink } from '@angular/router';
 import { CopropiedadComponent } from '../copropiedad/copropiedad.component';
 import { RegisterComponent } from '../../../auth/pages/register/register.component';
+import { RecaudoComponent } from '../recaudo/recaudo.component';
+import { CarteraComponent } from '../cartera/cartera.component';
+import { DemandadoComponent } from '../demandado/demandado.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, MatMenuModule, MatButtonModule, MatToolbarModule, 
-            CopropiedadComponent, RouterLink, RegisterComponent],
+            CopropiedadComponent, RouterLink, RegisterComponent, RecaudoComponent, CarteraComponent, DemandadoComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

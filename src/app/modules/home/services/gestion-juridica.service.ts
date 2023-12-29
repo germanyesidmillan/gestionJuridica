@@ -31,5 +31,20 @@ export class GestionJuridicaService {
     return this.http.get(url);   
   }
 
+  getDemandantes(){
+    const url = `${this.URL_BASE}/demandantes`;
+    return this.http.get(url);   
+  }
+
+  getEtapaDemandado(){
+    const url = `${this.URL_BASE}/etapasdemandante`;
+    return this.http.get(url);   
+  }
+
+  getInmuebles(){
+    const url = `${this.URL_BASE}/inmuebles`;
+    return this.http.get(url);   
+  }
+
 
 }
