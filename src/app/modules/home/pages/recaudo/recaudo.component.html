@@ -1,17 +1,17 @@
 <div class="div-container">
-    <h1>Cartera</h1>
-    <form [formGroup]="formCartera" (submit)="onSubmit()">
+    <h1>Recaudo</h1>
+    <form [formGroup]="formRecaudo" (submit)="onSubmit()">
         
         <section>
 
             <mat-form-field >
                 <mat-label>Copropiedad:</mat-label>
-                <mat-select formControlName="demate" (selectionChange)="onChangeCopropiedad($event)">
+                <mat-select formControlName="demate">
                     @for (d of demandantes; track d.id_demandante) {
                       <mat-option [value]="d.id_demandante">{{d.nombre_demandante}}</mat-option>
                     }
                   </mat-select>
-                  @if (formCartera.get('demate')?.invalid && formCartera.get('demate')?.touched) {
+                  @if (formRecaudo.get('demate')?.invalid && formRecaudo.get('demate')?.touched) {
                     <small>Copropiedad requerido</small>
                 }
             </mat-form-field>
@@ -23,7 +23,7 @@
                       <mat-option [value]="i.id_inmueble">{{i.numero_inmueble}}</mat-option>
                     }
                   </mat-select>
-                  @if (formCartera.get('inmueble')?.invalid && formCartera.get('inmueble')?.touched) {
+                  @if (formRecaudo.get('inmueble')?.invalid && formRecaudo.get('inmueble')?.touched) {
                     <small>Inmueble requerido</small>
                 }
               </mat-form-field>
@@ -35,34 +35,35 @@
                       <mat-option [value]="de.id_demandado">{{de.nombre_demandado}}</mat-option>
                     }
                   </mat-select>
-                  @if (formCartera.get('demado')?.invalid && formCartera.get('demado')?.touched) {
+                  @if (formRecaudo.get('demado')?.invalid && formRecaudo.get('demado')?.touched) {
                     <small>Propietario requerido</small>
                 }
               </mat-form-field>
               
               <mat-form-field>
-                <mat-label>Cartera:</mat-label>
-                <input matInput formControlName="cartera">
-                @if (formCartera.get('cartera')?.invalid && formCartera.get('cartera')?.touched) {
-                    <small>Cartera requerido</small>
+                <mat-label>Recaudo:</mat-label>
+                <input matInput formControlName="recaudo">
+                @if (formRecaudo.get('recaudo')?.invalid && formRecaudo.get('recaudo')?.touched) {
+                    <small>Recaudo requerido</small>
                 }
               </mat-form-field>
             
               <mat-form-field>
-                <mat-label>Fecha Cartera (dd/mm/yyyy):</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="fechaCartera">
+                <mat-label>Fecha Recaudo (dd/mm/yyyy):</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="fechaRecaudo">
                <!--  <mat-hint>MM/DD/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                @if (formCartera.get('fechaCartera')?.invalid && formCartera.get('fechaCartera')?.touched) {
-                    <small>Fecha Cartera requerido</small>
+                @if (formRecaudo.get('fechaRecaudo')?.invalid && formRecaudo.get('fechaRecaudo')?.touched) {
+                    <small>Fecha Recaudo requerido</small>
                 }
               </mat-form-field>
         </section>
 
 
-        <button mat-flat-button color="primary" [disabled]="formCartera.invalid" >Guardar</button>  
+        <button mat-flat-button color="primary" [disabled]="formRecaudo.invalid" >Guardar</button>  
     
     </form>
 
 </div>
+

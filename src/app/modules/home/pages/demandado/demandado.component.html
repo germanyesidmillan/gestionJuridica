@@ -6,7 +6,7 @@
 
             <mat-form-field>
                 <mat-label>Identificacion:</mat-label>
-                <input matInput formControlName="Ident">
+                <input matInput formControlName="ident">
                 @if (formDemandado.get('ident')?.invalid && formDemandado.get('ident')?.touched) {
                 }
               </mat-form-field>
@@ -20,7 +20,7 @@
               </mat-form-field>
 
               <mat-form-field >
-                <mat-label>Email:</mat-label>
+                <mat-label>E-mail:</mat-label>
                 <input matInput formControlName="email">  
                 @if (formDemandado.get('email')?.invalid && formDemandado.get('email')?.touched) {
                 }
@@ -28,33 +28,35 @@
               
               <mat-form-field >
                 <mat-label>Copropiedad:</mat-label>
-                <mat-select formControlName="">
+                <mat-select formControlName="copropiedad">
                     @for (d of demandantes; track d.id_demandante) {
-                      <mat-option [value]="d.id_demandante">{{d.id_demandante}}</mat-option>
+                      <mat-option [value]="d.id_demandante">{{d.nombre_demandante}}</mat-option>
                     }
                   </mat-select>
-                  @if (formDemandado.get('demate')?.invalid && formDemandado.get('demate')?.touched) {
+                  @if (formDemandado.get('copropiedad')?.invalid && formDemandado.get('copropiedad')?.touched) {
                     <small>admin requerido</small>
                 }
               </mat-form-field>
+
               <mat-form-field >
-                <mat-label>Numero Inmueble:</mat-label>
-                <input matInput formControlName="inm">  
-                @if (formDemandado.get('inm')?.invalid && formDemandado.get('inm')?.touched) {
+                <mat-label>Inmueble:</mat-label>
+                <input matInput formControlName="inmueble">  
+                @if (formDemandado.get('inmueble')?.invalid && formDemandado.get('inmueble')?.touched) {
                     <small>Nombre requerido</small>
                 }
               </mat-form-field>
 
-            <mat-form-field >
-              <mat-label>Etapa Demandado:</mat-label>
-              <input matInput formControlName="inm">  
-              @if (formDemandado.get('etaDemand')?.invalid && formDemandado.get('etaDemand')?.touched) {
-                  <small>Nombre requerido</small>
-              }
-            </mat-form-field>
-
-
-    
+              <mat-form-field >
+                <mat-label>Etapa Demandado:</mat-label>
+                <mat-select formControlName="etapaDemandado">
+                    @for (ed of etapaDemandados; track ed.id_etapa_demandado) {
+                      <mat-option [value]="ed.id_etapa_demandado">{{ed.nombre_etapa_demandado}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formDemandado.get('etapaDemandado')?.invalid && formDemandado.get('etapaDemandado')?.touched) {
+                    <small>admin requerido</small>
+                  }
+                </mat-form-field>    
     
                              
         </section>

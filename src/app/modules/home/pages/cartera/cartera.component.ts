@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 
 @Component({
   selector: 'app-cartera',
@@ -17,36 +18,53 @@ import {MatNativeDateModule} from '@angular/material/core';
   templateUrl: './cartera.component.html',
   styleUrl: './cartera.component.css'
 })
-export class CarteraComponent {
+export class CarteraComponent implements OnInit{
 
   formCartera: FormGroup;
 
-  municipios:any = [];
-  bancos:any = [];
-  tipoCuentas:any = [];
-  administradores:any = [];
+  demandantes:any = [];
+  inmuebles:any = [];
   demandados:any = [];
+ 
+  
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
     this.formCartera = this.fb.group({
-      nit: ['', [Validators.required]],
-      nombre: ['', [Validators.required]],
-      dir: ['', [Validators.required]],
-      municipio: ['', [Validators.required]],
-      banco: ['', [Validators.required]],
-      tipoCuenta: ['', [Validators.required]],
-      numCuenta: ['', [Validators.required]],
-      admin: ['', [Validators.required]],
-      fechaPersoneria: ['', [Validators.required]],
+      demate: ['', [Validators.required]],
+      inmueble: ['', [Validators.required]],
+      demado: ['', [Validators.required]],
+      cartera: ['', [Validators.required]],
+      fechaCartera: ['', [Validators.required]],
     });
   }
-
+  ngOnInit(): void {
+    this.getCopropiedad();
+    this.getInmueble();
+  }
+  
   onSubmit(){
-
-    let banco = this.formCartera.get('banco')?.value;
-    console.log('formulario',this.formCartera, banco);
-
   }
 
+  onChangeCopropiedad(event: any){
+    console.log("onChangeCopropiedad->",event.value)
+  }
+  
+  getCopropiedad() {
+    this.gjService.getDemandantes().subscribe((resp:any)=>{
+      console.log("demandantes->",resp)
+      this.demandantes = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
+  
+  getInmueble() {
+    this.gjService.getInmuebles().subscribe((resp:any)=>{
+      console.log("demandantes->",resp)
+      this.inmuebles = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
 
 }

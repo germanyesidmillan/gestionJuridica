@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,6 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 
 @Component({
   selector: 'app-demandado',
@@ -16,22 +17,49 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './demandado.component.html',
   styleUrl: './demandado.component.css'
 })
-export class DemandadoComponent {
+export class DemandadoComponent implements OnInit{
   formDemandado: FormGroup;
-  demandantes:any=[]
+  demandantes:any = [];
+  etapaDemandados:any =[];
  
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
     this.formDemandado = this.fb.group({
-      identificacion: [''],
+      ident: [''],
       nombre: ['', [Validators.required]],
       email: [''],
+      copropiedad: ['',[Validators.required]],
+      inmueble: ['',[Validators.required]],
+      etapaDemandado: ['',[Validators.required]],
 
       });
+  }
+  ngOnInit(): void {
+    this.getDemandantes();
+    this.getEtapaDemandado();
+
   }
 
   onSubmit(){
 
   }
+  getDemandantes(){
+     this.gjService.getDemandantes().subscribe((resp:any)=>{
+      console.log("demandantes->",resp)
+      this.demandantes = resp;
 
+
+     }, error=>{
+      console.log(error)
+     });
+
+  }
+  getEtapaDemandado(){
+    this.gjService.getEtapaDemandado().subscribe((resp:any)=>{
+      console.log("etapas->",resp)
+      this.etapaDemandados = resp;
+    }, error=>{
+     console.log(error)
+    });
+  }
 }
