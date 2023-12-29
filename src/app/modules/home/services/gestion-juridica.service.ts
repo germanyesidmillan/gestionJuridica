@@ -46,5 +46,10 @@ export class GestionJuridicaService {
     return this.http.get(url);   
   }
 
+  getDemandados(){
+    const url = `${this.URL_BASE}/demandados`;
+    return this.http.get(url);   
+  }
+
 
 }

@@ -9,12 +9,13 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-cartera',
   standalone: true,
   imports: [CommonModule,  ReactiveFormsModule ,MatFormFieldModule, MatInputModule, MatButtonModule,
-    MatSelectModule,MatDatepickerModule, MatNativeDateModule],
+    MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule],
   templateUrl: './cartera.component.html',
   styleUrl: './cartera.component.css'
 })
@@ -25,6 +26,8 @@ export class CarteraComponent implements OnInit{
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
+  inmueblesXdemandante:any = []; 
+  inmuebleXdemandado:any = [];
  
   
 
@@ -37,16 +40,60 @@ export class CarteraComponent implements OnInit{
       fechaCartera: ['', [Validators.required]],
     });
   }
+
   ngOnInit(): void {
     this.getCopropiedad();
     this.getInmueble();
+    this.getDemandados();
   }
+
+  
   
   onSubmit(){
   }
 
   onChangeCopropiedad(event: any){
-    console.log("onChangeCopropiedad->",event.value)
+    let demandante = event.value;
+    this.limpiarDatos();
+    //this.formCartera.get("demado")?.setValue(null);
+    this.inmuebles.filter((inmueble:any)=>{
+      if(inmueble.id_demandante == demandante){
+        this.inmueblesXdemandante.push(inmueble)
+      }
+    });
+ }
+
+  onChangeInmueble(event: any){
+    let inmueble = event.value;
+    console.log('inmueble',inmueble);
+    this.formCartera.get("demado")?.setValue(null);
+    this.inmuebleXdemandado = [];
+
+    this.inmueblesXdemandante.filter((i:any)=>{
+      if(i.id_inmueble == inmueble){
+        this.inmuebleXdemandado.push(i);
+      }
+    });
+
+    console.log('inmuebleXdemandado',this.inmuebleXdemandado);
+
+    let demandado = this.inmuebleXdemandado[0]["id_demandado"];
+
+    this.demandados.filter( (dem:any)=>{
+      if (dem.id_demandado == demandado){
+        this.formCartera.get("demado")?.setValue(dem.nombre_demandado);
+        console.log('dem==>',dem.nombre_demandado);
+      }
+    });
+
+    console.log('demandado',demandado);
+
+  }
+
+  limpiarDatos(){
+    this.inmuebleXdemandado = [];
+    this.inmueblesXdemandante = [];
+    this.formCartera.get("demado")?.setValue(null);
   }
   
   getCopropiedad() {
@@ -60,8 +107,17 @@ export class CarteraComponent implements OnInit{
   
   getInmueble() {
     this.gjService.getInmuebles().subscribe((resp:any)=>{
-      console.log("demandantes->",resp)
+      console.log("inmuebles->",resp)
       this.inmuebles = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
+
+  getDemandados() {
+    this.gjService.getDemandados().subscribe((resp:any)=>{
+      console.log("demandados->",resp)
+      this.demandados = resp;
      }, error=>{
       console.log(error)
      });

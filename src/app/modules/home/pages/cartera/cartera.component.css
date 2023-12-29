@@ -1,0 +1,25 @@
+.div-container{
+    display: flex;
+   /*  width: 80%; */
+   justify-content: center;
+    /* flex-direction: column; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    align-items: center;
+}
+
+mat-card{
+    display: flex;
+    align-items: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+
+    /*    flex-wrap: wrap;
+    align-items: center;
+ */    border: 1px solid teal;
+
+}
+
