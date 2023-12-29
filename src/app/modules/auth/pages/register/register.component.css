@@ -1,54 +1,24 @@
 .div-container{
     display: flex;
-    /* flex-grow: 1; */
- /*    justify-content: center; */
-    width: 90%;
-    flex-direction: column;
-    align-content: center;
-    /* align-items: center; */ 
-    border: 5px solid blueviolet;
-}
-
-/* .div-container div{
-    flex-grow: 1;
-}
- */
-
-/* .div-container > :nth-child(odd){
-    background-color: aqua;
-} */
-
-section{
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    border: 1px solid blueviolet;
-  /*   flex-basis: 500px; */
-   /*  margin: 10px; */
-   gap: 25px;
-   /* align-items: center; */
-   justify-content: center;
+    align-items: center;
+    border: 1px solid yellow;
+}
+mat-card{
+    /* display: flex; */
+    width: 340px;
+    align-items: center;
+    border: 1px solid teal;
+    margin: 15px;
+    background-color: teal;
+    border-radius: 25px;;
 }
 
-/* section div{
-    background-color: red;
-    flex-grow: 0;
-} */
-
-.caja{
+form{
     display: flex;
-    justify-content: center;
-    flex-grow: 0 !important;
-    background-color: aqua;
+    width: 300px;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid blue;
 }
 
-.cajax {
-    display: flex;
-    flex-direction: row;
-    background-color: salmon;
-    gap: 15px;
-}
-
-.cajaj{
-    flex-grow: 1;
-}

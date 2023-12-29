@@ -1,12 +1,27 @@
 <div class="div-container">
-    <!-- <div class="div-container"> -->
-        <div class="caja">1</div>
-        <div class="cajax">
-            <div class="cajaj">1a</div>    
-            <div class="cajaj">1b</div>    
-            <div class="cajaj">1c</div>    
-        </div>
-        <div class="caja">3</div>
-        <div class="caja">4</div>
-    <!-- </div> -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><h1>Registro de usuarios</h1></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+        <mat-form-field>
+          <mat-label>User Name</mat-label>
+          <input matInput />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>User Email</mat-label>
+          <input matInput />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>User Password</mat-label>
+          <input matInput type="password" />
+        </mat-form-field>
+
+        <button mat-flat-button>Guardar</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>
