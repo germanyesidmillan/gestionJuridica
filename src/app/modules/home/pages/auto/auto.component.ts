@@ -20,12 +20,21 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './auto.component.css'
 })
 export class AutoComponent implements OnInit{
+juzgados: any;
+onChangeJuzgado($event: MatSelectChange) {
+throw new Error('Method not implemented.');
+}
+radicados: any;
+onChangeRadicado($event: MatSelectChange) {
+throw new Error('Method not implemented.');
+}
 
   formAuto: FormGroup;
 
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
+  numJuzgado:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
  
@@ -33,22 +42,27 @@ export class AutoComponent implements OnInit{
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
     this.formAuto = this.fb.group({
+      juzgado: ['', [Validators.required]],
+      numjuzgado: ['', [Validators.required]],
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
       demado: ['', [Validators.required]],
       radicado: ['', [Validators.required]],
       fechaRadicado: ['', [Validators.required]],
-    });
+      });
   }
   ngOnInit(): void {
+    this.getJuzgado();
+    this.getNumJuzgado();
     this.getCopropiedad();
     this.getInmueble();
     this.getDemandados();
+    this.radicados();
   }
   onSubmit(){
   }
 
-  onChangeCopropiedad(event: any){
+   onChangeCopropiedad(event: any){
     let demandante = event.value;
     this.limpiarDatos();
     //this.formAuto.get("demado")?.setValue(null);
@@ -91,6 +105,24 @@ export class AutoComponent implements OnInit{
     this.inmueblesXdemandante = [];
     this.formAuto.get("demado")?.setValue(null);
   }
+
+  getJuzgado() {
+    this.gjService.getDemandantes().subscribe((resp:any)=>{
+      console.log("juzgado->",resp)
+      this.juzgados = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
+
+  getNumJuzgado() {
+    this.gjService.getDemandantes().subscribe((resp:any)=>{
+      console.log("numJuzgado->",resp)
+      this.getNumJuzgado = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
   
   getCopropiedad() {
     this.gjService.getDemandantes().subscribe((resp:any)=>{
@@ -114,6 +146,15 @@ export class AutoComponent implements OnInit{
     this.gjService.getDemandados().subscribe((resp:any)=>{
       console.log("demandados->",resp)
       this.demandados = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
+
+  getRadicados() {
+    this.gjService.getDemandados().subscribe((resp:any)=>{
+      console.log("radicado->",resp)
+      this.radicados = resp;
      }, error=>{
       console.log(error)
      });

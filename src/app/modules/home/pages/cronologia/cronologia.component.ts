@@ -20,12 +20,19 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './cronologia.component.css'
 })
 export class CronologiaComponent implements OnInit{
+cronologia: any;
+onChangeCronologia($event: MatSelectChange) {
+throw new Error('Method not implemented.');
+}
 
   formCronologia: FormGroup;
 
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
+  etadaDemandados:any = [];
+  radicados:any = [];
+  cronologias:any =[];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
  
@@ -36,16 +43,24 @@ export class CronologiaComponent implements OnInit{
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
       demado: ['', [Validators.required]],
+      etapaDemado: ['', [Validators.required]],
       radicado: ['', [Validators.required]],
-      fechaRadicado: ['', [Validators.required]],
+      cronologia: ['', [Validators.required]],
+      fechaCronologia: ['', [Validators.required]],
     });
   }
   ngOnInit(): void {
     this.getCopropiedad();
     this.getInmueble();
     this.getDemandados();
+    this.getEtapaDemandado();
+    this.getRadicado();
+    this.getCronologia();
+    }
+  getEtapaDemandado() {
+    throw new Error('Method not implemented.');
   }
-  onSubmit(){
+   onSubmit(){
   }
 
   onChangeCopropiedad(event: any){
@@ -114,6 +129,33 @@ export class CronologiaComponent implements OnInit{
     this.gjService.getDemandados().subscribe((resp:any)=>{
       console.log("demandados->",resp)
       this.demandados = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
+
+  getRadicado() {
+    this.gjService.getDemandantes().subscribe((resp:any)=>{
+      console.log("radicado->",resp)
+      this.radicados = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
+
+  getEtapaRadicado() {
+    this.gjService.getDemandantes().subscribe((resp:any)=>{
+      console.log("etapaDemado->",resp)
+      this.getEtapaDemandado = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
+
+  getCronologia() {
+    this.gjService.getDemandantes().subscribe((resp:any)=>{
+      console.log("cronologia->",resp)
+      this.getCronologia = resp;
      }, error=>{
       console.log(error)
      });

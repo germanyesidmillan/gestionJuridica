@@ -8,47 +8,51 @@
         <mat-card-content>
           <form [formGroup]="formAuto" (submit)="onSubmit()">
             <section>
+
+              <mat-form-field>
+                <mat-label>Radicado:</mat-label>
+                <input matInput formControlName="radicado">
+                @if (formAuto.get('radicado')?.invalid && formAuto.get('radicado')?.touched) {
+                  <small>Radicado requerido</small>
+                }
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Juzgado:</mat-label>
+                <mat-select
+                  formControlName="juzgado"
+                  (selectionChange)="onChangeJuzgado($event)"
+                >
+                  @for (j of juzgados; track j.id_juzgado) {
+                  <mat-option [value]="j.id_juzgado">{{
+                    j.nombre_juzgado
+                  }}</mat-option>
+                  }
+                </mat-select>
+                @if (formAuto.get('juzgado')?.invalid &&
+                formAuto.get('juzgado')?.touched) {
+                <small>Nombre Juzgado requerido</small>
+                }
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Numero de Juzgado:</mat-label>
+                <input matInput readonly="readonly" formControlName="numJuzgado" />
+              </mat-form-field>
+
               <mat-form-field>
                 <mat-label>Copropiedad:</mat-label>
-                <mat-select
-                  formControlName="demate"
-                  (selectionChange)="onChangeCopropiedad($event)"
-                >
-                  @for (d of demandantes; track d.id_demandante) {
-                  <mat-option [value]="d.id_demandante">{{
-                    d.nombre_demandante
-                  }}</mat-option>
-                  }
-                </mat-select>
-                @if (formAuto.get('demate')?.invalid &&
-                formAuto.get('demate')?.touched) {
-                <small>Copropiedad requerido</small>
-                }
+                <input matInput readonly="readonly" formControlName="demate" />
               </mat-form-field>
-  
+
               <mat-form-field>
                 <mat-label>Inmueble:</mat-label>
-                <mat-select
-                  formControlName="inmueble"
-                  (selectionChange)="onChangeInmueble($event)"
-                >
-                  @for (i of inmueblesXdemandante; track i.id_inmueble) {
-                  <mat-option [value]="i.id_inmueble">{{
-                    i.numero_inmueble
-                  }}</mat-option>
-                  }
-                </mat-select>
-                @if (formAuto.get('inmueble')?.invalid &&
-                formAuto.get('inmueble')?.touched) {
-                <small>Inmueble requerido</small>
-                }
-              </mat-form-field>
-            </section>
+                <input matInput readonly="readonly" formControlName="inmueble" />
+              </mat-form-field>                
             
-            <section>
   
               <mat-form-field>
-                <mat-label>Propietario:</mat-label>
+                <mat-label>Demandado:</mat-label>
                 <input matInput readonly="readonly" formControlName="demado" />
               </mat-form-field>
   

@@ -7,7 +7,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { Router, RouterLink } from '@angular/router';
 import { RegisterComponent } from '../../../auth/pages/register/register.component';
 import { CopropiedadComponent } from '../copropiedad/copropiedad.component';
-import { RecaudoComponent } from '../recaudo/recaudo.component';
+
 import { CarteraComponent } from '../cartera/cartera.component';
 import { DemandadoComponent } from '../demandado/demandado.component';
 import { ReembolsosComponent } from '../reembolsos/reembolsos.component';
@@ -15,13 +15,14 @@ import { CronologiaComponent } from '../cronologia/cronologia.component';
 import { HonorariosComponent } from '../honorarios/honorarios.component';
 import { AutoComponent } from '../auto/auto.component';
 import { RadicadoComponent } from '../radicado/radicados.component';
+import { RecaudosComponent } from '../recaudos/recaudos.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, MatMenuModule, MatButtonModule, MatToolbarModule, 
              RouterLink, RegisterComponent, CopropiedadComponent, DemandadoComponent, RadicadoComponent,
-             AutoComponent,CarteraComponent, RecaudoComponent, HonorariosComponent, 
+             AutoComponent,CarteraComponent, HonorariosComponent, RecaudosComponent,
               ReembolsosComponent, CronologiaComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

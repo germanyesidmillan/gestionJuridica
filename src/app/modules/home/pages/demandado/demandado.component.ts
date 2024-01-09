@@ -19,8 +19,7 @@ import { GestionJuridicaService } from '../../services/gestion-juridica.service'
 })
 export class DemandadoComponent implements OnInit{
   formDemandado: FormGroup;
-  demandantes:any = [];
-  etapaDemandados:any =[];
+  demandantes:any = [];  
  
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
@@ -30,14 +29,12 @@ export class DemandadoComponent implements OnInit{
       email: [''],
       copropiedad: ['',[Validators.required]],
       inmueble: ['',[Validators.required]],
-      etapaDemandado: ['',[Validators.required]],
-
+      
       });
   }
   ngOnInit(): void {
     this.getDemandantes();
-    this.getEtapaDemandado();
-
+    
   }
 
   onSubmit(){
@@ -54,12 +51,5 @@ export class DemandadoComponent implements OnInit{
      });
 
   }
-  getEtapaDemandado(){
-    this.gjService.getEtapaDemandado().subscribe((resp:any)=>{
-      console.log("etapas->",resp)
-      this.etapaDemandados = resp;
-    }, error=>{
-     console.log(error)
-    });
-  }
+ 
 }

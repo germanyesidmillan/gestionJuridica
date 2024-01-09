@@ -48,7 +48,7 @@
           <section>
 
             <mat-form-field>
-              <mat-label>Propietario:</mat-label>
+              <mat-label>Demandado:</mat-label>
               <input matInput readonly="readonly" formControlName="demado" />
             </mat-form-field>
 
@@ -60,6 +60,19 @@
               <small>Cartera requerido</small>
               }
             </mat-form-field>
+
+            <mat-form-field >
+              <mat-label>Etapa Demandado:</mat-label>
+              <mat-select formControlName="etapaDemandado">
+                  @for (ed of etapaDemandados; track ed.id_etapa_demandado) {
+                    <mat-option [value]="ed.id_etapa_demandado">{{ed.nombre_etapa_demandado}}</mat-option>
+                  }
+                </mat-select>
+                @if (formCartera.get('etapaDemandado')?.invalid && formCartera.get('etapaDemandado')?.touched) {
+                  <small>Etapa Demandado requerido</small>
+                }
+              </mat-form-field> 
+
           </section>
           <section>  
             <mat-form-field>

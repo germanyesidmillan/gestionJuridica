@@ -34,7 +34,7 @@
                     }
                   </mat-select>
                   @if (formDemandado.get('copropiedad')?.invalid && formDemandado.get('copropiedad')?.touched) {
-                    <small>admin requerido</small>
+                    <small>Copropiedad requerido</small>
                 }
               </mat-form-field>
 
@@ -42,22 +42,9 @@
                 <mat-label>Inmueble:</mat-label>
                 <input matInput formControlName="inmueble">  
                 @if (formDemandado.get('inmueble')?.invalid && formDemandado.get('inmueble')?.touched) {
-                    <small>Nombre requerido</small>
+                    <small>Inmueble requerido</small>
                 }
-              </mat-form-field>
-
-              <mat-form-field >
-                <mat-label>Etapa Demandado:</mat-label>
-                <mat-select formControlName="etapaDemandado">
-                    @for (ed of etapaDemandados; track ed.id_etapa_demandado) {
-                      <mat-option [value]="ed.id_etapa_demandado">{{ed.nombre_etapa_demandado}}</mat-option>
-                    }
-                  </mat-select>
-                  @if (formDemandado.get('etapaDemandado')?.invalid && formDemandado.get('etapaDemandado')?.touched) {
-                    <small>admin requerido</small>
-                  }
-                </mat-form-field>    
-    
+              </mat-form-field>    
                              
         </section>
         <button mat-flat-button color="primary" [disabled]="formDemandado.invalid" >Guardar</button>  

@@ -20,6 +20,18 @@
                     <small>Nombre requerido</small>
                 }
               </mat-form-field>
+
+              <mat-form-field >
+                <mat-label>Tipo de Inmueble:</mat-label>
+                <mat-select formControlName="tipoInmueble">
+                    @for (ti of tipoInmueble; track ti.id_tipo_inmueble) {
+                      <mat-option [value]="ti.id_tipo_inmueble">{{ti.id_tipo_inmueble}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formCopropiedad.get('tipoInmueble')?.invalid && formCopropiedad.get('tipoInmueble')?.touched) {
+                    <small>Tipo de Inmueble requerido</small>
+                }
+              </mat-form-field>
         
               
               <mat-form-field >

@@ -1,10 +1,6 @@
 .div-container{
     display: flex;
-   /*  width: 80%; */
-   justify-content: center;
-    /* flex-direction: column; */
-    /* justify-content: center; */
-    /* align-items: center; */
+    justify-content: center;
     align-items: center;
 }
 
@@ -17,9 +13,7 @@ form{
     display: flex;
     flex-direction: column;
 
-    /*    flex-wrap: wrap;
-    align-items: center;
- */    border: 1px solid teal;
+    border: 1px solid teal;
 
 }
 

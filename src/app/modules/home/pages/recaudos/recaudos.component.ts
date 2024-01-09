@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,31 +12,31 @@ import { GestionJuridicaService } from '../../services/gestion-juridica.service'
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-honorarios',
+  selector: 'app-recaudos',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule ,MatFormFieldModule, MatInputModule, MatButtonModule,
     MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule],
-  templateUrl: './honorarios.component.html',
-  styleUrl: './honorarios.component.css'
+  templateUrl: './recaudos.component.html',
+  styleUrl: './recaudos.component.css'
 })
-export class HonorariosComponent implements OnInit{
+export class RecaudosComponent {
 
-  formHonorarios: FormGroup;
+  formRecaudo: FormGroup;
 
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
-formCartera: any;
-  
+  formCartera: any;
+
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
-    this.formHonorarios = this.fb.group({
+    this.formRecaudo = this.fb.group({
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
       demado: ['', [Validators.required]],
-      honorarios: ['', [Validators.required]],
-      fechaHonorarios: ['', [Validators.required]],
+      recaudo: ['', [Validators.required]],
+      fechaRecaudo: ['', [Validators.required]],
     });
   }
   ngOnInit(): void {
@@ -44,7 +44,6 @@ formCartera: any;
     this.getInmueble();
     this.getDemandados();
   }
-
   onSubmit(){
   }
 
@@ -58,7 +57,6 @@ formCartera: any;
       }
     });
  }
-
  onChangeInmueble(event: any){
   let inmueble = event.value;
   console.log('inmueble',inmueble);
@@ -119,6 +117,5 @@ getDemandados() {
    });
 }
 
+
 }
-
-
