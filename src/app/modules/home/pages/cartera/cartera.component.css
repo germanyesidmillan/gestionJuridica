@@ -1,25 +1,32 @@
-.div-container{
-    display: flex;
-   /*  width: 80%; */
-   justify-content: center;
-    /* flex-direction: column; */
-    /* justify-content: center; */
-    /* align-items: center; */
-    align-items: center;
+.div-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-top: 25px;
 }
 
-mat-card{
-    display: flex;
-    align-items: center;
+mat-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  width: 60%;
+  background-color: rgba(214, 197, 194, 0.7);
+  border-radius: 80px 0 80px 0;
+}
+#F5F5F5
+ form {
+  display: flex;
+} 
+
+form > :nth-child(1) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
-form{
-    display: flex;
-    flex-direction: column;
-
-    /*    flex-wrap: wrap;
-    align-items: center;
- */    border: 1px solid teal;
-
+form > :nth-child(2) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-

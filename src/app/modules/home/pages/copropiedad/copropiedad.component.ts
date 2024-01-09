@@ -9,12 +9,13 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { IGestionJuridica } from '../../models/gestion-juridica-interface';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-copropiedad',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule ,MatFormFieldModule, MatInputModule, MatButtonModule,
-             MatSelectModule,MatDatepickerModule, MatNativeDateModule],
+             MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule],
   templateUrl: './copropiedad.component.html',
   styleUrl: './copropiedad.component.css'
 })

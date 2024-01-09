@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 //import { LoginComponent } from './modules/auth/pages/login/login.component';
-import { HomeComponent } from './modules/home/pages/home/home.component';
+import { HomeComponent } from './modules/home/pages/menu/home.component';
 import { CopropiedadComponent } from './modules/home/pages/copropiedad/copropiedad.component';
 
 
