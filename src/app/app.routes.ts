@@ -8,10 +8,10 @@ import { CarteraComponent } from './modules/home/pages/cartera/cartera.component
 import { RadicadoComponent } from './modules/home/pages/radicado/radicados.component';
 import { AutoComponent } from './modules/home/pages/auto/auto.component';
 import { CronologiaComponent } from './modules/home/pages/cronologia/cronologia.component';
-import { RecaudoComponent } from './modules/home/pages/recaudo/recaudo.component';
+
 import { HonorariosComponent } from './modules/home/pages/honorarios/honorarios.component';
 import { ReembolsosComponent } from './modules/home/pages/reembolsos/reembolsos.component';
-import { RegisterComponent } from './modules/auth/pages/register/register.component';
+import { RecaudosComponent } from './modules/home/pages/recaudos/recaudos.component';
 
 
 export const routes: Routes = [
@@ -26,11 +26,11 @@ export const routes: Routes = [
         component:LoginComponent,
         title:'Registro'
     },
-    {
+    /*{
         path:'registro',
         component:RegisterComponent,
         title:'Registro'
-    },
+    },*/
     {
         path:'wompi',
         component:WompiComponent,
@@ -68,7 +68,7 @@ export const routes: Routes = [
     },
     {
         path:'recaudo',
-        component:RecaudoComponent,
+        component:RecaudosComponent,
         title:'recaudo',
     },
     {

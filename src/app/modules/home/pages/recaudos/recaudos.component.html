@@ -2,11 +2,11 @@
     <div>
       <mat-card>
         <mat-card-header>
-          <mat-card-title><h1>Reembolsos</h1></mat-card-title>
+          <mat-card-title><h1>Recaudo</h1></mat-card-title>
         </mat-card-header>
   
         <mat-card-content>
-          <form [formGroup]="formReembolso" (submit)="onSubmit()">
+          <form [formGroup]="formRecaudo" (submit)="onSubmit()">
             <section>
               <mat-form-field>
                 <mat-label>Copropiedad:</mat-label>
@@ -20,8 +20,8 @@
                   }}</mat-option>
                   }
                 </mat-select>
-                @if (formReembolso.get('demate')?.invalid &&
-                formReembolso.get('demate')?.touched) {
+                @if (formRecaudo.get('demate')?.invalid &&
+                formRecaudo.get('demate')?.touched) {
                 <small>Copropiedad requerido</small>
                 }
               </mat-form-field>
@@ -38,8 +38,8 @@
                   }}</mat-option>
                   }
                 </mat-select>
-                @if (formReembolso.get('inmueble')?.invalid &&
-                formReembolso.get('inmueble')?.touched) {
+                @if (formRecaudo.get('inmueble')?.invalid &&
+                formRecaudo.get('inmueble')?.touched) {
                 <small>Inmueble requerido</small>
                 }
               </mat-form-field>
@@ -51,34 +51,23 @@
                 <mat-label>Demandado:</mat-label>
                 <input matInput readonly="readonly" formControlName="demado" />
               </mat-form-field>
-
-              <mat-form-field>
-                <mat-label>Cuenta de Cobro:</mat-label>
-                <input matInput formControlName="cuecobro" />
-                @if (formReembolso.get('cuecobro')?.invalid &&
-                formReembolso.get('cuecobro')?.touched) {
-                <small>Cuenta de Cobro requerido</small>
-                }
-              </mat-form-field>
-
-              <mat-form-field>
-                <mat-label>Reembolso:</mat-label>
-                <input matInput formControlName="reembolso" />
-                @if (formReembolso.get('reembolso')?.invalid &&
-                formReembolso.get('reembolso')?.touched) {
-                <small>Reembolso requerido</small>
-                }
-              </mat-form-field>
   
-          
+              <mat-form-field>
+                <mat-label>Recaudo:</mat-label>
+                <input matInput formControlName="recaudo" />
+                @if (formRecaudo.get('recaudo')?.invalid &&
+                formRecaudo.get('recaudo')?.touched) {
+                <small>Recaudo requerido</small>
+                }
+              </mat-form-field>
             </section>
             <section>  
               <mat-form-field>
-                <mat-label>Fecha Reembolso (dd/mm/yyyy):</mat-label>
+                <mat-label>Fecha Recaudo (dd/mm/yyyy):</mat-label>
                 <input
                   matInput
                   [matDatepicker]="picker"
-                  formControlName="fechaReembolso"
+                  formControlName="fechaRecaudo"
                 />
                 <!--  <mat-hint>MM/DD/YYYY</mat-hint> -->
                 <mat-datepicker-toggle
@@ -86,9 +75,9 @@
                   [for]="picker"
                 ></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                @if (formReembolso.get('fechaReembolso')?.invalid &&
-                formReembolso.get('fechaReembolso')?.touched) {
-                <small>Fecha Radicado requerido</small>
+                @if (formRecaudo.get('fechaRecaudo')?.invalid &&
+                formRecaudo.get('fechaRecaudo')?.touched) {
+                <small>Fecha Recaudo requerido</small>
                 }
               </mat-form-field>
             </section>
@@ -96,7 +85,7 @@
             <button
               mat-flat-button
               color="primary"
-              [disabled]="formReembolso.invalid"
+              [disabled]="formRecaudo.invalid"
             >
               Guardar
             </button>
@@ -106,4 +95,3 @@
     </div>
   </div>
   
-

@@ -1,4 +1,5 @@
 <div class="div-container">
+<<<<<<< HEAD
   <mat-card>
     <mat-card-header>
       <mat-card-title>
@@ -16,6 +17,106 @@
             <small>Nit requerido</small>
             }
           </mat-form-field>
+=======
+    <h1>Copropiedad</h1>
+    <form [formGroup]="formCopropiedad" (submit)="onSubmit()">
+        
+       
+          <section>
+      
+            <mat-form-field>
+                <mat-label>Nit:</mat-label>
+                <input matInput formControlName="nit">
+                @if (formCopropiedad.get('nit')?.invalid && formCopropiedad.get('nit')?.touched ) {
+                    <small>Nit requerido</small>
+                }
+              </mat-form-field>
+            
+              <mat-form-field >
+                <mat-label>Nombre:</mat-label>
+                <input matInput formControlName="nombre">  
+                @if (formCopropiedad.get('nombre')?.invalid && formCopropiedad.get('nit')?.touched) {
+                    <small>Nombre requerido</small>
+                }
+              </mat-form-field>
+
+              <mat-form-field >
+                <mat-label>Tipo de Inmueble:</mat-label>
+                <mat-select formControlName="tipoInmueble">
+                    @for (ti of tipoInmueble; track ti.id_tipo_inmueble) {
+                      <mat-option [value]="ti.id_tipo_inmueble">{{ti.id_tipo_inmueble}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formCopropiedad.get('tipoInmueble')?.invalid && formCopropiedad.get('tipoInmueble')?.touched) {
+                    <small>Tipo de Inmueble requerido</small>
+                }
+              </mat-form-field>
+        
+              
+              <mat-form-field >
+                <mat-label>Direccion:</mat-label>
+                <input matInput formControlName="direccion">  
+                @if (formCopropiedad.get('direccion')?.invalid && formCopropiedad.get('direccion')?.touched) {
+                    <small>Direccion requerida</small>
+                }
+              </mat-form-field>
+              
+              <mat-form-field >
+                <mat-label>Municipio:</mat-label>
+                <mat-select formControlName="municipio">
+                    @for (m of municipios; track m.id_municipio) {
+                      <mat-option [value]="m.id_municipio">{{m.nombre_municipio}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formCopropiedad.get('municipio')?.invalid && formCopropiedad.get('municipio')?.touched) {
+                    <small>Municipio requerido</small>
+                }
+              </mat-form-field>
+              
+              <mat-form-field >
+                <mat-label>Entidad Bancaria:</mat-label>
+                <mat-select formControlName="banco">
+                    @for (b of bancos; track b.id_banco) {
+                      <mat-option [value]="b.id_banco">{{b.nombre_banco}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formCopropiedad.get('banco')?.invalid && formCopropiedad.get('banco')?.touched) {
+                    <small>Entidad Bancaria requerido</small>
+                }
+              </mat-form-field>
+              
+              <mat-form-field >
+                <mat-label>Tipo de Cuenta:</mat-label>
+                <mat-select formControlName="tipoCuenta">
+                    @for (tc of tipoCuentas; track tc.id_tipo_cuenta) {
+                      <mat-option [value]="tc.id_tipo_cuenta">{{tc.nombre_tipo_cuenta}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formCopropiedad.get('tipoCuenta')?.invalid && formCopropiedad.get('tipocuenta')?.touched) {
+                    <small>Tipo de Cuenta requerido</small>
+                }
+              </mat-form-field>
+        
+              <mat-form-field >
+                <mat-label>Numero de cuenta:</mat-label>
+                <input matInput formControlName="numCuenta" type="number">  
+                @if (formCopropiedad.get('numCuenta')?.invalid && formCopropiedad.get('numCuenta')?.touched) {
+                    <small>Numero de Cuenta requerido</small>
+                }
+              </mat-form-field>
+              
+              <mat-form-field >
+                <mat-label>Administrador:</mat-label>
+                <mat-select formControlName="admin">
+                    @for (adm of administradores; track adm.id_admin_copropiedad) {
+                      <mat-option [value]="adm.id_admin_copropiedad">{{adm.nombre_admin_copropiedad}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formCopropiedad.get('admin')?.invalid && formCopropiedad.get('admin')?.touched) {
+                    <small>Administrador requerido</small>
+                }
+              </mat-form-field>
+>>>>>>> 8066143a5dbb785e699a70a90b37a07520904f74
     
           <mat-form-field>
             <mat-label>Nombre:</mat-label>

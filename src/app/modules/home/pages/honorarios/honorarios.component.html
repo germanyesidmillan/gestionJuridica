@@ -48,8 +48,17 @@
             <section>
   
               <mat-form-field>
-                <mat-label>Propietario:</mat-label>
+                <mat-label>Demandado:</mat-label>
                 <input matInput readonly="readonly" formControlName="demado" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Cuenta de Cobro:</mat-label>
+                <input matInput formControlName="cuecobro" />
+                @if (formHonorarios.get('cuecobro')?.invalid &&
+                formHonorarios.get('cuecobro')?.touched) {
+                <small>Cuenta de Cobro requerido</small>
+                }
               </mat-form-field>
   
               <mat-form-field>

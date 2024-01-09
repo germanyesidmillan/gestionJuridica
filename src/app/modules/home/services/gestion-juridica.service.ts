@@ -6,6 +6,12 @@ import { IGestionJuridica } from '../models/gestion-juridica-interface';
   providedIn: 'root'
 })
 export class GestionJuridicaService {
+  getNumJuzgados() {
+    throw new Error('Method not implemented.');
+  }
+  getJuzgados() {
+    throw new Error('Method not implemented.');
+  }
 
   URL_BASE = 'http://localhost:1323';
 
@@ -50,6 +56,18 @@ export class GestionJuridicaService {
     const url = `${this.URL_BASE}/demandados`;
     return this.http.get(url);   
   }
+  getTipoInmueble(){
+    const url = `${this.URL_BASE}/tipoInmueble`;
+    return this.http.get(url);   
+  }
 
+  getJuzgado(){
+    const url = `${this.URL_BASE}/juzgado`;
+    return this.http.get(url);   
+  }
+  getNumJuzgado(){
+    const url = `${this.URL_BASE}/numjuzgado`;
+    return this.http.get(url);   
+  }
 
 }

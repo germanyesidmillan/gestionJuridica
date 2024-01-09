@@ -26,6 +26,8 @@ export class RadicadoComponent implements OnInit{
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
+  juzgados:any = [];
+  numJuzgados:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
  
@@ -38,12 +40,16 @@ export class RadicadoComponent implements OnInit{
       demado: ['', [Validators.required]],
       radicado: ['', [Validators.required]],
       fechaRadicado: ['', [Validators.required]],
+      juzgado: ['', [Validators.required]],
+      numJuzgado: ['', [Validators.required]],
     });
   }
   ngOnInit(): void {
     this.getCopropiedad();
-    this.getInmueble();
+    this.getInmuebles();
     this.getDemandados();
+    this.getJuzgados();
+    this.getNumJuzgados();
   }
   onSubmit(){
   }
@@ -58,6 +64,26 @@ export class RadicadoComponent implements OnInit{
       }
     });
  }
+
+ onChangeJuzgado(event: any){
+  let juzgado = event.value;
+  this.limpiarDatos();
+  this.juzgados.filter((juzgado:any)=>{
+    if(juzgado.id_juzgado == juzgado){
+      this.inmueblesXdemandante.push(juzgado)
+    }
+  });
+}
+
+onChangeNumJuzgado(event: any){
+  let numJuzgado = event.value;
+  this.limpiarDatos();
+  this.numJuzgados.filter((juzgado:any)=>{
+    if(numJuzgado.id_num_juzgado == numJuzgado){
+      this.inmueblesXdemandante.push(juzgado)
+    }
+  });
+}
 
   onChangeInmueble(event: any){
     let inmueble = event.value;
@@ -101,7 +127,7 @@ export class RadicadoComponent implements OnInit{
      });
   }
   
-  getInmueble() {
+  getInmuebles() {
     this.gjService.getInmuebles().subscribe((resp:any)=>{
       console.log("inmuebles->",resp)
       this.inmuebles = resp;
@@ -119,4 +145,22 @@ export class RadicadoComponent implements OnInit{
      });
   }
 
+  getJuzgados() {
+    this.gjService.getDemandados().subscribe((resp:any)=>{
+      console.log("juzgado->",resp)
+      this.juzgados = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
+
+  getNumJuzgados() {
+    this.gjService.getDemandados().subscribe((resp:any)=>{
+      console.log("numjuzgado->",resp)
+      this.numJuzgados = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
+  
 }

@@ -48,7 +48,7 @@
             <section>
   
               <mat-form-field>
-                <mat-label>Propietario:</mat-label>
+                <mat-label>Demandado:</mat-label>
                 <input matInput readonly="readonly" formControlName="demado" />
               </mat-form-field>
 
@@ -80,6 +80,42 @@
                 @if (formRadicado.get('fechaRadicado')?.invalid &&
                 formRadicado.get('fechaRadicado')?.touched) {
                 <small>Fecha Radicado requerido</small>
+                }
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Juzgado:</mat-label>
+                <mat-select
+                  formControlName="juzgado"
+                  (selectionChange)="onChangeJuzgado($event)"
+                >
+                  @for (j of juzgados; track j.id_juzgado) {
+                  <mat-option [value]="j.id_juzgado">{{
+                    j.nombre_juzgado
+                  }}</mat-option>
+                  }
+                </mat-select>
+                @if (formRadicado.get('juzgado')?.invalid &&
+                formRadicado.get('juzgado')?.touched) {
+                <small>Juzgado requerido</small>
+                }
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Numero de Juzgado:</mat-label>
+                <mat-select
+                  formControlName="numJuzgado"
+                  (selectionChange)="onChangeNumJuzgado($event)"
+                >
+                  @for (nj of juzgados; track nj.id_juzgado) {
+                  <mat-option [value]="nj.id_juzgado">{{
+                    nj.num_juzgado
+                  }}</mat-option>
+                  }
+                </mat-select>
+                @if (formRadicado.get('numJuzgado')?.invalid &&
+                formRadicado.get('numJuzgado')?.touched) {
+                <small>Numero de Juzgado requerido</small>
                 }
               </mat-form-field>
             </section>

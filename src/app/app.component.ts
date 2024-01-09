@@ -4,6 +4,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 //import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { HomeComponent } from './modules/home/pages/menu/home.component';
 import { CopropiedadComponent } from './modules/home/pages/copropiedad/copropiedad.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({

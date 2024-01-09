@@ -28,6 +28,7 @@ export class CarteraComponent implements OnInit{
   demandados:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
+  etapaDemandados:any = [];
  
   
 

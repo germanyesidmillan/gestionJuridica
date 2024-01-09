@@ -1,6 +1,7 @@
 .div-container{
     display: flex;
     justify-content: center;
+<<<<<<< HEAD
     border: 1px solid blue;
 }
 
@@ -33,3 +34,20 @@ small{
     color:red
 }
 
+=======
+    align-items: center;
+}
+
+mat-card{
+    display: flex;
+    align-items: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid teal;
+
+}
+>>>>>>> 8066143a5dbb785e699a70a90b37a07520904f74
