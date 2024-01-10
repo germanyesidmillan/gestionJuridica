@@ -30,6 +30,7 @@ export class RadicadoComponent implements OnInit{
   numJuzgados:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
+  numJuzgadosXjuzgado: any = [];
  
   
 
@@ -67,17 +68,23 @@ export class RadicadoComponent implements OnInit{
 
  onChangeJuzgado(event: any){
   let juzgado = event.value;
-  this.limpiarDatos();
-  this.juzgados.filter((juzgado:any)=>{
-    if(juzgado.id_juzgado == juzgado){
-      this.inmueblesXdemandante.push(juzgado)
+
+  console.log('juzgado',juzgado);
+  this.numJuzgadosXjuzgado = [];
+  //this.limpiarDatos();
+
+  this.numJuzgados.filter((numJuzgado:any)=>{
+    if(numJuzgado.id_juzgado == juzgado){
+      this.numJuzgadosXjuzgado.push(numJuzgado)
     }
   });
+
+  console.log('numJuzgadosXjuzgado',this.numJuzgadosXjuzgado);
 }
 
 onChangeNumJuzgado(event: any){
   let numJuzgado = event.value;
-  this.limpiarDatos();
+  //this.limpiarDatos();
   this.numJuzgados.filter((juzgado:any)=>{
     if(numJuzgado.id_num_juzgado == numJuzgado){
       this.inmueblesXdemandante.push(juzgado)
@@ -87,7 +94,7 @@ onChangeNumJuzgado(event: any){
 
   onChangeInmueble(event: any){
     let inmueble = event.value;
-    console.log('inmueble',inmueble);
+    //console.log('inmueble',inmueble);
     this.formRadicado.get("demado")?.setValue(null);
     this.inmuebleXdemandado = [];
 
@@ -120,7 +127,7 @@ onChangeNumJuzgado(event: any){
   
   getCopropiedad() {
     this.gjService.getDemandantes().subscribe((resp:any)=>{
-      console.log("demandantes->",resp)
+      //console.log("demandantes->",resp)
       this.demandantes = resp;
      }, error=>{
       console.log(error)
@@ -129,7 +136,7 @@ onChangeNumJuzgado(event: any){
   
   getInmuebles() {
     this.gjService.getInmuebles().subscribe((resp:any)=>{
-      console.log("inmuebles->",resp)
+      //console.log("inmuebles->",resp)
       this.inmuebles = resp;
      }, error=>{
       console.log(error)
@@ -138,7 +145,7 @@ onChangeNumJuzgado(event: any){
 
   getDemandados() {
     this.gjService.getDemandados().subscribe((resp:any)=>{
-      console.log("demandados->",resp)
+      //console.log("demandados->",resp)
       this.demandados = resp;
      }, error=>{
       console.log(error)
@@ -146,7 +153,7 @@ onChangeNumJuzgado(event: any){
   }
 
   getJuzgados() {
-    this.gjService.getDemandados().subscribe((resp:any)=>{
+    this.gjService.getJuzgados().subscribe((resp:any)=>{
       console.log("juzgado->",resp)
       this.juzgados = resp;
      }, error=>{
@@ -155,7 +162,7 @@ onChangeNumJuzgado(event: any){
   }
 
   getNumJuzgados() {
-    this.gjService.getDemandados().subscribe((resp:any)=>{
+    this.gjService.getNumJuzgados().subscribe((resp:any)=>{
       console.log("numjuzgado->",resp)
       this.numJuzgados = resp;
      }, error=>{

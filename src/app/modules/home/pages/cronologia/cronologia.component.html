@@ -62,9 +62,9 @@
 
             <mat-form-field>
               <mat-label>Cronologia:</mat-label>
-              <mat-select formControlName="cronologia" (selectionChange)="onChangeCronologia($event)">
+              <mat-select formControlName="cronologia">
 
-                @for (cr of cronologia; track cr.id_cronologia) {
+                @for (cr of cronologias; track cr.id_cronologia) {
                 <mat-option [value]="cr.id_cronologia">{{cr.nombre_cronologia}}</mat-option>
                 }
               </mat-select>

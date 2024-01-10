@@ -43,9 +43,8 @@
             }
           </mat-form-field>
 
-<<<<<<< HEAD
           <mat-form-field>
-            <mat-label>Propietario:</mat-label>
+            <mat-label>Demandado:</mat-label>
             <input matInput readonly="readonly" formControlName="demado" />
           </mat-form-field>
 
@@ -57,6 +56,22 @@
             <small>Cartera requerido</small>
             }
           </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Etapa Demandado:</mat-label>
+            <mat-select formControlName="etapaDemandado">
+              @for (ed of etapaDemandados; track ed.id_etapa_demandado) {
+              <mat-option [value]="ed.id_etapa_demandado">{{
+                ed.nombre_etapa_demandado
+              }}</mat-option>
+              }
+            </mat-select>
+            @if (formCartera.get('etapaDemandado')?.invalid &&
+            formCartera.get('etapaDemandado')?.touched) {
+            <small>Etapa Demandado requerido</small>
+            }
+          </mat-form-field>
+
           <mat-form-field>
             <mat-label>Fecha Cartera (dd/mm/yyyy):</mat-label>
             <input
@@ -76,55 +91,6 @@
             }
           </mat-form-field>
         </div>
-=======
-            <mat-form-field>
-              <mat-label>Demandado:</mat-label>
-              <input matInput readonly="readonly" formControlName="demado" />
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Cartera:</mat-label>
-              <input matInput formControlName="cartera" />
-              @if (formCartera.get('cartera')?.invalid &&
-              formCartera.get('cartera')?.touched) {
-              <small>Cartera requerido</small>
-              }
-            </mat-form-field>
-
-            <mat-form-field >
-              <mat-label>Etapa Demandado:</mat-label>
-              <mat-select formControlName="etapaDemandado">
-                  @for (ed of etapaDemandados; track ed.id_etapa_demandado) {
-                    <mat-option [value]="ed.id_etapa_demandado">{{ed.nombre_etapa_demandado}}</mat-option>
-                  }
-                </mat-select>
-                @if (formCartera.get('etapaDemandado')?.invalid && formCartera.get('etapaDemandado')?.touched) {
-                  <small>Etapa Demandado requerido</small>
-                }
-              </mat-form-field> 
-
-          </section>
-          <section>  
-            <mat-form-field>
-              <mat-label>Fecha Cartera (dd/mm/yyyy):</mat-label>
-              <input
-                matInput
-                [matDatepicker]="picker"
-                formControlName="fechaCartera"
-              />
-              <!--  <mat-hint>MM/DD/YYYY</mat-hint> -->
-              <mat-datepicker-toggle
-                matIconSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-              @if (formCartera.get('fechaCartera')?.invalid &&
-              formCartera.get('fechaCartera')?.touched) {
-              <small>Fecha Cartera requerido</small>
-              }
-            </mat-form-field>
-          </section>
->>>>>>> 8066143a5dbb785e699a70a90b37a07520904f74
 
         <div>
           <button

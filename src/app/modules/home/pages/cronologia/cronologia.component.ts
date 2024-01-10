@@ -20,13 +20,8 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './cronologia.component.css'
 })
 export class CronologiaComponent implements OnInit{
-cronologia: any;
-onChangeCronologia($event: MatSelectChange) {
-throw new Error('Method not implemented.');
-}
-
+  cronologia: any;
   formCronologia: FormGroup;
-
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
@@ -35,8 +30,6 @@ throw new Error('Method not implemented.');
   cronologias:any =[];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
- 
-  
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
     this.formCronologia = this.fb.group({
@@ -47,13 +40,14 @@ throw new Error('Method not implemented.');
       radicado: ['', [Validators.required]],
       cronologia: ['', [Validators.required]],
       fechaCronologia: ['', [Validators.required]],
+      diasalerta: ['', [Validators.required]],
     });
   }
   ngOnInit(): void {
     this.getCopropiedad();
     this.getInmueble();
     this.getDemandados();
-    this.getEtapaDemandado();
+    //this.getEtapaDemandado();
     this.getRadicado();
     this.getCronologia();
     }
@@ -86,7 +80,7 @@ throw new Error('Method not implemented.');
       }
     });
 
-    console.log('inmuebleXdemandado',this.inmuebleXdemandado);
+    //console.log('inmuebleXdemandado',this.inmuebleXdemandado);
 
     let demandado = this.inmuebleXdemandado[0]["id_demandado"];
 
@@ -97,7 +91,7 @@ throw new Error('Method not implemented.');
       }
     });
 
-    console.log('demandado',demandado);
+    //console.log('demandado',demandado);
 
   }
 
@@ -109,7 +103,7 @@ throw new Error('Method not implemented.');
   
   getCopropiedad() {
     this.gjService.getDemandantes().subscribe((resp:any)=>{
-      console.log("demandantes->",resp)
+      //console.log("demandantes->",resp)
       this.demandantes = resp;
      }, error=>{
       console.log(error)
@@ -118,7 +112,7 @@ throw new Error('Method not implemented.');
   
   getInmueble() {
     this.gjService.getInmuebles().subscribe((resp:any)=>{
-      console.log("inmuebles->",resp)
+      //console.log("inmuebles->",resp)
       this.inmuebles = resp;
      }, error=>{
       console.log(error)
@@ -127,7 +121,7 @@ throw new Error('Method not implemented.');
 
   getDemandados() {
     this.gjService.getDemandados().subscribe((resp:any)=>{
-      console.log("demandados->",resp)
+      //console.log("demandados->",resp)
       this.demandados = resp;
      }, error=>{
       console.log(error)
@@ -136,7 +130,7 @@ throw new Error('Method not implemented.');
 
   getRadicado() {
     this.gjService.getDemandantes().subscribe((resp:any)=>{
-      console.log("radicado->",resp)
+      //console.log("radicado->",resp)
       this.radicados = resp;
      }, error=>{
       console.log(error)
@@ -145,7 +139,7 @@ throw new Error('Method not implemented.');
 
   getEtapaRadicado() {
     this.gjService.getDemandantes().subscribe((resp:any)=>{
-      console.log("etapaDemado->",resp)
+     // console.log("etapaDemado->",resp)
       this.getEtapaDemandado = resp;
      }, error=>{
       console.log(error)
@@ -153,9 +147,9 @@ throw new Error('Method not implemented.');
   }
 
   getCronologia() {
-    this.gjService.getDemandantes().subscribe((resp:any)=>{
+    this.gjService.getCronologias().subscribe((resp:any)=>{
       console.log("cronologia->",resp)
-      this.getCronologia = resp;
+      this.cronologias = resp;
      }, error=>{
       console.log(error)
      });

@@ -28,7 +28,7 @@ export class CopropiedadComponent implements OnInit {
   bancos:any = [];
   tipoCuentas:any = [];
   administradores:any = [];
-  tipoInmueble: any = [];
+  tipoInmuebles: any = [];
 
   constructor(private fb: FormBuilder, private gestJur: GestionJuridicaService){
     this.formCopropiedad = this.fb.group({
@@ -99,11 +99,14 @@ export class CopropiedadComponent implements OnInit {
   }
 
   getTipoInmuebles(){
-    this.gestJur.getTipoInmueble().subscribe((resp:any)=>{
-      this.tipoInmueble = resp;
-      console.log('tipoInmueble',this.tipoInmueble);
+    this.gestJur.getTipoInmuebles().subscribe((resp:any)=>{
+      this.tipoInmuebles = resp;
+      console.log('tipoInmueble',this.tipoInmuebles);
+      
     }, error=>{
       console.log('error',error);
     }); 
   }
-  }
+
+
+}

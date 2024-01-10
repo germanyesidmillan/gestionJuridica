@@ -107,8 +107,8 @@
                   formControlName="numJuzgado"
                   (selectionChange)="onChangeNumJuzgado($event)"
                 >
-                  @for (nj of juzgados; track nj.id_juzgado) {
-                  <mat-option [value]="nj.id_juzgado">{{
+                  @for (nj of numJuzgadosXjuzgado; track nj.id_num_juzgado) {
+                  <mat-option [value]="nj.id_num_juzgado">{{
                     nj.num_juzgado
                   }}</mat-option>
                   }
