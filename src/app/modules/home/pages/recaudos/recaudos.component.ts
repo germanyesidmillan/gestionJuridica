@@ -22,13 +22,12 @@ import { MatCardModule } from '@angular/material/card';
 export class RecaudosComponent {
 
   formRecaudo: FormGroup;
-
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
-  formCartera: any;
+ 
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
     this.formRecaudo = this.fb.group({
@@ -60,7 +59,7 @@ export class RecaudosComponent {
  onChangeInmueble(event: any){
   let inmueble = event.value;
   console.log('inmueble',inmueble);
-  this.formCartera.get("demado")?.setValue(null);
+  this.formRecaudo.get("demado")?.setValue(null);
   this.inmuebleXdemandado = [];
 
   this.inmueblesXdemandante.filter((i:any)=>{
@@ -75,7 +74,7 @@ export class RecaudosComponent {
 
   this.demandados.filter( (dem:any)=>{
     if (dem.id_demandado == demandado){
-      this.formCartera.get("demado")?.setValue(dem.nombre_demandado);
+      this.formRecaudo.get("demado")?.setValue(dem.nombre_demandado);
       console.log('dem==>',dem.nombre_demandado);
     }
   });
@@ -87,7 +86,7 @@ export class RecaudosComponent {
 limpiarDatos(){
   this.inmuebleXdemandado = [];
   this.inmueblesXdemandante = [];
-  this.formCartera.get("demado")?.setValue(null);
+  this.formRecaudo.get("demado")?.setValue(null);
 }
 
 getCopropiedad() {

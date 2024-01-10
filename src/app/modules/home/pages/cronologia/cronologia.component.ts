@@ -20,8 +20,9 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './cronologia.component.css'
 })
 export class CronologiaComponent implements OnInit{
-  cronologia: any;
-  formCronologia: FormGroup;
+  
+  formCronologia: FormGroup;  
+  cronologia: any;  
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
@@ -30,6 +31,8 @@ export class CronologiaComponent implements OnInit{
   cronologias:any =[];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
+  inmuebleXetapaDemandado:any = [];
+  inmuebleXradicado:any = [];
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
     this.formCronologia = this.fb.group({
@@ -47,20 +50,19 @@ export class CronologiaComponent implements OnInit{
     this.getCopropiedad();
     this.getInmueble();
     this.getDemandados();
-    //this.getEtapaDemandado();
-    this.getRadicado();
-    this.getCronologia();
+    this.getEtapaDemandado();
+    this.getRadicados();
+    this.getCronologias();
     }
-  getEtapaDemandado() {
-    throw new Error('Method not implemented.');
-  }
+  
+  
    onSubmit(){
   }
 
   onChangeCopropiedad(event: any){
     let demandante = event.value;
     this.limpiarDatos();
-    //this.formCronologia.get("demado")?.setValue(null);
+    this.formCronologia.get("demado")?.setValue(null);
     this.inmuebles.filter((inmueble:any)=>{
       if(inmueble.id_demandante == demandante){
         this.inmueblesXdemandante.push(inmueble)
@@ -80,7 +82,7 @@ export class CronologiaComponent implements OnInit{
       }
     });
 
-    //console.log('inmuebleXdemandado',this.inmuebleXdemandado);
+    console.log('inmuebleXdemandado',this.inmuebleXdemandado);
 
     let demandado = this.inmuebleXdemandado[0]["id_demandado"];
 
@@ -91,7 +93,28 @@ export class CronologiaComponent implements OnInit{
       }
     });
 
-    //console.log('demandado',demandado);
+     
+   // console.log('inmuebleXetapaDemandado',this.inmuebleXetapaDemandado);
+
+   // let etapaDemandado = this.inmuebleXetapaDemandado[0]["id_etapa_demandado"];
+
+   // this.etadaDemandados.filter( (etadem:any)=>{
+    //  if (etadem.id_etapa_demandado == etapaDemandado){
+     //   this.formCronologia.get("etapaDemado")?.setValue(etadem.nombre_etapa_demandado);
+    //    console.log('etadem==>',etadem.nombre_etapa_demandado);
+     // }
+  //  });
+
+    console.log('inmuebleXradicado',this.inmuebleXradicado);
+
+    let radicados = this.inmuebleXradicado[0]["id_radicado"];
+
+    this.radicados.filter( (r:any)=>{
+      if (radicados.id_radicado == radicados){
+        this.formCronologia.get("radicados")?.setValue(r.num_radicado);
+        console.log('r==>',r.num_radicado);
+      }
+    });
 
   }
 
@@ -103,7 +126,7 @@ export class CronologiaComponent implements OnInit{
   
   getCopropiedad() {
     this.gjService.getDemandantes().subscribe((resp:any)=>{
-      //console.log("demandantes->",resp)
+    //  console.log("demandantes->",resp)
       this.demandantes = resp;
      }, error=>{
       console.log(error)
@@ -112,7 +135,7 @@ export class CronologiaComponent implements OnInit{
   
   getInmueble() {
     this.gjService.getInmuebles().subscribe((resp:any)=>{
-      //console.log("inmuebles->",resp)
+    //  console.log("inmuebles->",resp)
       this.inmuebles = resp;
      }, error=>{
       console.log(error)
@@ -121,34 +144,34 @@ export class CronologiaComponent implements OnInit{
 
   getDemandados() {
     this.gjService.getDemandados().subscribe((resp:any)=>{
-      //console.log("demandados->",resp)
+    //  console.log("demandados->",resp)
       this.demandados = resp;
      }, error=>{
       console.log(error)
      });
   }
 
-  getRadicado() {
-    this.gjService.getDemandantes().subscribe((resp:any)=>{
-      //console.log("radicado->",resp)
+  getRadicados() {
+    this.gjService.getRadicados().subscribe((resp:any)=>{
+     console.log("radicados->",resp)
       this.radicados = resp;
      }, error=>{
       console.log(error)
      });
   }
 
-  getEtapaRadicado() {
-    this.gjService.getDemandantes().subscribe((resp:any)=>{
-     // console.log("etapaDemado->",resp)
-      this.getEtapaDemandado = resp;
+  getEtapaDemandado() {
+    this.gjService.getEtapaDemandado().subscribe((resp:any)=>{
+     console.log("etapaDemado->",resp)
+      this.etadaDemandados = resp;
      }, error=>{
       console.log(error)
      });
   }
 
-  getCronologia() {
+  getCronologias() {
     this.gjService.getCronologias().subscribe((resp:any)=>{
-      console.log("cronologia->",resp)
+    //  console.log("cronologias->",resp)
       this.cronologias = resp;
      }, error=>{
       console.log(error)

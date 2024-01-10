@@ -22,10 +22,10 @@ import { MatCardModule } from '@angular/material/card';
 export class CarteraComponent implements OnInit{
 
   formCartera: FormGroup;
-
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
+  etadaDemandados:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
   etapaDemandados:any = [];
@@ -38,6 +38,7 @@ export class CarteraComponent implements OnInit{
       inmueble: ['', [Validators.required]],
       demado: ['', [Validators.required]],
       cartera: ['', [Validators.required]],
+      etapaDemado: ['', [Validators.required]],
       fechaCartera: ['', [Validators.required]],
     });
   }
@@ -46,6 +47,7 @@ export class CarteraComponent implements OnInit{
     this.getCopropiedad();
     this.getInmueble();
     this.getDemandados();
+    this.getEtapaDemandado();
   }
 
   
@@ -118,6 +120,15 @@ export class CarteraComponent implements OnInit{
   getDemandados() {
     this.gjService.getDemandados().subscribe((resp:any)=>{
       console.log("demandados->",resp)
+      this.demandados = resp;
+     }, error=>{
+      console.log(error)
+     });
+  }
+
+  getEtapaDemandado() {
+    this.gjService.getEtapaDemandado().subscribe((resp:any)=>{
+      console.log("etapaDemado->",resp)
       this.demandados = resp;
      }, error=>{
       console.log(error)

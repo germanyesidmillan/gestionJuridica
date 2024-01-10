@@ -8,6 +8,7 @@ import { IGestionJuridica } from '../models/gestion-juridica-interface';
 export class GestionJuridicaService {
   
   URL_BASE = 'http://localhost:1323';
+  getEtapaDemandados: any;
 
   constructor(private http: HttpClient) { }
 
@@ -37,7 +38,7 @@ export class GestionJuridicaService {
   }
 
   getEtapaDemandado(){
-    const url = `${this.URL_BASE}/etapasdemandante`;
+    const url = `${this.URL_BASE}/etapaDemado`;
     return this.http.get(url);   
   }
 
@@ -66,6 +67,11 @@ export class GestionJuridicaService {
 
   getCronologias(){
     const url = `${this.URL_BASE}/cronologias`;
+    return this.http.get(url);   
+  }
+
+  getRadicados(){
+    const url = `${this.URL_BASE}/radicados`;
     return this.http.get(url);   
   }
 

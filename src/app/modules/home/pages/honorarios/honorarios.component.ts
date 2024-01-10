@@ -22,13 +22,12 @@ import { MatCardModule } from '@angular/material/card';
 export class HonorariosComponent implements OnInit{
 
   formHonorarios: FormGroup;
-
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
-formCartera: any;
+
   
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
     this.formHonorarios = this.fb.group({
@@ -62,7 +61,7 @@ formCartera: any;
  onChangeInmueble(event: any){
   let inmueble = event.value;
   console.log('inmueble',inmueble);
-  this.formCartera.get("demado")?.setValue(null);
+  this.formHonorarios.get("demado")?.setValue(null);
   this.inmuebleXdemandado = [];
 
   this.inmueblesXdemandante.filter((i:any)=>{
@@ -77,7 +76,7 @@ formCartera: any;
 
   this.demandados.filter( (dem:any)=>{
     if (dem.id_demandado == demandado){
-      this.formCartera.get("demado")?.setValue(dem.nombre_demandado);
+      this.formHonorarios.get("demado")?.setValue(dem.nombre_demandado);
       console.log('dem==>',dem.nombre_demandado);
     }
   });
@@ -89,7 +88,7 @@ formCartera: any;
 limpiarDatos(){
   this.inmuebleXdemandado = [];
   this.inmueblesXdemandante = [];
-  this.formCartera.get("demado")?.setValue(null);
+  this.formHonorarios.get("demado")?.setValue(null);
 }
 
 getCopropiedad() {

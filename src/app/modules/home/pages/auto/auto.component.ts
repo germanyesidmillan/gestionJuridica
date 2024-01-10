@@ -35,6 +35,7 @@ throw new Error('Method not implemented.');
   inmuebles:any = [];
   demandados:any = [];
   numJuzgado:any = [];
+  
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
  
@@ -48,7 +49,8 @@ throw new Error('Method not implemented.');
       inmueble: ['', [Validators.required]],
       demado: ['', [Validators.required]],
       radicado: ['', [Validators.required]],
-      fechaRadicado: ['', [Validators.required]],
+      fechaAuto: ['', [Validators.required]],
+      Auto: ['', [Validators.required]],
       });
   }
   ngOnInit(): void {
