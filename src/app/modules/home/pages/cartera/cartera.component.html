@@ -60,7 +60,7 @@
           <mat-form-field>
             <mat-label>Etapa Demandado:</mat-label>
             <mat-select formControlName="etapaDemandado">
-              @for (ed of etapaDemandados; track ed.id_etapa_demandado) {
+              @for (ed of etapasDemandados; track ed.id_etapa_demandado) {
               <mat-option [value]="ed.id_etapa_demandado">{{
                 ed.nombre_etapa_demandado
               }}</mat-option>

@@ -28,7 +28,7 @@ export class CarteraComponent implements OnInit{
   etadaDemandados:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
-  etapaDemandados:any = [];
+  etapasDemandados:any = [];
  
   
 
@@ -47,7 +47,7 @@ export class CarteraComponent implements OnInit{
     this.getCopropiedad();
     this.getInmueble();
     this.getDemandados();
-    this.getEtapaDemandado();
+    this.getEtapasDemandado();
   }
 
   
@@ -126,10 +126,10 @@ export class CarteraComponent implements OnInit{
      });
   }
 
-  getEtapaDemandado() {
-    this.gjService.getEtapaDemandado().subscribe((resp:any)=>{
+  getEtapasDemandado() {
+    this.gjService.getEtapasDemandado().subscribe((resp:any)=>{
       console.log("etapaDemado->",resp)
-      this.demandados = resp;
+      this.etapasDemandados = resp;
      }, error=>{
       console.log(error)
      });

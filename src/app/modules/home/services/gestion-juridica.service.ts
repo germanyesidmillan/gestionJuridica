@@ -37,8 +37,8 @@ export class GestionJuridicaService {
     return this.http.get(url);   
   }
 
-  getEtapaDemandado(){
-    const url = `${this.URL_BASE}/etapaDemado`;
+  getEtapasDemandado(){
+    const url = `${this.URL_BASE}/etapasdemandado`;
     return this.http.get(url);   
   }
 
@@ -70,8 +70,13 @@ export class GestionJuridicaService {
     return this.http.get(url);   
   }
 
-  getRadicados(){
-    const url = `${this.URL_BASE}/radicados`;
+  getRadicadosPorInmueble(payload:any){
+    const url = `${this.URL_BASE}/radicadosPorInmueble/${payload}`;
+    return this.http.get(url);   
+  }
+  
+  getNumeroRadicado(payload:any){
+    const url = `${this.URL_BASE}/numradicado/${payload}`;
     return this.http.get(url);   
   }
 

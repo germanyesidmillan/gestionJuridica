@@ -11,7 +11,7 @@
 
               <mat-form-field>
                 <mat-label>Radicado:</mat-label>
-                <input matInput formControlName="radicado">
+                <input matInput formControlName="radicado" (blur)="buscarNumRadicado($event)">
                 @if (formAuto.get('radicado')?.invalid && formAuto.get('radicado')?.touched) {
                   <small>Radicado requerido</small>
                 }
@@ -23,7 +23,7 @@
                   formControlName="juzgado"
                   (selectionChange)="onChangeJuzgado($event)"
                 >
-                  @for (j of juzgados; track j.id_juzgado) {
+                  @for (j of juzgadosXradicado; track j.id_juzgado) {
                   <mat-option [value]="j.id_juzgado">{{
                     j.nombre_juzgado
                   }}</mat-option>

@@ -26,7 +26,7 @@ export class CronologiaComponent implements OnInit{
   demandantes:any = [];
   inmuebles:any = [];
   demandados:any = [];
-  etadaDemandados:any = [];
+  etapaDemandados:any = [];
   radicados:any = [];
   cronologias:any =[];
   inmueblesXdemandante:any = []; 
@@ -50,8 +50,8 @@ export class CronologiaComponent implements OnInit{
     this.getCopropiedad();
     this.getInmueble();
     this.getDemandados();
-    this.getEtapaDemandado();
-    this.getRadicados();
+    this.getEtapasDemandado();
+    //this.getRadicados();
     this.getCronologias();
     }
   
@@ -83,38 +83,26 @@ export class CronologiaComponent implements OnInit{
     });
 
     console.log('inmuebleXdemandado',this.inmuebleXdemandado);
-
     let demandado = this.inmuebleXdemandado[0]["id_demandado"];
+    
+    let id_etapa = this.inmuebleXdemandado[0].id_etapa_demandado;
+
+
+    this.etapaDemandados.filter((ed:any)=>{
+      if(ed.id_etapa_demandado == id_etapa){
+        this.formCronologia.get("etapaDemado")?.setValue(ed.nombre_etapa_demandado);
+      }
+    });
+    
+    console.log('id_etapa',this.inmuebleXdemandado[0].id_etapa_demandado);
 
     this.demandados.filter( (dem:any)=>{
       if (dem.id_demandado == demandado){
         this.formCronologia.get("demado")?.setValue(dem.nombre_demandado);
-        console.log('dem==>',dem.nombre_demandado);
       }
     });
 
-     
-   // console.log('inmuebleXetapaDemandado',this.inmuebleXetapaDemandado);
-
-   // let etapaDemandado = this.inmuebleXetapaDemandado[0]["id_etapa_demandado"];
-
-   // this.etadaDemandados.filter( (etadem:any)=>{
-    //  if (etadem.id_etapa_demandado == etapaDemandado){
-     //   this.formCronologia.get("etapaDemado")?.setValue(etadem.nombre_etapa_demandado);
-    //    console.log('etadem==>',etadem.nombre_etapa_demandado);
-     // }
-  //  });
-
-    console.log('inmuebleXradicado',this.inmuebleXradicado);
-
-    let radicados = this.inmuebleXradicado[0]["id_radicado"];
-
-    this.radicados.filter( (r:any)=>{
-      if (radicados.id_radicado == radicados){
-        this.formCronologia.get("radicados")?.setValue(r.num_radicado);
-        console.log('r==>',r.num_radicado);
-      }
-    });
+    this.getRadicadosPorInmueble(inmueble);
 
   }
 
@@ -151,19 +139,20 @@ export class CronologiaComponent implements OnInit{
      });
   }
 
-  getRadicados() {
-    this.gjService.getRadicados().subscribe((resp:any)=>{
+  getRadicadosPorInmueble(id_inmueble:any) {
+    this.gjService.getRadicadosPorInmueble(id_inmueble).subscribe((resp:any)=>{
      console.log("radicados->",resp)
+      this.formCronologia.get("radicado")?.setValue(resp[0].num_radicado);
       this.radicados = resp;
      }, error=>{
       console.log(error)
      });
   }
 
-  getEtapaDemandado() {
-    this.gjService.getEtapaDemandado().subscribe((resp:any)=>{
+  getEtapasDemandado() {
+    this.gjService.getEtapasDemandado().subscribe((resp:any)=>{
      console.log("etapaDemado->",resp)
-      this.etadaDemandados = resp;
+      this.etapaDemandados = resp;
      }, error=>{
       console.log(error)
      });
