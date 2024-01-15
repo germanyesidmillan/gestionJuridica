@@ -47,8 +47,18 @@
 
               <mat-form-field>
                 <mat-label>Inmueble:</mat-label>
-                <input matInput readonly="readonly" formControlName="inmueble" />
-              </mat-form-field>                
+                <mat-select
+                  formControlName="inmueble"
+                >
+                  @for (i of this.inmuebleXJuzgado; track i.id_inmueble) {
+                  <mat-option [value]="i.id_inmueble">{{i.numero_inmueble}}</mat-option>
+                  }
+                </mat-select>
+                @if (formAuto.get('inmueble')?.invalid &&
+                formAuto.get('inmueble')?.touched) {
+                <small>Inmueble requerido</small>
+                }
+              </mat-form-field>               
             
   
               <mat-form-field>

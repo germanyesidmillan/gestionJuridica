@@ -39,10 +39,12 @@ export class AutoComponent implements OnInit {
   formAuto: FormGroup;
   demandantes: any = [];
   inmuebles: any = [];
+  inmuebleXJuzgado: any = [];
   demandados: any = [];
   numJuzgado: any = [];
   numJuzgadosPorRadicado: any = [];
   juzgadosXradicado:any = [];
+
 
   inmueblesXdemandante: any = [];
   inmuebleXdemandado: any = [];
@@ -72,9 +74,25 @@ export class AutoComponent implements OnInit {
   }
   onSubmit() {}
 
-  onChangeJuzgado($event: MatSelectChange) {
-    throw new Error('Method not implemented.');
+  onChangeJuzgado(event: any) {
+    let juzgadoSel = event.value
+  
+    this.numJuzgadosPorRadicado.filter((n:any)=>{
+      if (n.id_juzgado == juzgadoSel){
+        this.formAuto.get('numJuzgado')?.setValue(n.num_juzgado)
+      }
+    });
+
+    let inmueble = this.radicados[0].id_inmueble;
+    this.inmuebles.filter((i:any)=>{
+      if (inmueble == i.id_inmueble){
+        this.inmuebleXJuzgado.push(i);
+        this.formAuto.get('inmueble')?.setValue(i.id_inmueble)
+      }
+    });
+
   }
+  
   onChangeRadicado($event: MatSelectChange) {
     throw new Error('Method not implemented.');
   }
@@ -213,11 +231,12 @@ export class AutoComponent implements OnInit {
 
     this.radicados=[]; 
     this.numJuzgadosPorRadicado = [];
-   
-
+    
     this.gjService.getNumeroRadicado(numRadicado).subscribe(
       (resp: any) => {
         this.radicados = resp;
+        console.log('resp--->',resp);
+        //TODO: Colocar validacion de registros
         this.numJuzgado.filter((nj:any)=>{
           this.radicados.filter((rad:any, i:number)=>{
            if(nj.id_num_juzgado == rad.id_num_juzgado){
