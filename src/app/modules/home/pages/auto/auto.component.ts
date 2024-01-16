@@ -34,6 +34,9 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './auto.component.css',
 })
 export class AutoComponent implements OnInit {
+  id_inmueble: any;
+  id_demandante: any;
+  id_demandado: any;
   juzgados: any = [];
   radicados: any = [];
   formAuto: FormGroup;
@@ -79,7 +82,8 @@ onChangeNumJuzgado: any;
   
     this.numJuzgadosPorRadicado.filter((n:any)=>{
       if (n.id_juzgado == juzgadoSel){
-        this.formAuto.get('numJuzgado')?.setValue(n.num_juzgado)
+        this.numJuzgadosXjuzgado.push(n);
+        this.formAuto.get('numJuzgado')?.setValue(n.id_num_juzgado)
       }
     });
 
@@ -87,8 +91,29 @@ onChangeNumJuzgado: any;
     this.inmuebles.filter((i:any)=>{
       if (inmueble == i.id_inmueble){
         this.inmuebleXJuzgado.push(i);
+        this.id_inmueble = i.id_inmueble;
         this.formAuto.get('inmueble')?.setValue(i.id_inmueble)
       }
+    });
+
+    this.inmuebles.filter((i:any)=>{
+      if( this.id_inmueble == i.id_inmueble ){
+        this.id_demandante = i.id_demandante;
+        this.id_demandado = i.id_demandado;
+      }
+
+    });
+
+    this.demandantes.filter((dte:any)=>{
+      if(dte.id_demandante == this.id_demandante){
+        this.formAuto.get('demate')?.setValue(dte.nombre_demandante);
+      }
+    });
+
+    this.demandados.filter((ddo:any)=>{
+      if(ddo.id_demandado == this.id_demandado){
+        this.formAuto.get('demado')?.setValue(ddo.nombre_demandado);
+      } 
     });
 
   }
