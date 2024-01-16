@@ -44,10 +44,10 @@ export class AutoComponent implements OnInit {
   numJuzgado: any = [];
   numJuzgadosPorRadicado: any = [];
   juzgadosXradicado:any = [];
-
-
+  numJuzgadosXjuzgado:any =[];
   inmueblesXdemandante: any = [];
   inmuebleXdemandado: any = [];
+onChangeNumJuzgado: any;
 
   constructor(
     private fb: FormBuilder,

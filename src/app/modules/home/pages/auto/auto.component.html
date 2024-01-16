@@ -37,8 +37,22 @@
 
               <mat-form-field>
                 <mat-label>Numero de Juzgado:</mat-label>
-                <input matInput readonly="readonly" formControlName="numJuzgado" />
+                <mat-select
+                  formControlName="numJuzgado"
+                  (selectionChange)="onChangeNumJuzgado($event)"
+                >
+                  @for (nj of numJuzgadosXjuzgado; track nj.id_num_juzgado) {
+                  <mat-option [value]="nj.id_num_juzgado">{{
+                    nj.num_juzgado
+                  }}</mat-option>
+                  }
+                </mat-select>
+                @if (formAuto.get('numJuzgado')?.invalid &&
+                formAuto.get('numJuzgado')?.touched) {
+                <small>Numero de Juzgado requerido</small>
+                }
               </mat-form-field>
+            </section>
 
               <mat-form-field>
                 <mat-label>Copropiedad:</mat-label>
@@ -75,8 +89,7 @@
                 }
               </mat-form-field>
               
-            </section>
-            <section>  
+              <section>  
               <mat-form-field>
                 <mat-label>Fecha Auto (dd/mm/yyyy):</mat-label>
                 <input
