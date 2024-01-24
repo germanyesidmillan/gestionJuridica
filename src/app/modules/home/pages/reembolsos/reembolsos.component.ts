@@ -35,8 +35,9 @@ export class ReembolsosComponent implements OnInit{
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
       demado: ['', [Validators.required]],
-      radicado: ['', [Validators.required]],
-      fechaRadicado: ['', [Validators.required]],
+      cuecobro: ['', [Validators.required]],
+      reembolso: ['', [Validators.required]],
+      fechaReembolso: ['', [Validators.required]],
     });
   }
   ngOnInit(): void {

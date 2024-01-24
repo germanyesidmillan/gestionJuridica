@@ -75,7 +75,29 @@ onChangeNumJuzgado: any;
     this.getDemandados();
     //this.radicados();
   }
-  onSubmit() {}
+  
+  onSubmit(){
+
+    const fec = new Date(this.formAuto.get('fechaAuto')!.value);
+
+    const fecAuto = `${fec.getFullYear()}-${fec.getMonth()+1}-${fec.getDate()}`;
+
+
+    const payload = {
+      fecha_auto: fecAuto,
+      descrip_auto:this.formAuto.get('auto')!.value,
+      id_inmueble:this.formAuto.get('inmueble')!.value,
+      id_num_juzgado:this.formAuto.get('numJuzgado')!.value
+    }
+
+    this.gjService.crearAuto(payload).subscribe((resp:any)=>{
+      console.log('resp',resp);
+      alert('Auto creado..');
+    },err=>{
+      console.log('Error',err);
+    });
+
+  }
 
   onChangeJuzgado(event: any) {
     let juzgadoSel = event.value

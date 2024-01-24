@@ -59,15 +59,15 @@
 
           <mat-form-field>
             <mat-label>Etapa Demandado:</mat-label>
-            <mat-select formControlName="etapaDemandado">
+            <mat-select formControlName="etapaDemado">
               @for (ed of etapasDemandados; track ed.id_etapa_demandado) {
               <mat-option [value]="ed.id_etapa_demandado">{{
                 ed.nombre_etapa_demandado
               }}</mat-option>
               }
             </mat-select>
-            @if (formCartera.get('etapaDemandado')?.invalid &&
-            formCartera.get('etapaDemandado')?.touched) {
+            @if (formCartera.get('etapaDemado')?.invalid &&
+            formCartera.get('etapaDemado')?.touched) {
             <small>Etapa Demandado requerido</small>
             }
           </mat-form-field>
@@ -91,7 +91,7 @@
             }
           </mat-form-field>
         </div>
-
+        <p>{{formCartera.invalid}}</p>
         <div>
           <button
             mat-flat-button

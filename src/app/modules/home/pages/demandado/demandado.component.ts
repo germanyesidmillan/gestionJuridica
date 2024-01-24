@@ -39,6 +39,16 @@ export class DemandadoComponent implements OnInit{
 
   onSubmit(){
 
+    const payload = {
+      identificacion_demandado: this.formDemandado.get('ident')!.value,
+      nombre_demandado:this.formDemandado.get('nombre')!.value,
+      email_demandado:this.formDemandado.get('email')!.value
+    }
+
+    this.gjService.crearDemandado(payload).subscribe((resp:any)=>{
+
+    });
+
   }
   getDemandantes(){
      this.gjService.getDemandantes().subscribe((resp:any)=>{

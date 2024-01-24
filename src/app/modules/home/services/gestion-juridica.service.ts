@@ -79,5 +79,50 @@ export class GestionJuridicaService {
     const url = `${this.URL_BASE}/numradicado/${payload}`;
     return this.http.get(url);   
   }
+  
+  crearDemandante(payload:any){
+    const url = `${this.URL_BASE}/demandante`;
+    return this.http.post(url, payload);   
+  }
+
+  crearDemandado(payload:any){
+    const url = `${this.URL_BASE}/demandado`;
+    return this.http.post(url, payload);   
+  }
+  
+  crearRadicado(payload:any){
+    const url = `${this.URL_BASE}/radicado`;
+    return this.http.post(url, payload);   
+  }
+
+  crearAuto(payload:any){
+    const url = `${this.URL_BASE}/auto`;
+    return this.http.post(url, payload);   
+  }
+  
+  crearCartera(payload:any){
+    const url = `${this.URL_BASE}/cartera`;
+    return this.http.post(url, payload);   
+  }
+
+  crearCronologiaInmueble(payload:any){
+    const url = `${this.URL_BASE}/cronoinmueble`;
+    return this.http.post(url, payload);   
+  }
+  
+  crearRecaudo(payload:any){
+    const url = `${this.URL_BASE}/recaudo`;
+    return this.http.post(url, payload);   
+  }
+  
+  crearHonorario(payload:any){
+    const url = `${this.URL_BASE}/honorario`;
+    return this.http.post(url, payload);   
+  }
+  
+  crearReembolso(payload:any){
+    const url = `${this.URL_BASE}/reembolso`;
+    return this.http.post(url, payload);   
+  }
 
 }

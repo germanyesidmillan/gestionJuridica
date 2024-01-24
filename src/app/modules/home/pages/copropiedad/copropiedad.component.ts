@@ -7,9 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { IGestionJuridica } from '../../models/gestion-juridica-interface';
 import { MatCardModule } from '@angular/material/card';
+
+import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 
 @Component({
   selector: 'app-copropiedad',
@@ -30,7 +31,8 @@ export class CopropiedadComponent implements OnInit {
   administradores:any = [];
   tipoInmuebles: any = [];
 
-  constructor(private fb: FormBuilder, private gestJur: GestionJuridicaService){
+  constructor(private fb: FormBuilder, private gestJur: GestionJuridicaService, 
+              private gjService: GestionJuridicaService){
     this.formCopropiedad = this.fb.group({
       nit: ['', [Validators.required]],
       nombre: ['', [Validators.required]],
@@ -57,6 +59,31 @@ export class CopropiedadComponent implements OnInit {
 
     let banco = this.formCopropiedad.get('banco')?.value;
     console.log('formulario',this.formCopropiedad, banco);
+
+    let fec = new Date(this.formCopropiedad.get('fechaPersoneria')!.value); 
+
+    const fecPer = `${fec.getFullYear()}-${fec.getMonth()+1}-${fec.getDate()}`;
+
+    const payload = {
+      identificacion_demandante: this.formCopropiedad.get('nit')!.value,
+      nombre_demandante: this.formCopropiedad.get('nombre')!.value,
+      direccion_demandante:this.formCopropiedad.get('direccion')!.value,
+      id_municipio: this.formCopropiedad.get('municipio')!.value,
+      id_tipo_cuenta:this.formCopropiedad.get('tipoCuenta')!.value,
+      num_cuenta:this.formCopropiedad.get('numCuenta')!.value,
+      id_admin_copropiedad:this.formCopropiedad.get('admin')!.value,
+      fecha_personeria: fecPer,
+      id_banco:this.formCopropiedad.get('banco')!.value,
+      id_tipo_inmuebles:this.formCopropiedad.get('tipoInmueble')!.value 
+    }
+
+    this.gjService.crearDemandante(payload).subscribe((resp:any)=>{
+      console.log('resp',resp);
+      alert('Se ha creado el demandante...');
+    }, err=>{
+      console.log('err',err);
+    });
+
 
   }
 
