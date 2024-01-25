@@ -8,10 +8,10 @@ import { CarteraComponent } from './modules/home/pages/cartera/cartera.component
 import { RadicadoComponent } from './modules/home/pages/radicado/radicados.component';
 import { AutoComponent } from './modules/home/pages/auto/auto.component';
 import { CronologiaComponent } from './modules/home/pages/cronologia/cronologia.component';
-
 import { HonorariosComponent } from './modules/home/pages/honorarios/honorarios.component';
 import { ReembolsosComponent } from './modules/home/pages/reembolsos/reembolsos.component';
 import { RecaudosComponent } from './modules/home/pages/recaudos/recaudos.component';
+import { InmueblesComponent } from './modules/home/pages/inmuebles/inmuebles.component';
 
 
 export const routes: Routes = [
@@ -45,6 +45,11 @@ export const routes: Routes = [
         path:'demandado',
         component:DemandadoComponent,
         title:'demandados',
+    },
+    {
+        path:'inmuebles',
+        component:InmueblesComponent,
+        title:'inmuebles',
     },
     {
         path:'radicado',

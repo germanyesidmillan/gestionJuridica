@@ -1,0 +1,53 @@
+<div class="div-container">
+    <h1>Inmuebles</h1>
+    <form [formGroup]="formInmuebles" (submit)="onSubmit()">
+        
+        <section>
+
+            <mat-form-field>
+                <mat-label>Identificacion:</mat-label>
+                <input matInput formControlName="ident">
+                @if (formInmuebles.get('ident')?.invalid && formInmuebles.get('ident')?.touched) {
+                }
+              </mat-form-field>
+            
+              <mat-form-field >
+                <mat-label>Nombre:</mat-label>
+                <input matInput formControlName="nombre">  
+                @if (formInmuebles.get('nombre')?.invalid && formInmuebles.get('nombre')?.touched) {
+                    <small>Nombre requerido</small>
+                }
+              </mat-form-field>
+
+              <mat-form-field >
+                <mat-label>E-mail:</mat-label>
+                <input matInput formControlName="email">  
+                @if (formInmuebles.get('email')?.invalid && formInmuebles.get('email')?.touched) {
+                }
+              </mat-form-field> 
+              
+              <mat-form-field >
+                <mat-label>Copropiedad:</mat-label>
+                <mat-select formControlName="copropiedad">
+                    @for (d of demandantes; track d.id_demandante) {
+                      <mat-option [value]="d.id_demandante">{{d.nombre_demandante}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formInmuebles.get('copropiedad')?.invalid && formInmuebles.get('copropiedad')?.touched) {
+                    <small>Copropiedad requerido</small>
+                }
+              </mat-form-field>
+
+              <mat-form-field >
+                <mat-label>Inmueble:</mat-label>
+                <input matInput formControlName="inmueble">  
+                @if (formInmuebles.get('inmueble')?.invalid && formInmuebles.get('inmueble')?.touched) {
+                    <small>Inmueble requerido</small>
+                }
+              </mat-form-field>    
+                             
+        </section>
+        <button mat-flat-button color="primary" [disabled]="formInmuebles.invalid" >Guardar</button>  
+        </form>
+</div>
+
