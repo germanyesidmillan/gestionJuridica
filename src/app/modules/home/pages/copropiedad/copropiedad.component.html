@@ -91,7 +91,7 @@
 
           <mat-form-field>
             <mat-label>Numero de cuenta:</mat-label>
-            <input matInput formControlName="numCuenta" type="number" />
+            <input matInput formControlName="numCuenta" type="text" />
             @if (formCopropiedad.get('numCuenta')?.invalid &&
             formCopropiedad.get('numCuenta')?.touched) {
             <small>Numero de Cuenta requerido</small>

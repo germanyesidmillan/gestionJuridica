@@ -37,6 +37,11 @@ export class GestionJuridicaService {
     return this.http.get(url);   
   }
 
+  getDemandadoXidenti(payload:any){
+    const url = `${this.URL_BASE}/buscarDemandadoId/${payload}`;
+    return this.http.get(url);  
+  }
+
   getEtapasDemandado(){
     const url = `${this.URL_BASE}/etapasdemandado`;
     return this.http.get(url);   
@@ -45,6 +50,11 @@ export class GestionJuridicaService {
   getInmuebles(){
     const url = `${this.URL_BASE}/inmuebles`;
     return this.http.get(url);   
+  }
+
+  crearInmueble(payload:any){
+    const url = `${this.URL_BASE}/inmueble`;
+    return this.http.post(url,payload);  
   }
 
   getDemandados(){

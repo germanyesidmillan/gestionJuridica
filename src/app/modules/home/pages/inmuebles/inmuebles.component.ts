@@ -20,6 +20,7 @@ import { GestionJuridicaService } from '../../services/gestion-juridica.service'
 export class InmueblesComponent implements OnInit{
   formInmuebles: FormGroup;
   demandantes:any = [];  
+  id_demandado!:number;
  
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
@@ -33,34 +34,74 @@ export class InmueblesComponent implements OnInit{
       });
   }
   ngOnInit(): void {
-    this.getInmuebles();
+    this.getDemandantes();
     
   }
 
   onSubmit(){
 
     const payload = {
-      identificacion_demandado: this.formInmuebles.get('ident')!.value,
-      nombre_demandado:this.formInmuebles.get('nombre')!.value,
-      email_demandado:this.formInmuebles.get('email')!.value
+        numero_inmueble: this.formInmuebles.get('inmueble')!.value,
+        id_demandante:this.formInmuebles.get('copropiedad')!.value,
+        id_etapa_demandado: 2,
+        id_demandado: this.id_demandado,
+        fecha_etapa_demandado: "2023-01-01"
     }
 
-    this.gjService.crearDemandado(payload).subscribe((resp:any)=>{
+    console.log('payload',payload);
 
+    this.gjService.crearInmueble(payload).subscribe((resp:any)=>{
+      console.log('resp',resp);
+      if( resp.state){
+        alert("El inmueble se creo con exito");
+        this.formInmuebles.reset();
+      }
+    }, error=>{
+       console.log('error',error); 
     });
 
   }
-  getInmuebles(){
-     this.gjService.getInmuebles().subscribe((resp:any)=>{
-      console.log("demandantes->",resp)
-      this.demandantes = resp;
 
 
-     }, error=>{
-      console.log(error)
-     });
+  buscarDemandado(){
+    const identi = this.formInmuebles.get('ident')!.value;
+    console.log(identi)
+    
+    if (!identi){
+      alert("Debe diligenciar identificación");
+      return;
+    }
+
+    this.gjService.getDemandadoXidenti(identi).subscribe((resp:any)=>{
+      console.log('resp',resp);
+      
+      if(!resp.state){
+        alert("Deamandado no existe en la base de datos");
+        this.formInmuebles.get('ident')?.setValue(null);
+      }else{
+        this.formInmuebles.get('nombre')?.setValue(resp.data.nombre_demandado);
+        this.formInmuebles.get('email')?.setValue(resp.data.email_demandado);
+        this.id_demandado = resp.data.id_demandado;
+      }
+
+    },err=>{
+      console.log('Error',err);
+    });
 
   }
+
+
+  getDemandantes(){
+    this.gjService.getDemandantes().subscribe((resp:any)=>{
+     console.log("demandantes->",resp)
+     this.demandantes = resp;
+
+
+    }, error=>{
+     console.log(error)
+    });
+
+ }
  
 }
 

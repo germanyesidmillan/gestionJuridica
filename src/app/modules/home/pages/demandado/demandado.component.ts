@@ -17,25 +17,18 @@ import { GestionJuridicaService } from '../../services/gestion-juridica.service'
   templateUrl: './demandado.component.html',
   styleUrl: './demandado.component.css'
 })
-export class DemandadoComponent implements OnInit{
+export class DemandadoComponent {
   formDemandado: FormGroup;
   demandantes:any = [];  
- 
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
     this.formDemandado = this.fb.group({
       ident: [''],
       nombre: ['', [Validators.required]],
-      email: [''],
-      copropiedad: ['',[Validators.required]],
-      inmueble: ['',[Validators.required]],
-      
+      email: ['',[Validators.email]],
       });
   }
-  ngOnInit(): void {
-    this.getDemandantes();
-    
-  }
+ 
 
   onSubmit(){
 
@@ -46,19 +39,35 @@ export class DemandadoComponent implements OnInit{
     }
 
     this.gjService.crearDemandado(payload).subscribe((resp:any)=>{
-
+      console.log('resp',resp);
+      if(resp){
+        alert("Demandado creado..");
+      }
+    }, error=>{
+      console.log('error',error);
     });
 
   }
-  getDemandantes(){
-     this.gjService.getDemandantes().subscribe((resp:any)=>{
-      console.log("demandantes->",resp)
-      this.demandantes = resp;
 
 
-     }, error=>{
-      console.log(error)
-     });
+  buscarDemandado(){
+    const identi = this.formDemandado.get('ident')!.value;
+    console.log(identi)
+    if (!identi){
+      alert("Debe diligenciar identificación");
+      return;
+    }
+
+    this.gjService.getDemandadoXidenti(identi).subscribe((resp:any)=>{
+      console.log('resp',resp);
+      if(resp.State){
+        alert("Deamandado ya existe en la base de datos");
+        this.formDemandado.get('ident')?.setValue(null);
+      }
+
+    },err=>{
+      console.log('Error',err);
+    });
 
   }
  

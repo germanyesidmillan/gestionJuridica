@@ -6,14 +6,14 @@
 
             <mat-form-field>
                 <mat-label>Identificacion:</mat-label>
-                <input matInput formControlName="ident">
+                <input matInput formControlName="ident" (blur)="buscarDemandado()">
                 @if (formInmuebles.get('ident')?.invalid && formInmuebles.get('ident')?.touched) {
                 }
               </mat-form-field>
             
               <mat-form-field >
                 <mat-label>Nombre:</mat-label>
-                <input matInput formControlName="nombre">  
+                <input matInput formControlName="nombre" readonly>  
                 @if (formInmuebles.get('nombre')?.invalid && formInmuebles.get('nombre')?.touched) {
                     <small>Nombre requerido</small>
                 }
@@ -21,7 +21,7 @@
 
               <mat-form-field >
                 <mat-label>E-mail:</mat-label>
-                <input matInput formControlName="email">  
+                <input matInput formControlName="email" readonly>  
                 @if (formInmuebles.get('email')?.invalid && formInmuebles.get('email')?.touched) {
                 }
               </mat-form-field> 
