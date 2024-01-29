@@ -21,6 +21,7 @@ export class InmueblesComponent implements OnInit{
   formInmuebles: FormGroup;
   demandantes:any = [];  
   id_demandado!:number;
+    
  
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
@@ -30,12 +31,13 @@ export class InmueblesComponent implements OnInit{
       email: [''],
       copropiedad: ['',[Validators.required]],
       inmueble: ['',[Validators.required]],
+      fechaEtapaDemandado: ['', [Validators.required]],
       
       });
   }
   ngOnInit(): void {
     this.getDemandantes();
-    
+        
   }
 
   onSubmit(){
@@ -102,6 +104,7 @@ export class InmueblesComponent implements OnInit{
     });
 
  }
- 
+
+
 }
 

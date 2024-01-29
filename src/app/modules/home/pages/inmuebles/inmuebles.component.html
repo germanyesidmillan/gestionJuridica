@@ -44,7 +44,26 @@
                 @if (formInmuebles.get('inmueble')?.invalid && formInmuebles.get('inmueble')?.touched) {
                     <small>Inmueble requerido</small>
                 }
-              </mat-form-field>    
+              </mat-form-field> 
+                         
+              <mat-form-field>
+                <mat-label>Fecha Etapa Demandado (d/m/y):</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="fechaEtapaDemandado"
+                />
+                <!--  <mat-hint>MM/DD/YYYY</mat-hint> -->
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                @if (formInmuebles.get('fechaEtapaDemandado')?.invalid &&
+                formInmuebles.get('fechaEtapaDemandado')?.touched) {
+                <small>Fecha Etapa Demandado requerido</small>
+                }
+              </mat-form-field>
                              
         </section>
         <button mat-flat-button color="primary" [disabled]="formInmuebles.invalid" >Guardar</button>  
