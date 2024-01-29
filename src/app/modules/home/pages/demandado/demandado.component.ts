@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -20,6 +20,8 @@ import { GestionJuridicaService } from '../../services/gestion-juridica.service'
 export class DemandadoComponent {
   formDemandado: FormGroup;
   demandantes:any = [];  
+  @ViewChild(FormGroupDirective)
+  private formDir!: FormGroupDirective;
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
     this.formDemandado = this.fb.group({
@@ -40,8 +42,9 @@ export class DemandadoComponent {
 
     this.gjService.crearDemandado(payload).subscribe((resp:any)=>{
       console.log('resp',resp);
-      if(resp){
+      if(resp.state){
         alert("Demandado creado..");
+        this.formDir.resetForm();
       }
     }, error=>{
       console.log('error',error);

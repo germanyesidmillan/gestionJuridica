@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-radicados',
@@ -32,6 +33,8 @@ export class RadicadoComponent implements OnInit{
   inmuebleXdemandado:any = [];
   numJuzgadosXjuzgado: any = [];
  
+  @ViewChild(FormGroupDirective)
+  private forDir!:FormGroupDirective
   
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
@@ -52,7 +55,31 @@ export class RadicadoComponent implements OnInit{
     this.getJuzgados();
     this.getNumJuzgados();
   }
+  
+  
   onSubmit(){
+
+    const fecha = new Date (this.formRadicado.get('fechaRadicado')?.value);
+    const fecRadicado = `${fecha.getFullYear()}-${fecha.getMonth()+1}-${fecha.getDate()}`;
+
+    const payload = {
+      num_radicado:this.formRadicado.get('radicado')!.value,
+      id_inmueble:this.formRadicado.get('inmueble')!.value,
+      id_num_juzgado:this.formRadicado.get('numJuzgado')!.value,
+      fecha_radicado: fecRadicado
+    }
+
+    this.gjService.crearRadicado(payload).subscribe((resp:any)=>{
+      console.log('resp',resp);
+      if(resp.state){
+        alert('Radicado creado con exito');
+        this.forDir.resetForm();
+      }
+    }, (error:HttpErrorResponse)=>{
+      console.log('Error',error);
+      alert(error.message);
+    });
+    
   }
 
   onChangeCopropiedad(event: any){

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -19,8 +19,11 @@ import { GestionJuridicaService } from '../../services/gestion-juridica.service'
 })
 export class InmueblesComponent implements OnInit{
   formInmuebles: FormGroup;
-  demandantes:any = [];  
+  demandantes:any = [];  //copropiedades
   id_demandado!:number;
+
+  @ViewChild(FormGroupDirective)
+  private formDir!:FormGroupDirective; 
     
  
 
@@ -42,21 +45,24 @@ export class InmueblesComponent implements OnInit{
 
   onSubmit(){
 
+    const fecha = new Date(this.formInmuebles.get('fechaEtapaDemandado')!.value);
+    const fecEtapa = `${fecha.getFullYear()}-${fecha.getMonth()+1}-${fecha.getDate()}`;
+    console.log('fecEtapa',fecEtapa);
+
     const payload = {
         numero_inmueble: this.formInmuebles.get('inmueble')!.value,
         id_demandante:this.formInmuebles.get('copropiedad')!.value,
         id_etapa_demandado: 2,
         id_demandado: this.id_demandado,
-        fecha_etapa_demandado: "2023-01-01"
+        fecha_etapa_demandado: fecEtapa
     }
 
-    console.log('payload',payload);
 
     this.gjService.crearInmueble(payload).subscribe((resp:any)=>{
       console.log('resp',resp);
       if( resp.state){
         alert("El inmueble se creo con exito");
-        this.formInmuebles.reset();
+        this.formDir.resetForm();
       }
     }, error=>{
        console.log('error',error); 

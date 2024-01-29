@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,6 +24,8 @@ export class CopropiedadComponent implements OnInit {
 
 
   formCopropiedad: FormGroup;
+  @ViewChild(FormGroupDirective)
+  private formDir!:FormGroupDirective;  
 
   municipios:any = [];
   bancos:any = [];
@@ -78,8 +80,12 @@ export class CopropiedadComponent implements OnInit {
     }
 
     this.gjService.crearDemandante(payload).subscribe((resp:any)=>{
-      console.log('resp',resp);
-      alert('Se ha creado el demandante...');
+      
+      if (resp.state){
+        console.log('resp',resp);
+        alert('Se ha creado el demandante...');
+        this.formDir.resetForm();
+      }
     }, err=>{
       console.log('err',err);
     });
