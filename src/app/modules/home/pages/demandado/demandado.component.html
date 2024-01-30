@@ -1,32 +1,49 @@
 <div class="div-container">
-    <h1>Demandado</h1>
-    <form [formGroup]="formDemandado" (submit)="onSubmit()">
-        
+  <mat-card>
+    <mat-card-header>
+      <h1>Demandado</h1>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="formDemandado" (submit)="onSubmit()">
         <section>
+          <mat-form-field>
+            <mat-label>Identificacion:</mat-label>
+            <input
+              matInput
+              formControlName="ident"
+              (blur)="buscarDemandado()"
+            />
+            @if (formDemandado.get('ident')?.invalid &&
+            formDemandado.get('ident')?.touched) { }
+          </mat-form-field>
 
-            <mat-form-field>
-                <mat-label>Identificacion:</mat-label>
-                <input matInput formControlName="ident" (blur)="buscarDemandado()">
-                @if (formDemandado.get('ident')?.invalid && formDemandado.get('ident')?.touched) {
-                }
-              </mat-form-field>
-            
-              <mat-form-field >
-                <mat-label>Nombre:</mat-label>
-                <input matInput formControlName="nombre">  
-                @if (formDemandado.get('nombre')?.invalid && formDemandado.get('nombre')?.touched) {
-                    <small>Nombre requerido</small>
-                }
-              </mat-form-field>
+          <mat-form-field>
+            <mat-label>Nombre:</mat-label>
+            <input matInput formControlName="nombre" />
+            @if (formDemandado.get('nombre')?.invalid &&
+            formDemandado.get('nombre')?.touched) {
+            <small>Nombre requerido</small>
+            }
+          </mat-form-field>
 
-              <mat-form-field >
-                <mat-label>E-mail:</mat-label>
-                <input matInput formControlName="email">  
-                @if (formDemandado.get('email')?.invalid && formDemandado.get('email')?.touched) {
-                }
-              </mat-form-field> 
-             
+          <mat-form-field>
+            <mat-label>E-mail:</mat-label>
+            <input matInput formControlName="email" />
+            @if (formDemandado.get('email')?.invalid &&
+            formDemandado.get('email')?.touched) { }
+          </mat-form-field>
         </section>
-        <button mat-flat-button color="primary" [disabled]="formDemandado.invalid" >Guardar</button>  
-        </form>
+        <div>
+          <button
+            mat-flat-button
+            color="primary"
+            [disabled]="formDemandado.invalid"
+          >
+            Guardar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

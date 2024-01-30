@@ -116,6 +116,7 @@ export class GestionJuridicaService {
   }
 
   crearCronologiaInmueble(payload:any){
+    console.log('payload-service',payload);
     const url = `${this.URL_BASE}/cronoinmueble`;
     return this.http.post(url, payload);   
   }

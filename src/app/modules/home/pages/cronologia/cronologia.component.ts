@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
+import { UtilsService } from '../../../../share/services/utils.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-cronologia',
@@ -34,7 +36,10 @@ export class CronologiaComponent implements OnInit{
   inmuebleXetapaDemandado:any = [];
   inmuebleXradicado:any = [];
 
-  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
+  @ViewChild(FormGroupDirective) forDir!:FormGroupDirective;
+
+  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService,
+              private utilService:UtilsService   ){
     this.formCronologia = this.fb.group({
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
@@ -56,7 +61,37 @@ export class CronologiaComponent implements OnInit{
     }
   
   
-   onSubmit(){
+  onSubmit(){
+
+
+    const fecha = new Date(this.formCronologia.get('fechaCronologia')?.value);
+    const fecCrono = `${fecha.getFullYear()}-${fecha.getMonth()+1}-${fecha.getDate()}`; 
+
+    const payload = {
+      id_cronologia: this.formCronologia.get('cronologia')?.value,
+      id_inmueble: this.formCronologia.get('inmueble')?.value,
+      dias_alerta: parseInt(this.formCronologia.get('diasalerta')?.value),
+      fecha_cronologia: fecCrono
+    }
+    
+    console.log('payload',payload);
+
+    this.gjService.crearCronologiaInmueble(payload).subscribe((resp:any)=>{
+
+      if(resp.state){
+        
+        this.utilService.showAlerta(resp.message);
+        this.forDir.resetForm();
+
+      }else{
+        this.utilService.showAlerta(resp.message,"Error", "error");
+      }
+
+    }, (error:HttpErrorResponse)=>{
+      console.log('error',error);
+      this.utilService.showAlerta(error.message,"Error", "error");
+    })
+
   }
 
   onChangeCopropiedad(event: any){

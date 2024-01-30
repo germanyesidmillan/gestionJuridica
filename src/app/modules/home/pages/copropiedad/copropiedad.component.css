@@ -2,17 +2,27 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    align-content: center;
 }
 
 mat-card{
     display: flex;
+    width: 70%;
     align-items: center;
+    margin-top: 25px;
+    border-radius: 25px;
+    background-color:rgb(237, 222, 222);
 }
 
-form{
+/* form{
     display: flex;
     flex-direction: column;
-
     border: 1px solid teal;
+} */
 
+form div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 25px;
 }

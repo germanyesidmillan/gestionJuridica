@@ -9,12 +9,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { UtilsService } from '../../../../share/services/utils.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-demandado',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule ,MatFormFieldModule, MatInputModule, 
-    MatButtonModule, MatSelectModule,MatDatepickerModule, MatNativeDateModule],
+    MatButtonModule, MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule],
   templateUrl: './demandado.component.html',
   styleUrl: './demandado.component.css'
 })

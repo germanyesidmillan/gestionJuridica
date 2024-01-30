@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
   FormBuilder,
   FormGroup,
+  FormGroupDirective,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -15,6 +16,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
+import { UtilsService } from '../../../../share/services/utils.service';
 
 @Component({
   selector: 'app-auto',
@@ -50,11 +52,15 @@ export class AutoComponent implements OnInit {
   numJuzgadosXjuzgado:any =[];
   inmueblesXdemandante: any = [];
   inmuebleXdemandado: any = [];
-onChangeNumJuzgado: any;
+  onChangeNumJuzgado: any;
+
+  @ViewChild(FormGroupDirective)
+  private forDir!:FormGroupDirective;
 
   constructor(
     private fb: FormBuilder,
-    private gjService: GestionJuridicaService
+    private gjService: GestionJuridicaService,
+    private utilService: UtilsService
   ) {
     this.formAuto = this.fb.group({
       juzgado: ['', [Validators.required]],
@@ -82,7 +88,6 @@ onChangeNumJuzgado: any;
 
     const fecAuto = `${fec.getFullYear()}-${fec.getMonth()+1}-${fec.getDate()}`;
 
-
     const payload = {
       fecha_auto: fecAuto,
       descrip_auto:this.formAuto.get('auto')!.value,
@@ -91,8 +96,12 @@ onChangeNumJuzgado: any;
     }
 
     this.gjService.crearAuto(payload).subscribe((resp:any)=>{
-      console.log('resp',resp);
-      alert('Auto creado..');
+
+      if(resp.state){
+        this.utilService.showAlerta(resp.message);
+        this.forDir.resetForm();
+      }
+
     },err=>{
       console.log('Error',err);
     });
@@ -265,7 +274,7 @@ onChangeNumJuzgado: any;
     console.log('event',event.target.value);
     const numRadicado = event.target.value;
     if (numRadicado == ''){
-      alert("Digite el numero de radicado");
+      this.utilService.showAlerta("Digite el número de radicado","Advertencia","warning");
       return;
     }
     this.radicados = [];

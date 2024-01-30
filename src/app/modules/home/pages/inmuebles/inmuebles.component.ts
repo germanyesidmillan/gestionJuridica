@@ -9,12 +9,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { UtilsService } from '../../../../share/services/utils.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-inmuebles',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule ,MatFormFieldModule, MatInputModule, 
-    MatButtonModule, MatSelectModule,MatDatepickerModule, MatNativeDateModule],
+    MatButtonModule, MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule],
   templateUrl: './inmuebles.component.html',
   styleUrl: './inmuebles.component.css'
 })
@@ -77,7 +78,7 @@ export class InmueblesComponent implements OnInit{
     console.log(identi)
     
     if (!identi){
-      alert("Debe diligenciar identificación");
+      this.utilService.showAlerta("Debe diligenciar identificación","Advertencia","warning");
       return;
     }
 
@@ -85,7 +86,7 @@ export class InmueblesComponent implements OnInit{
       console.log('resp',resp);
       
       if(!resp.state){
-        alert("Deamandado no existe en la base de datos");
+        this.utilService.showAlerta("Deamandado no existe en la base de datos","Advertencia","warning");
         this.formInmuebles.get('ident')?.setValue(null);
       }else{
         this.formInmuebles.get('nombre')?.setValue(resp.data.nombre_demandado);

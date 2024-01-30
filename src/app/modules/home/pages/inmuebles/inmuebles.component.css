@@ -1,0 +1,28 @@
+.div-container{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 15px;
+}
+
+mat-card{
+    display: flex;
+    align-items: center;
+    width: 70%;
+    border-radius: 25px;
+    background-color:rgb(237, 222, 222);
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+}
+
+section{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}

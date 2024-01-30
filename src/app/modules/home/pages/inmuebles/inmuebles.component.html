@@ -1,72 +1,89 @@
 <div class="div-container">
-    <h1>Inmuebles</h1>
-    <form [formGroup]="formInmuebles" (submit)="onSubmit()">
-        
+
+  <mat-card>
+    
+    <mat-card-header>
+      <h1>Inmuebles</h1>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="formInmuebles" (submit)="onSubmit()">
         <section>
-
-            <mat-form-field>
-                <mat-label>Identificacion:</mat-label>
-                <input matInput formControlName="ident" (blur)="buscarDemandado()">
-                @if (formInmuebles.get('ident')?.invalid && formInmuebles.get('ident')?.touched) {
-                }
-              </mat-form-field>
-            
-              <mat-form-field >
-                <mat-label>Nombre:</mat-label>
-                <input matInput formControlName="nombre" readonly>  
-                @if (formInmuebles.get('nombre')?.invalid && formInmuebles.get('nombre')?.touched) {
-                    <small>Nombre requerido</small>
-                }
-              </mat-form-field>
-
-              <mat-form-field >
-                <mat-label>E-mail:</mat-label>
-                <input matInput formControlName="email" readonly>  
-                @if (formInmuebles.get('email')?.invalid && formInmuebles.get('email')?.touched) {
-                }
-              </mat-form-field> 
-              
-              <mat-form-field >
-                <mat-label>Copropiedad:</mat-label>
-                <mat-select formControlName="copropiedad">
-                    @for (d of demandantes; track d.id_demandante) {
-                      <mat-option [value]="d.id_demandante">{{d.nombre_demandante}}</mat-option>
-                    }
-                  </mat-select>
-                  @if (formInmuebles.get('copropiedad')?.invalid && formInmuebles.get('copropiedad')?.touched) {
-                    <small>Copropiedad requerido</small>
-                }
-              </mat-form-field>
-
-              <mat-form-field >
-                <mat-label>Inmueble:</mat-label>
-                <input matInput formControlName="inmueble">  
-                @if (formInmuebles.get('inmueble')?.invalid && formInmuebles.get('inmueble')?.touched) {
-                    <small>Inmueble requerido</small>
-                }
-              </mat-form-field> 
-                         
-              <mat-form-field>
-                <mat-label>Fecha Etapa Demandado (d/m/y):</mat-label>
-                <input
-                  matInput
-                  [matDatepicker]="picker"
-                  formControlName="fechaEtapaDemandado"
-                />
-                <!--  <mat-hint>MM/DD/YYYY</mat-hint> -->
-                <mat-datepicker-toggle
-                  matIconSuffix
-                  [for]="picker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                @if (formInmuebles.get('fechaEtapaDemandado')?.invalid &&
-                formInmuebles.get('fechaEtapaDemandado')?.touched) {
-                <small>Fecha Etapa Demandado requerido</small>
-                }
-              </mat-form-field>
-                             
+          <mat-form-field>
+            <mat-label>Identificacion:</mat-label>
+            <input matInput formControlName="ident" (blur)="buscarDemandado()" />
+            @if (formInmuebles.get('ident')?.invalid &&
+            formInmuebles.get('ident')?.touched) { }
+          </mat-form-field>
+    
+          <mat-form-field>
+            <mat-label>Nombre:</mat-label>
+            <input matInput formControlName="nombre" readonly />
+            @if (formInmuebles.get('nombre')?.invalid &&
+            formInmuebles.get('nombre')?.touched) {
+            <small>Nombre requerido</small>
+            }
+          </mat-form-field>
+    
+          <mat-form-field>
+            <mat-label>E-mail:</mat-label>
+            <input matInput formControlName="email" readonly />
+            @if (formInmuebles.get('email')?.invalid &&
+            formInmuebles.get('email')?.touched) { }
+          </mat-form-field>
+    
+          <mat-form-field>
+            <mat-label>Copropiedad:</mat-label>
+            <mat-select formControlName="copropiedad">
+              @for (d of demandantes; track d.id_demandante) {
+              <mat-option [value]="d.id_demandante">{{
+                d.nombre_demandante
+              }}</mat-option>
+              }
+            </mat-select>
+            @if (formInmuebles.get('copropiedad')?.invalid &&
+            formInmuebles.get('copropiedad')?.touched) {
+            <small>Copropiedad requerido</small>
+            }
+          </mat-form-field>
+    
+          <mat-form-field>
+            <mat-label>Inmueble:</mat-label>
+            <input matInput formControlName="inmueble" />
+            @if (formInmuebles.get('inmueble')?.invalid &&
+            formInmuebles.get('inmueble')?.touched) {
+            <small>Inmueble requerido</small>
+            }
+          </mat-form-field>
+    
+          <mat-form-field>
+            <mat-label>Fecha Etapa Demandado (d/m/y):</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="fechaEtapaDemandado"
+            />
+            <!--  <mat-hint>MM/DD/YYYY</mat-hint> -->
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            @if (formInmuebles.get('fechaEtapaDemandado')?.invalid &&
+            formInmuebles.get('fechaEtapaDemandado')?.touched) {
+            <small>Fecha Etapa Demandado requerido</small>
+            }
+          </mat-form-field>
         </section>
-        <button mat-flat-button color="primary" [disabled]="formInmuebles.invalid" >Guardar</button>  
-        </form>
-</div>
+        <div>
+          <button mat-flat-button color="primary" [disabled]="formInmuebles.invalid">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 
+
+  
+</div>
