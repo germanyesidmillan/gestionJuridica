@@ -11,6 +11,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UtilsService } from '../../../../share/services/utils.service';
 
 @Component({
   selector: 'app-radicados',
@@ -37,7 +38,7 @@ export class RadicadoComponent implements OnInit{
   private forDir!:FormGroupDirective
   
 
-  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
+  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService, private utilService:UtilsService){
     this.formRadicado = this.fb.group({
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
@@ -72,7 +73,7 @@ export class RadicadoComponent implements OnInit{
     this.gjService.crearRadicado(payload).subscribe((resp:any)=>{
       console.log('resp',resp);
       if(resp.state){
-        alert('Radicado creado con exito');
+        this.utilService.showAlerta("Radicado creado")
         this.forDir.resetForm();
       }
     }, (error:HttpErrorResponse)=>{

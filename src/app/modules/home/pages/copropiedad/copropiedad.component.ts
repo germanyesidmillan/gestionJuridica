@@ -11,6 +11,7 @@ import { IGestionJuridica } from '../../models/gestion-juridica-interface';
 import { MatCardModule } from '@angular/material/card';
 
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
+import { UtilsService } from '../../../../share/services/utils.service';
 
 @Component({
   selector: 'app-copropiedad',
@@ -33,7 +34,7 @@ export class CopropiedadComponent implements OnInit {
   administradores:any = [];
   tipoInmuebles: any = [];
 
-  constructor(private fb: FormBuilder, private gestJur: GestionJuridicaService, 
+  constructor(private fb: FormBuilder, private utilService: UtilsService , 
               private gjService: GestionJuridicaService){
     this.formCopropiedad = this.fb.group({
       nit: ['', [Validators.required]],
@@ -83,7 +84,7 @@ export class CopropiedadComponent implements OnInit {
       
       if (resp.state){
         console.log('resp',resp);
-        alert('Se ha creado el demandante...');
+        this.utilService.showAlerta('Se ha creado el demandante');
         this.formDir.resetForm();
       }
     }, err=>{
@@ -95,7 +96,7 @@ export class CopropiedadComponent implements OnInit {
 
   getMunicipios(){
 
-    this.gestJur.getMunicipios().subscribe((resp:IGestionJuridica)=>{
+    this.gjService.getMunicipios().subscribe((resp:IGestionJuridica)=>{
       this.municipios = resp;
       console.log('municipios',this.municipios);
     }, error=>{
@@ -105,7 +106,7 @@ export class CopropiedadComponent implements OnInit {
   }
   
   getBancos(){
-    this.gestJur.getBancos().subscribe((resp:any)=>{
+    this.gjService.getBancos().subscribe((resp:any)=>{
       this.bancos = resp;
       console.log('bancos',this.bancos);
     }, error=>{
@@ -114,7 +115,7 @@ export class CopropiedadComponent implements OnInit {
   }
 
   getTipoCuentas(){
-    this.gestJur.getTipoCuentas().subscribe((resp:any)=>{
+    this.gjService.getTipoCuentas().subscribe((resp:any)=>{
       this.tipoCuentas = resp;
       console.log('tipoCuentas',this.tipoCuentas);
     }, error=>{
@@ -123,7 +124,7 @@ export class CopropiedadComponent implements OnInit {
   }
   
   getAdministradores(){
-    this.gestJur.getAdministradores().subscribe((resp:any)=>{
+    this.gjService.getAdministradores().subscribe((resp:any)=>{
       this.administradores = resp;
       console.log('admnin',this.administradores);
     }, error=>{
@@ -132,7 +133,7 @@ export class CopropiedadComponent implements OnInit {
   }
 
   getTipoInmuebles(){
-    this.gestJur.getTipoInmuebles().subscribe((resp:any)=>{
+    this.gjService.getTipoInmuebles().subscribe((resp:any)=>{
       this.tipoInmuebles = resp;
       console.log('tipoInmueble',this.tipoInmuebles);
       

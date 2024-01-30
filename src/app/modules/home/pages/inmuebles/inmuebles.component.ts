@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
+import { UtilsService } from '../../../../share/services/utils.service';
 
 @Component({
   selector: 'app-inmuebles',
@@ -27,7 +28,7 @@ export class InmueblesComponent implements OnInit{
     
  
 
-  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
+  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService, private utilService:UtilsService){
     this.formInmuebles = this.fb.group({
       ident: [''],
       nombre: ['', [Validators.required]],
@@ -61,7 +62,7 @@ export class InmueblesComponent implements OnInit{
     this.gjService.crearInmueble(payload).subscribe((resp:any)=>{
       console.log('resp',resp);
       if( resp.state){
-        alert("El inmueble se creo con exito");
+        this.utilService.showAlerta("Inmueble crado")
         this.formDir.resetForm();
       }
     }, error=>{

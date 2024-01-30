@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
+import { UtilsService } from '../../../../share/services/utils.service';
 
 @Component({
   selector: 'app-demandado',
@@ -23,7 +24,7 @@ export class DemandadoComponent {
   @ViewChild(FormGroupDirective)
   private formDir!: FormGroupDirective;
 
-  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
+  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService, private utilsService:UtilsService){
     this.formDemandado = this.fb.group({
       ident: [''],
       nombre: ['', [Validators.required]],
@@ -43,7 +44,7 @@ export class DemandadoComponent {
     this.gjService.crearDemandado(payload).subscribe((resp:any)=>{
       console.log('resp',resp);
       if(resp.state){
-        alert("Demandado creado..");
+        this.utilsService.showAlerta('Se ha creado el Demandado');
         this.formDir.resetForm();
       }
     }, error=>{
