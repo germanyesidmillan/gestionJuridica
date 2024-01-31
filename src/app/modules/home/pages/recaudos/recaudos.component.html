@@ -54,7 +54,7 @@
   
               <mat-form-field>
                 <mat-label>Recaudo:</mat-label>
-                <input matInput formControlName="recaudo" />
+                <input matInput formControlName="recaudo" type="number"/>
                 @if (formRecaudo.get('recaudo')?.invalid &&
                 formRecaudo.get('recaudo')?.touched) {
                 <small>Recaudo requerido</small>

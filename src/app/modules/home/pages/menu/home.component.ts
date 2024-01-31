@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {MatMenuModule} from '@angular/material/menu';
@@ -16,6 +16,7 @@ import { HonorariosComponent } from '../honorarios/honorarios.component';
 import { AutoComponent } from '../auto/auto.component';
 import { RadicadoComponent } from '../radicado/radicados.component';
 import { RecaudosComponent } from '../recaudos/recaudos.component';
+import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-home',
@@ -23,11 +24,13 @@ import { RecaudosComponent } from '../recaudos/recaudos.component';
   imports: [CommonModule, MatMenuModule, MatButtonModule, MatToolbarModule, 
              RouterLink, RegisterComponent, CopropiedadComponent, DemandadoComponent, RadicadoComponent,
              AutoComponent,CarteraComponent, HonorariosComponent, RecaudosComponent,
-              ReembolsosComponent, CronologiaComponent],
+              ReembolsosComponent, CronologiaComponent, SpinnerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+
+  public loading = false;
 
   constructor(private router: Router){
     console.log('router',router);

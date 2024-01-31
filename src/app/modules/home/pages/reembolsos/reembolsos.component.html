@@ -63,7 +63,7 @@
 
               <mat-form-field>
                 <mat-label>Reembolso:</mat-label>
-                <input matInput formControlName="reembolso" />
+                <input matInput formControlName="reembolso" type="number"/>
                 @if (formReembolso.get('reembolso')?.invalid &&
                 formReembolso.get('reembolso')?.touched) {
                 <small>Reembolso requerido</small>

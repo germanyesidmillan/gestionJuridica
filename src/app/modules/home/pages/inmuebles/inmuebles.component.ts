@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,9 +26,6 @@ export class InmueblesComponent implements OnInit{
 
   @ViewChild(FormGroupDirective)
   private formDir!:FormGroupDirective; 
-    
- 
-
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService, private utilService:UtilsService){
     this.formInmuebles = this.fb.group({
       ident: [''],
@@ -76,7 +73,6 @@ export class InmueblesComponent implements OnInit{
   buscarDemandado(){
     const identi = this.formInmuebles.get('ident')!.value;
     console.log(identi)
-    
     if (!identi){
       this.utilService.showAlerta("Debe diligenciar identificación","Advertencia","warning");
       return;

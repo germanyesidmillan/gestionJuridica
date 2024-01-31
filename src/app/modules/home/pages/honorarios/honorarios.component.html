@@ -63,7 +63,7 @@
   
               <mat-form-field>
                 <mat-label>Honorarios:</mat-label>
-                <input matInput formControlName="honorarios" />
+                <input matInput formControlName="honorarios" type="number" />
                 @if (formHonorarios.get('honorarios')?.invalid &&
                 formHonorarios.get('honorarios')?.touched) {
                 <small>Honorarios requerido</small>

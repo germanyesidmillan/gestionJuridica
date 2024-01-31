@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UtilsService } from '../../../../share/services/utils.service';
 
 @Component({
   selector: 'app-honorarios',
@@ -28,14 +30,16 @@ export class HonorariosComponent implements OnInit{
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
 
+  @ViewChild(FormGroupDirective) formDir!:FormGroupDirective
   
-  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
+  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService, private utilService: UtilsService){
     this.formHonorarios = this.fb.group({
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
       demado: ['', [Validators.required]],
       honorarios: ['', [Validators.required]],
       fechaHonorarios: ['', [Validators.required]],
+      cuecobro: ['', [Validators.required]],
     });
   }
   ngOnInit(): void {
@@ -45,6 +49,28 @@ export class HonorariosComponent implements OnInit{
   }
 
   onSubmit(){
+    const fecha = new Date (this.formHonorarios.get('fechaHonorarios')?.value);
+    const fecHonorario = `${fecha.getFullYear()}-${fecha.getMonth()+1}-${fecha.getDate()}`;
+
+    const payload = {
+      fecha_honorarios: fecHonorario,
+      valor_honorarios: this.formHonorarios.get('honorarios')!.value,
+      id_inmueble: this.formHonorarios.get('inmueble')!.value,
+      num_c_cobro: this.formHonorarios.get('cuecobro')!.value,
+    }
+
+    this.gjService.crearHonorario(payload).subscribe((resp:any)=>{
+      console.log('resp',resp);
+      if(resp.state){
+        this.utilService.showAlerta(resp.message);
+        this.formDir.resetForm();
+      }else{
+        this.utilService.showAlerta(resp.message, "Error","error");
+      }
+    }, (error:HttpErrorResponse)=>{
+      console.log('Error',error);
+      alert(error.message);
+    });
   }
 
   onChangeCopropiedad(event: any){

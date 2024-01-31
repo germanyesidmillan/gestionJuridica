@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UtilsService } from '../../../../share/services/utils.service';
 @Component({
   selector: 'app-reembolsos',
   standalone: true,
@@ -28,9 +30,10 @@ export class ReembolsosComponent implements OnInit{
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
  
+  @ViewChild(FormGroupDirective) formDir!:FormGroupDirective;
   
 
-  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService){
+  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService, private utilService:UtilsService){
     this.formReembolso = this.fb.group({
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
@@ -45,7 +48,30 @@ export class ReembolsosComponent implements OnInit{
     this.getInmueble();
     this.getDemandados();
   }
+  
   onSubmit(){
+    const fecha = new Date (this.formReembolso.get('fechaReembolso')?.value);
+    const fecReembolso = `${fecha.getFullYear()}-${fecha.getMonth()+1}-${fecha.getDate()}`;
+
+    const payload = {
+      fecha_reembolsos: fecReembolso,
+      valor_reembolsos: this.formReembolso.get('reembolso')!.value,
+      id_inmueble: this.formReembolso.get('inmueble')!.value,
+      num_c_cobro: this.formReembolso.get('cuecobro')!.value,
+    }
+
+    this.gjService.crearReembolso(payload).subscribe((resp:any)=>{
+      console.log('resp',resp);
+      if(resp.state){
+        this.utilService.showAlerta(resp.message);
+        this.formDir.resetForm();
+      }else{
+        this.utilService.showAlerta(resp.message, "Error","error");
+      }
+    }, (error:HttpErrorResponse)=>{
+      console.log('Error',error);
+      alert(error.message);
+    });
   }
 
   onChangeCopropiedad(event: any){

@@ -45,7 +45,7 @@ export class CronologiaComponent implements OnInit{
       inmueble: ['', [Validators.required]],
       demado: ['', [Validators.required]],
       etapaDemado: ['', [Validators.required]],
-      radicado: ['', [Validators.required]],
+      radicado: [''],
       cronologia: ['', [Validators.required]],
       fechaCronologia: ['', [Validators.required]],
       diasalerta: ['', [Validators.required]],
