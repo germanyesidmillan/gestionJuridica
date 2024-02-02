@@ -274,7 +274,7 @@ export class AutoComponent implements OnInit {
     console.log('event',event.target.value);
     const numRadicado = event.target.value;
     if (numRadicado == ''){
-      this.utilService.showAlerta("Digite el número de radicado","Advertencia","warning");
+      this.utilService.showAlerta("Digite el número de radicado","Advertencia!","warning");
       return;
     }
     this.radicados = [];

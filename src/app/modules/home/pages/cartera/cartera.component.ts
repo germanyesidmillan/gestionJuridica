@@ -76,7 +76,7 @@ export class CarteraComponent implements OnInit{
         this.utilService.showAlerta(resp.message);
         this.forDir.resetForm();
       }else{
-        this.utilService.showAlerta(resp.message,"Error","error");
+        this.utilService.showAlerta(resp.message,"Error!","error");
       }
     },(error:HttpErrorResponse)=>{
       this.utilService.showAlerta(error.message);

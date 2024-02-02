@@ -17,6 +17,7 @@ import { AutoComponent } from '../auto/auto.component';
 import { RadicadoComponent } from '../radicado/radicados.component';
 import { RecaudosComponent } from '../recaudos/recaudos.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
+import { UtilsService } from '../../../../share/services/utils.service';
 
 @Component({
   selector: 'app-home',
@@ -30,9 +31,8 @@ import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.
 })
 export class HomeComponent {
 
-  public loading = false;
 
-  constructor(private router: Router){
+  constructor(private router: Router, public utilService: UtilsService){
     console.log('router',router);
   }
 

@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { UtilsService } from '../../../../share/services/utils.service';
 import { MatCardModule } from '@angular/material/card';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-inmuebles',
@@ -72,17 +73,19 @@ export class InmueblesComponent implements OnInit{
 
   buscarDemandado(){
     const identi = this.formInmuebles.get('ident')!.value;
-    console.log(identi)
+    console.log(identi);
+    this.utilService.cargando(true);
     if (!identi){
-      this.utilService.showAlerta("Debe diligenciar identificación","Advertencia","warning");
+      this.utilService.showAlerta("Debe diligenciar identificación","Advertencia!","warning");
       return;
     }
 
     this.gjService.getDemandadoXidenti(identi).subscribe((resp:any)=>{
       console.log('resp',resp);
-      
+      this.utilService.cargando(false);
+
       if(!resp.state){
-        this.utilService.showAlerta("Deamandado no existe en la base de datos","Advertencia","warning");
+        this.utilService.showAlerta("Deamandado no existe en la base de datos","Advertencia!","warning");
         this.formInmuebles.get('ident')?.setValue(null);
       }else{
         this.formInmuebles.get('nombre')?.setValue(resp.data.nombre_demandado);
@@ -90,8 +93,10 @@ export class InmueblesComponent implements OnInit{
         this.id_demandado = resp.data.id_demandado;
       }
 
-    },err=>{
-      console.log('Error',err);
+    }, (error:HttpErrorResponse)=>{
+      this.utilService.cargando(false);
+      this.utilService.showAlerta(error.message,"Error!","error");
+      console.log('err',error);
     });
 
   }

@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { UtilsService } from '../../../../share/services/utils.service';
 import { MatCardModule } from '@angular/material/card';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-demandado',
@@ -36,6 +37,8 @@ export class DemandadoComponent {
 
   onSubmit(){
 
+    this.utilsService.cargando(true);
+
     const payload = {
       identificacion_demandado: this.formDemandado.get('ident')!.value,
       nombre_demandado:this.formDemandado.get('nombre')!.value,
@@ -44,12 +47,16 @@ export class DemandadoComponent {
 
     this.gjService.crearDemandado(payload).subscribe((resp:any)=>{
       console.log('resp',resp);
+      this.utilsService.cargando(true);
+
       if(resp.state){
         this.utilsService.showAlerta('Se ha creado el Demandado');
         this.formDir.resetForm();
       }
-    }, error=>{
-      console.log('error',error);
+    }, (error:HttpErrorResponse)=>{
+      this.utilsService.cargando(false);
+      this.utilsService.showAlerta(error.message,"Error!","error");
+      console.log('err',error);
     });
 
   }
@@ -57,21 +64,25 @@ export class DemandadoComponent {
 
   buscarDemandado(){
     const identi = this.formDemandado.get('ident')!.value;
+   
     console.log(identi)
     if (!identi){
-      alert("Debe diligenciar identificación");
+      this.utilsService.showAlerta('Debe diligenciar identificación',"Advertencia!","warning");
       return;
     }
-
+    this.utilsService.cargando(true);
     this.gjService.getDemandadoXidenti(identi).subscribe((resp:any)=>{
       console.log('resp',resp);
+      this.utilsService.cargando(false);
       if(resp.State){
         alert("Deamandado ya existe en la base de datos");
         this.formDemandado.get('ident')?.setValue(null);
       }
 
-    },err=>{
-      console.log('Error',err);
+    },(error:HttpErrorResponse)=>{
+      this.utilsService.cargando(false);
+      this.utilsService.showAlerta(error.message,"Error!","error");
+      console.log('err',error);
     });
 
   }

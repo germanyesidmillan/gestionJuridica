@@ -84,12 +84,12 @@ export class CronologiaComponent implements OnInit{
         this.forDir.resetForm();
 
       }else{
-        this.utilService.showAlerta(resp.message,"Error", "error");
+        this.utilService.showAlerta(resp.message,"Error!", "error");
       }
 
     }, (error:HttpErrorResponse)=>{
       console.log('error',error);
-      this.utilService.showAlerta(error.message,"Error", "error");
+      this.utilService.showAlerta(error.message,"Error!", "error");
     })
 
   }

@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { UtilsService } from '../../../../share/services/utils.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-copropiedad',
@@ -63,6 +64,8 @@ export class CopropiedadComponent implements OnInit {
     let banco = this.formCopropiedad.get('banco')?.value;
     console.log('formulario',this.formCopropiedad, banco);
 
+    this.utilService.cargando(true);
+
     let fec = new Date(this.formCopropiedad.get('fechaPersoneria')!.value); 
 
     const fecPer = `${fec.getFullYear()}-${fec.getMonth()+1}-${fec.getDate()}`;
@@ -81,14 +84,16 @@ export class CopropiedadComponent implements OnInit {
     }
 
     this.gjService.crearDemandante(payload).subscribe((resp:any)=>{
-      
+      this.utilService.cargando(false);
       if (resp.state){
         console.log('resp',resp);
         this.utilService.showAlerta('Se ha creado el demandante');
         this.formDir.resetForm();
       }
-    }, err=>{
-      console.log('err',err);
+    }, (error:HttpErrorResponse)=>{
+      this.utilService.cargando(false);
+      this.utilService.showAlerta(error.message);
+      console.log('err',error);
     });
 
 

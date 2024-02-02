@@ -1,4 +1,4 @@
-<div>
+<div class="m-div-container">
   <mat-toolbar>
     <button routerLink="" mat-button>Home</button>
     <!-- <button routerLink="/login" mat-button>Login </button>
@@ -14,7 +14,9 @@
     <button routerLink="/honorarios" mat-button>Honorarios</button>
     <button routerLink="/reembolsos" mat-button>Reembolsos</button>
   </mat-toolbar>
-  @if(loading){
+
+  
+  @if(utilService.spinner | async){
       <div class="m-div-spinner">
           <app-spinner [tamano]="50" />
       </div>
