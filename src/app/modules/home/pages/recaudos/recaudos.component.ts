@@ -65,11 +65,11 @@ export class RecaudosComponent {
         this.utilService.showAlerta(resp.message);
         this.formDir.resetForm();
       }else{
-        this.utilService.showAlerta(resp.message, "Error","error");
+        this.utilService.showAlerta(resp.message, "Error!","error");
       }
     }, (error:HttpErrorResponse)=>{
       console.log('Error',error);
-      alert(error.message);
+      this.utilService.showAlerta(error.message, "Error!","error");
     });
   }
 
