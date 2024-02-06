@@ -17,7 +17,7 @@ import { AutoComponent } from '../auto/auto.component';
 import { RadicadoComponent } from '../radicado/radicados.component';
 import { RecaudosComponent } from '../recaudos/recaudos.component';
 import { SpinnerComponent } from '../../../../shared/components/spinner/spinner.component';
-import { UtilsService } from '../../../../share/services/utils.service';
+import { UtilsService } from '../../../../shared/services/utils.service';
 
 @Component({
   selector: 'app-home',

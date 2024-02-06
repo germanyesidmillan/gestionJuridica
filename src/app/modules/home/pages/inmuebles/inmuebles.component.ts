@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
-import { UtilsService } from '../../../../share/services/utils.service';
+import { UtilsService } from '../../../../shared/services/utils.service';
 import { MatCardModule } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -74,7 +74,6 @@ export class InmueblesComponent implements OnInit{
   buscarDemandado(){
     const identi = this.formInmuebles.get('ident')!.value;
     console.log(identi);
-    this.utilService.cargando(true);
     if (!identi){
       this.utilService.showAlerta("Debe diligenciar identificación","Advertencia!","warning");
       return;
@@ -82,8 +81,7 @@ export class InmueblesComponent implements OnInit{
 
     this.gjService.getDemandadoXidenti(identi).subscribe((resp:any)=>{
       console.log('resp',resp);
-      this.utilService.cargando(false);
-
+    
       if(!resp.state){
         this.utilService.showAlerta("Deamandado no existe en la base de datos","Advertencia!","warning");
         this.formInmuebles.get('ident')?.setValue(null);
@@ -94,7 +92,6 @@ export class InmueblesComponent implements OnInit{
       }
 
     }, (error:HttpErrorResponse)=>{
-      this.utilService.cargando(false);
       this.utilService.showAlerta(error.message,"Error!","error");
       console.log('err',error);
     });

@@ -11,7 +11,7 @@ import { IGestionJuridica } from '../../models/gestion-juridica-interface';
 import { MatCardModule } from '@angular/material/card';
 
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
-import { UtilsService } from '../../../../share/services/utils.service';
+import { UtilsService } from '../../../../shared/services/utils.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

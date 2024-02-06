@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
-import { UtilsService } from '../../../../share/services/utils.service';
+import { UtilsService } from '../../../../shared/services/utils.service';
 import { MatCardModule } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -70,19 +70,19 @@ export class DemandadoComponent {
       this.utilsService.showAlerta('Debe diligenciar identificación',"Advertencia!","warning");
       return;
     }
-    this.utilsService.cargando(true);
+    //this.utilsService.cargando(true);
     this.gjService.getDemandadoXidenti(identi).subscribe((resp:any)=>{
-      console.log('resp',resp);
-      this.utilsService.cargando(false);
+      console.log('resp-service',resp);
+      //this.utilsService.cargando(false);
       if(resp.State){
         alert("Deamandado ya existe en la base de datos");
         this.formDemandado.get('ident')?.setValue(null);
       }
 
     },(error:HttpErrorResponse)=>{
-      this.utilsService.cargando(false);
+      //this.utilsService.cargando(false);
       this.utilsService.showAlerta(error.message,"Error!","error");
-      console.log('err',error);
+      console.log('err-service',error);
     });
 
   }

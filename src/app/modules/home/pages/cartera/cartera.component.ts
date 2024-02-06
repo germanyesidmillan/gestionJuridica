@@ -10,7 +10,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
-import { UtilsService } from '../../../../share/services/utils.service';
+import { UtilsService } from '../../../../shared/services/utils.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -162,6 +162,23 @@ export class CarteraComponent implements OnInit{
      }, error=>{
       console.log(error)
      });
+  }
+
+  separadorMiles(){
+    const valor = this.formCartera.get('cartera')?.value;
+    //console.log('valor',typeof(String(valor)));
+    
+    if(!valor){
+      console.log('valida')
+
+      return;
+    }
+
+    const miles = parseFloat(valor).toLocaleString("es-CO").toString();
+    console.log('miles',miles);
+
+    this.formCartera.get('cartera')!.setValue(miles);
+
   }
 
 }

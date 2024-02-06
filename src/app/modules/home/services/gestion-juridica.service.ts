@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { IGestionJuridica } from '../models/gestion-juridica-interface';
+import { catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -37,9 +38,22 @@ export class GestionJuridicaService {
     return this.http.get(url);   
   }
 
+  errorHandler(error:HttpErrorResponse){
+    console.log('error',error.error);
+    console.log('message',error.message);
+    console.log('statusText',error.statusText);
+    console.log('name',error.name);
+    
+    console.log('ok',error.ok);
+    console.log('status',error.status);
+    console.log('errorResp',error);
+    return throwError(error.message)
+  }
+
   getDemandadoXidenti(payload:any){
     const url = `${this.URL_BASE}/buscarDemandadoId/${payload}`;
-    return this.http.get(url);  
+    return this.http.get(url);
+    //.pipe(catchError(this.errorHandler));  
   }
 
   getEtapasDemandado(){
