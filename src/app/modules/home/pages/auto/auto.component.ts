@@ -279,6 +279,7 @@ export class AutoComponent implements OnInit {
     }
     this.radicados = [];
     this.juzgadosXradicado = [];
+    this.forDir.resetForm();
     this.getNumRadicado(numRadicado);
 
   }
@@ -287,28 +288,34 @@ export class AutoComponent implements OnInit {
 
     this.radicados=[]; 
     this.numJuzgadosPorRadicado = [];
+    this.formAuto.get('radicado')?.setValue(numRadicado)
     
-    this.gjService.getNumeroRadicado(numRadicado).subscribe(
-      (resp: any) => {
-        this.radicados = resp;
+    this.gjService.getNumeroRadicado(numRadicado).subscribe((resp: any) => {
+        
         console.log('resp--->',resp);
         //TODO: Colocar validacion de registros
-        this.numJuzgado.filter((nj:any)=>{
-          this.radicados.filter((rad:any, i:number)=>{
-           if(nj.id_num_juzgado == rad.id_num_juzgado){
-             this.numJuzgadosPorRadicado.push(nj);
-            }
-          });
-        });
 
-        this.juzgados.filter((j:any)=>{
-          this.numJuzgadosPorRadicado.filter((jr:any)=>{
-            if(j.id_juzgado == jr.id_juzgado){
-              console.log('j',j);
-              this.juzgadosXradicado.push(j);
-            }
+        if(resp.state){
+          this.radicados = resp.data;
+          this.numJuzgado.filter((nj:any)=>{
+            this.radicados.filter((rad:any, i:number)=>{
+             if(nj.id_num_juzgado == rad.id_num_juzgado){
+               this.numJuzgadosPorRadicado.push(nj);
+              }
+            });
+          });
+  
+          this.juzgados.filter((j:any)=>{
+            this.numJuzgadosPorRadicado.filter((jr:any)=>{
+              if(j.id_juzgado == jr.id_juzgado){
+                console.log('j',j);
+                this.juzgadosXradicado.push(j);
+              }
+            })
           })
-        })
+        }else{
+          this.utilService.showAlerta(resp.message,"Advertencia!",'warning')
+        }
 
       },
       (error) => {
