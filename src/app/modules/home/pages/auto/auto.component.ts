@@ -85,13 +85,12 @@ export class AutoComponent implements OnInit {
   onSubmit(){
 
     const fec = new Date(this.formAuto.get('fechaAuto')!.value);
-
     const fecAuto = `${fec.getFullYear()}-${fec.getMonth()+1}-${fec.getDate()}`;
 
     const payload = {
       fecha_auto: fecAuto,
       descrip_auto:this.formAuto.get('auto')!.value,
-      id_inmueble:this.formAuto.get('inmueble')!.value,
+      id_radicado:this.radicados[0].id_radicado,
       id_num_juzgado:this.formAuto.get('numJuzgado')!.value
     }
 
