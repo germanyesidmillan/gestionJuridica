@@ -7,91 +7,60 @@
     <mat-card-content>
       <form [formGroup]="formRadicado" (submit)="onSubmit()">
         <section>
-          <mat-form-field>
-            <mat-label>Copropiedad:</mat-label>
-            <mat-select
-              formControlName="demate"
-              (selectionChange)="onChangeCopropiedad($event)"
-            >
-              @for (d of demandantes; track d.id_demandante) {
-              <mat-option [value]="d.id_demandante">{{
-                d.nombre_demandante
-              }}</mat-option>
-              }
-            </mat-select>
-            @if (formRadicado.get('demate')?.invalid &&
-            formRadicado.get('demate')?.touched) {
-            <small>Copropiedad requerido</small>
-            }
-          </mat-form-field>
+          
+          <app-autocompletar 
+            title="Copropiedad"
+            [options]="demandantes"
+            [myInputComplete]= "formRadicado.get('demate')"
+            cmbDescripcion="nombre_demandante"
+            optionId="id_demandante"
+            msgError="Copropiedad requerida"
+            (onChangeSelection)=" onChangeCopropiedad($event)"
+          />
 
-          <mat-form-field>
-            <mat-label>Inmueble:</mat-label>
-            <mat-select
-              formControlName="inmueble"
-              (selectionChange)="onChangeInmueble($event)"
-            >
-              @for (i of inmueblesXdemandante; track i.id_inmueble) {
-              <mat-option [value]="i.id_inmueble">{{
-                i.numero_inmueble
-              }}</mat-option>
-              }
-            </mat-select>
-            @if (formRadicado.get('inmueble')?.invalid &&
-            formRadicado.get('inmueble')?.touched) {
-            <small>Inmueble requerido</small>
-            }
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Demandado:</mat-label>
-            <input matInput readonly="readonly" formControlName="demado" />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Radicado:</mat-label>
-            <input matInput formControlName="radicado" />
-            @if (formRadicado.get('radicado')?.invalid &&
-            formRadicado.get('radicado')?.touched) {
-            <small>Radicado requerido</small>
-            }
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Juzgado:</mat-label>
-            <mat-select
-              formControlName="juzgado"
-              (selectionChange)="onChangeJuzgado($event)"
-            >
-              @for (j of juzgados; track j.id_juzgado) {
-              <mat-option [value]="j.id_juzgado">{{
-                j.nombre_juzgado
-              }}</mat-option>
-              }
-            </mat-select>
-            @if (formRadicado.get('juzgado')?.invalid &&
-            formRadicado.get('juzgado')?.touched) {
-            <small>Juzgado requerido</small>
-            }
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Numero de Juzgado:</mat-label>
-            <mat-select
-              formControlName="numJuzgado"
-              (selectionChange)="onChangeNumJuzgado($event)"
-            >
-              @for (nj of numJuzgadosXjuzgado; track nj.id_num_juzgado) {
-              <mat-option [value]="nj.id_num_juzgado">{{
-                nj.num_juzgado
-              }}</mat-option>
-              }
-            </mat-select>
-            @if (formRadicado.get('numJuzgado')?.invalid &&
-            formRadicado.get('numJuzgado')?.touched) {
-            <small>Numero de Juzgado requerido</small>
-            }
-          </mat-form-field>
+          <app-autocompletar 
+            title="Inmueble"
+            [options]="inmueblesXdemandante"
+            [myInputComplete]= "formRadicado.get('inmueble')"
+            cmbDescripcion="numero_inmueble"
+            optionId="id_inmueble"
+            [seleccionado]="storeService.cancelInmueble()"
+            msgError="Inmueble requerida"
+            (onChangeSelection)=" onChangeInmueble($event)"
+          />
+    
+          <app-input
+            label="Demandado:"  
+            [inputControl]= "formRadicado.get('demado')"
+            [readonly]= true
+          />
+          
+          <app-input
+            label="Radicado:"  
+            [inputControl]= "formRadicado.get('radicado')"
+            msgError="Radicado requerido"
+          />
+          
+          <app-autocompletar 
+            title="Juzgado"
+            [options]="juzgados"
+            [myInputComplete]= "formRadicado.get('juzgado')"
+            optionId="id_juzgado"
+            cmbDescripcion="nombre_juzgado"
+            msgError="Inmueble requerida"
+            (onChangeSelection)=" onChangeJuzgado($event)"
+          />
+          
+          <app-autocompletar 
+            title="Numero de Juzgado:"
+            [options]="numJuzgadosXjuzgado"
+            [myInputComplete]= "formRadicado.get('numJuzgado')"
+            cmbDescripcion="num_juzgado"
+            optionId="id_num_juzgado"
+            [seleccionado]="storeService.cancelNumJuzgado()"
+            msgError="Inmueble requerida"
+            (onChangeSelection)=" onChangeNumJuzgado($event)"
+          />
 
           <mat-form-field>
             <mat-label>Fecha Radicado (dd/mm/yyyy):</mat-label>

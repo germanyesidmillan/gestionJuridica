@@ -1,0 +1,21 @@
+<mat-form-field>
+  <mat-label>{{title}}</mat-label>
+  <input type="text" matInput [formControl]="myInputComplete" [matAutocomplete]="auto"/> 
+ 
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="seleccionar()">
+    @for (option of filteredOptions | async; track option.optionId) {
+    <mat-option [value]="option">{{option[cmbDescripcion]}} </mat-option>
+    }
+  </mat-autocomplete>
+   
+  @if ( myInputComplete.invalid && myInputComplete.touched ) {
+    <small>{{msgError}}</small>
+  }  
+ 
+</mat-form-field>
+
+<span>
+  @if(seleccionado){
+    <mat-icon (click)="resetCombo()">close</mat-icon>
+  }
+</span>

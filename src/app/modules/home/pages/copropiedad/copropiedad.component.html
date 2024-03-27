@@ -6,116 +6,75 @@
     <mat-card-content>
       <form [formGroup]="formCopropiedad" (submit)="onSubmit()">
         <div>
-          <mat-form-field>
-            <mat-label>Nit:</mat-label>
-            <input matInput formControlName="nit" />
-            @if (formCopropiedad.get('nit')?.invalid &&
-            formCopropiedad.get('nit')?.touched ) {
-            <small>Nit requerido</small>
-            }
-          </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>Nombre:</mat-label>
-            <input matInput formControlName="nombre" />
-            @if (formCopropiedad.get('nombre')?.invalid &&
-            formCopropiedad.get('nombre')?.touched) {
-            <small>Nombre requerido</small>
-            }
-          </mat-form-field>
+          <app-input 
+            label="Nit:"
+            [inputControl]="formCopropiedad.get('nit')"
+            msgError="Nit requerido"
+          />
 
-          <mat-form-field>
-            <mat-label>Tipo de Inmueble:</mat-label>
-            <mat-select formControlName="tipoInmueble">
-              @for (ti of tipoInmuebles; track ti.id_tipo_inmueble) {
-                <mat-option [value]="ti.id_tipo_inmueble">
-                  {{ti.tipo_inmueble}}
-                </mat-option>
-              }
-            </mat-select>
-            @if (formCopropiedad.get('tipoInmueble')?.invalid &&
-            formCopropiedad.get('tipoInmueble')?.touched) {
-            <small>Tipo de Inmueble requerido</small>
-            }
-          </mat-form-field>
+          <app-input 
+            label="Nombre:"
+            [inputControl]="formCopropiedad.get('nombre')"
+            msgError="Nombre requerido"
+          />
 
-          <mat-form-field>
-            <mat-label>Direccion:</mat-label>
-            <input matInput formControlName="direccion" />
-            @if (formCopropiedad.get('direccion')?.invalid &&
-            formCopropiedad.get('direccion')?.touched) {
-            <small>Direccion requerida</small>
-            }
-          </mat-form-field>
+          <app-autocompletar 
+            title="Tipo de Inmueble"
+            [options]="tipoInmuebles"
+            [myInputComplete]= "formCopropiedad.get('tipoInmueble')"
+            cmbDescripcion="tipo_inmueble"
+            optionId="id_tipo_inmueble"
+            msgError="Copropiedad requerida"
+          />
 
-          <mat-form-field>
-            <mat-label>Municipio:</mat-label>
-            <mat-select formControlName="municipio">
-              @for (m of municipios; track m.id_municipio) {
-              <mat-option [value]="m.id_municipio">{{
-                m.nombre_municipio
-              }}</mat-option>
-              }
-            </mat-select>
-            @if (formCopropiedad.get('municipio')?.invalid &&
-            formCopropiedad.get('municipio')?.touched) {
-            <small>Municipio requerido</small>
-            }
-          </mat-form-field>
+          <app-input 
+            label="Direccion:"
+            [inputControl]="formCopropiedad.get('direccion')"
+            msgError="Direccion requerida"
+          />
 
-          <mat-form-field>
-            <mat-label>Entidad Bancaria:</mat-label>
-            <mat-select formControlName="banco">
-              @for (b of bancos; track b.id_banco) {
-              <mat-option [value]="b.id_banco">{{ b.nombre_banco }}</mat-option>
-              }
-            </mat-select>
-            @if (formCopropiedad.get('banco')?.invalid &&
-            formCopropiedad.get('banco')?.touched) {
-            <small>Entidad Bancaria requerido</small>
-            }
-          </mat-form-field>
+          <app-autocompletar 
+            title="Municipio:"
+            [options]="municipios"
+            [myInputComplete]= "formCopropiedad.get('municipio')"
+            cmbDescripcion="nombre_municipio"
+            optionId="id_municipio"
+            msgError="Municipio requerido"
+          />
 
-          <mat-form-field>
-            <mat-label>Tipo de Cuenta:</mat-label>
-            <mat-select formControlName="tipoCuenta">
-              @for (tc of tipoCuentas; track tc.id_tipo_cuenta) {
-              <mat-option [value]="tc.id_tipo_cuenta">{{
-                tc.nombre_tipo_cuenta
-              }}</mat-option>
-              }
-            </mat-select>
-            @if (formCopropiedad.get('tipoCuenta')?.invalid &&
-            formCopropiedad.get('tipocuenta')?.touched) {
-            <small>Tipo de Cuenta requerido</small>
-            }
-          </mat-form-field>
+          <app-autocompletar 
+            title="Entidad Bancaria:"
+            [options]="bancos"
+            [myInputComplete]= "formCopropiedad.get('banco')"
+            cmbDescripcion="nombre_banco"
+            optionId="id_banco"
+            msgError="Entidad Bancaria requerida"
+          />
 
-          <mat-form-field>
-            <mat-label>Numero de cuenta:</mat-label>
-            <input matInput formControlName="numCuenta" type="text" />
-            @if (formCopropiedad.get('numCuenta')?.invalid &&
-            formCopropiedad.get('numCuenta')?.touched) {
-            <small>Numero de Cuenta requerido</small>
-            }
-          </mat-form-field>
+          <app-autocompletar 
+            title="Tipo de Cuenta:"
+            [options]="tipoCuentas"
+            [myInputComplete]= "formCopropiedad.get('tipoCuenta')"
+            cmbDescripcion="nombre_tipo_cuenta"
+            optionId="id_tipo_cuenta"
+            msgError="Entidad Bancaria requerida"
+          />
 
-          <mat-form-field>
-            <mat-label>Administrador:</mat-label>
-            <mat-select formControlName="admin">
-              @for (adm of administradores; track adm.id_admin_copropiedad) {
-              <mat-option [value]="adm.id_admin_copropiedad">{{
-                adm.nombre_admin_copropiedad
-              }}</mat-option>
-              }
-            </mat-select>
-            @if (formCopropiedad.get('admin')?.invalid &&
-            formCopropiedad.get('admin')?.touched) {
-            <small>Administrador requerido</small>
-            }
-          </mat-form-field>
-
-        
+          <app-input 
+            label="Numero de cuenta:"
+            [inputControl]="formCopropiedad.get('numCuenta')"
+            msgError="Numero de Cuenta requerida"
+          />
+          
+          <app-autocompletar 
+            title="Administrador:"
+            [options]="administradores"
+            [myInputComplete]= "formCopropiedad.get('admin')"
+            cmbDescripcion="nombre_admin_copropiedad"
+            optionId="id_admin_copropiedad"
+            msgError="Administrador requerido"
+          />
 
           <mat-form-field>
             <mat-label>Fecha Personeria (d/m/y):</mat-label>

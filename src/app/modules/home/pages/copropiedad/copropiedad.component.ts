@@ -7,18 +7,20 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import { IGestionJuridica } from '../../models/gestion-juridica-interface';
 import { MatCardModule } from '@angular/material/card';
 
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
-import { UtilsService } from '../../../../shared/services/utils.service';
+import { UtilsService } from '@shared/services/utils.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { StoreService } from '@shared/services/store.service';
+import { InputComponent } from "@shared/components/input/input.component";
+import { AutocompletarComponent } from '@home/components/autocompletar/autocompletar.component';
 
 @Component({
   selector: 'app-copropiedad',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule ,MatFormFieldModule, MatInputModule, MatButtonModule,
-             MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule],
+             MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule, InputComponent, AutocompletarComponent],
   templateUrl: './copropiedad.component.html',
   styleUrl: './copropiedad.component.css'
 })
@@ -29,14 +31,8 @@ export class CopropiedadComponent implements OnInit {
   @ViewChild(FormGroupDirective)
   private formDir!:FormGroupDirective;  
 
-  municipios:any = [];
-  bancos:any = [];
-  tipoCuentas:any = [];
-  administradores:any = [];
-  tipoInmuebles: any = [];
-
   constructor(private fb: FormBuilder, private utilService: UtilsService , 
-              private gjService: GestionJuridicaService){
+              private gjService: GestionJuridicaService, private storeService: StoreService){
     this.formCopropiedad = this.fb.group({
       nit: ['', [Validators.required]],
       nombre: ['', [Validators.required]],
@@ -50,8 +46,24 @@ export class CopropiedadComponent implements OnInit {
       fechaPersoneria: ['', [Validators.required]],
     });
   }
+
+  get municipios(){
+    return this.storeService.municipiosSignal();
+  }
+  get bancos(){
+    return this.storeService.bancosSignal();
+  }
+  get tipoCuentas(){
+    return this.storeService.tipoCuentaSignal();
+  }
+  get administradores(){
+    return this.storeService.administradoresSignal();
+  }
+  get tipoInmuebles(){
+    return this.storeService.tipoInmueblesSignal();
+  }
+
   ngOnInit(): void {
-   
     this.getMunicipios();
     this.getTipoCuentas();
     this.getBancos();
@@ -61,49 +73,46 @@ export class CopropiedadComponent implements OnInit {
 
   onSubmit(){
 
-    let banco = this.formCopropiedad.get('banco')?.value;
-    console.log('formulario',this.formCopropiedad, banco);
-
     this.utilService.cargando(true);
-
     let fec = new Date(this.formCopropiedad.get('fechaPersoneria')!.value); 
-
     const fecPer = `${fec.getFullYear()}-${fec.getMonth()+1}-${fec.getDate()}`;
 
     const payload = {
       identificacion_demandante: this.formCopropiedad.get('nit')!.value,
       nombre_demandante: this.formCopropiedad.get('nombre')!.value,
       direccion_demandante:this.formCopropiedad.get('direccion')!.value,
-      id_municipio: this.formCopropiedad.get('municipio')!.value,
-      id_tipo_cuenta:this.formCopropiedad.get('tipoCuenta')!.value,
+      id_municipio: (this.formCopropiedad.get('municipio')!.value).id_municipio,
+      id_tipo_cuenta:(this.formCopropiedad.get('tipoCuenta')!.value).id_tipo_cuenta,
       num_cuenta:this.formCopropiedad.get('numCuenta')!.value,
-      id_admin_copropiedad:this.formCopropiedad.get('admin')!.value,
+      id_admin_copropiedad: (this.formCopropiedad.get('admin')!.value).id_admin_copropiedad,
       fecha_personeria: fecPer,
-      id_banco:this.formCopropiedad.get('banco')!.value,
-      id_tipo_inmuebles:this.formCopropiedad.get('tipoInmueble')!.value 
+      id_banco:(this.formCopropiedad.get('banco')!.value).id_banco,
+      id_tipo_inmuebles:(this.formCopropiedad.get('tipoInmueble')!.value).id_tipo_inmueble 
     }
 
     this.gjService.crearDemandante(payload).subscribe((resp:any)=>{
       this.utilService.cargando(false);
       if (resp.state){
-        console.log('resp',resp);
         this.utilService.showAlerta('Se ha creado el demandante');
         this.formDir.resetForm();
+        this.storeService.copropiedadesSignal.update(current=>[...current, resp.data] );
       }
     }, (error:HttpErrorResponse)=>{
       this.utilService.cargando(false);
-      this.utilService.showAlerta(error.message);
+      this.utilService.showAlerta(error.message, 'Error!','error');
       console.log('err',error);
     });
-
 
   }
 
   getMunicipios(){
 
-    this.gjService.getMunicipios().subscribe((resp:IGestionJuridica)=>{
-      this.municipios = resp;
-      console.log('municipios',this.municipios);
+    if(this.storeService.municipiosSignal().length > 0){
+      return;
+    }
+
+    this.gjService.getMunicipios().subscribe((resp:any)=>{
+      this.storeService.municipiosSignal.set(resp);
     }, error=>{
       console.log('error',error);
     }); 
@@ -111,41 +120,56 @@ export class CopropiedadComponent implements OnInit {
   }
   
   getBancos(){
+    
+    if(this.storeService.bancosSignal().length > 0){
+      return;
+    }
+
     this.gjService.getBancos().subscribe((resp:any)=>{
-      this.bancos = resp;
-      console.log('bancos',this.bancos);
+      this.storeService.bancosSignal.set(resp);
     }, error=>{
       console.log('error',error);
     }); 
   }
 
   getTipoCuentas(){
+
+    if(this.storeService.tipoCuentaSignal().length > 0){
+      return;
+    }
+
     this.gjService.getTipoCuentas().subscribe((resp:any)=>{
-      this.tipoCuentas = resp;
-      console.log('tipoCuentas',this.tipoCuentas);
+      this.storeService.tipoCuentaSignal.set(resp);
     }, error=>{
       console.log('error',error);
     }); 
   }
   
   getAdministradores(){
+
+    if(this.storeService.administradoresSignal().length > 0){
+      return;
+    }
+
     this.gjService.getAdministradores().subscribe((resp:any)=>{
-      this.administradores = resp;
-      console.log('admnin',this.administradores);
+      this.storeService.administradoresSignal.set(resp);
     }, error=>{
       console.log('error',error);
     }); 
   }
 
   getTipoInmuebles(){
+
+    if(this.storeService.tipoInmueblesSignal().length > 0){
+      return;
+    }
+
     this.gjService.getTipoInmuebles().subscribe((resp:any)=>{
-      this.tipoInmuebles = resp;
-      console.log('tipoInmueble',this.tipoInmuebles);
+      this.storeService.tipoInmueblesSignal.set(resp);
       
     }, error=>{
       console.log('error',error);
     }); 
   }
-
 
 }

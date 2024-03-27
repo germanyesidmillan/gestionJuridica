@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { IGestionJuridica } from '../models/gestion-juridica-interface';
-import { catchError, throwError } from 'rxjs';
+
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class GestionJuridicaService {
 
   getMunicipios(){
     const url = `${this.URL_BASE}/city`;
-    return this.http.get<IGestionJuridica>(url);
+    return this.http.get(url);
   }
 
   getBancos(){

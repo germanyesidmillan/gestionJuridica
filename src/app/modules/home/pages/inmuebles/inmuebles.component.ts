@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, signal } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,12 +11,14 @@ import { GestionJuridicaService } from '../../services/gestion-juridica.service'
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { MatCardModule } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
+import { InputComponent } from '@shared/components/input/input.component';
+import { AutocompletarComponent } from '@home/components/autocompletar/autocompletar.component';
 
 @Component({
   selector: 'app-inmuebles',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule ,MatFormFieldModule, MatInputModule, 
-    MatButtonModule, MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule],
+    MatButtonModule, MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule, InputComponent, AutocompletarComponent],
   templateUrl: './inmuebles.component.html',
   styleUrl: './inmuebles.component.css'
 })
@@ -24,6 +26,7 @@ export class InmueblesComponent implements OnInit{
   formInmuebles: FormGroup;
   demandantes:any = [];  //copropiedades
   id_demandado!:number;
+  readonly=true;
 
   @ViewChild(FormGroupDirective)
   private formDir!:FormGroupDirective; 
@@ -47,17 +50,15 @@ export class InmueblesComponent implements OnInit{
 
     const fecha = new Date(this.formInmuebles.get('fechaEtapaDemandado')!.value);
     const fecEtapa = `${fecha.getFullYear()}-${fecha.getMonth()+1}-${fecha.getDate()}`;
-    console.log('fecEtapa',fecEtapa);
 
     const payload = {
         numero_inmueble: this.formInmuebles.get('inmueble')!.value,
-        id_demandante:this.formInmuebles.get('copropiedad')!.value,
+        id_demandante:(this.formInmuebles.get('copropiedad')!.value).id_demandante,
         id_etapa_demandado: 2,
         id_demandado: this.id_demandado,
         fecha_etapa_demandado: fecEtapa
     }
-
-
+   
     this.gjService.crearInmueble(payload).subscribe((resp:any)=>{
       console.log('resp',resp);
       if( resp.state){
@@ -71,7 +72,7 @@ export class InmueblesComponent implements OnInit{
   }
 
 
-  buscarDemandado(){
+  buscarDemandado(event:any){
     const identi = this.formInmuebles.get('ident')!.value;
     console.log(identi);
     if (!identi){
@@ -110,7 +111,6 @@ export class InmueblesComponent implements OnInit{
     });
 
  }
-
 
 }
 

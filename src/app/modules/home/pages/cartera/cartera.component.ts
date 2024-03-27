@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,34 +8,40 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
-import { UtilsService } from '../../../../shared/services/utils.service';
+import { UtilsService } from '@shared/services/utils.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AutocompletarComponent } from '../../components/autocompletar/autocompletar.component';
+import { InputComponent } from '@shared/components/input/input.component';
+import { StoreService } from '@shared/services/store.service';
+
+export interface User {
+  name: string;
+}
+
 
 @Component({
   selector: 'app-cartera',
   standalone: true,
   imports: [CommonModule,  ReactiveFormsModule ,MatFormFieldModule, MatInputModule, MatButtonModule,
-    MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule],
+             MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule,MatAutocompleteModule, 
+             AutocompletarComponent, InputComponent],
   templateUrl: './cartera.component.html',
   styleUrl: './cartera.component.css'
 })
-export class CarteraComponent implements OnInit{
+export class CarteraComponent {
 
   formCartera: FormGroup;
-  demandantes:any = [];
-  inmuebles:any = [];
-  demandados:any = [];
   etadaDemandados:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
-  etapasDemandados:any = [];
   @ViewChild(FormGroupDirective) forDir!:FormGroupDirective;
   
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService,
-              private utilService:UtilsService){
+              private utilService:UtilsService, public storeService:StoreService){
     this.formCartera = this.fb.group({
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
@@ -44,31 +50,38 @@ export class CarteraComponent implements OnInit{
       etapaDemado: ['', [Validators.required]],
       fechaCartera: ['', [Validators.required]],
     });
+   
+   
   }
 
-  ngOnInit(): void {
-    this.getCopropiedad();
-    this.getInmueble();
-    this.getDemandados();
-    this.getEtapasDemandado();
+  get copropiedades(){
+    return this.storeService.copropiedadesSignal();
   }
 
-  
-  
+  get inmuebles(){
+    return this.storeService.inmueblesSignal();
+  }
+
+  get demandados(){
+    return this.storeService.demandadosSignal();
+  }
+
+  get etapasDemandados(){
+    return this.storeService.etapasDemandadosSignal();
+  }
+
   onSubmit(){
 
     const fecha = new Date(this.formCartera.get('fechaCartera')?.value);
     const fecCartera = `${fecha.getFullYear()}-${fecha.getMonth()+1}-${fecha.getDate()}`;
-
+    const inmueble = this.formCartera.get('inmueble')?.value;
 
     const payload = {
       fecha_cartera: fecCartera,
-      valor_cartera: this.formCartera.get('cartera')?.value ,
-      id_inmueble:this.formCartera.get('inmueble')?.value ,
-      id_etapa_demandado:this.formCartera.get('etapaDemado')?.value 
+      valor_cartera: parseInt(this.formCartera.get('cartera')!.value) ,
+      id_inmueble: inmueble.id_inmueble ,
+      id_etapa_demandado:(this.formCartera.get('etapaDemado')?.value).id_etapa_demandado 
     };
-
-    console.log('payload',payload);
 
     this.gjService.crearCartera(payload).subscribe((resp:any)=>{
       console.log('resp',resp);
@@ -85,9 +98,13 @@ export class CarteraComponent implements OnInit{
   }
 
   onChangeCopropiedad(event: any){
-    let demandante = event.value;
+    
     this.limpiarDatos();
-    //this.formCartera.get("demado")?.setValue(null);
+    if(!event.value.id_demandante){
+      return;
+    }
+
+    let demandante = event.value.id_demandante;
     this.inmuebles.filter((inmueble:any)=>{
       if(inmueble.id_demandante == demandante){
         this.inmueblesXdemandante.push(inmueble)
@@ -96,77 +113,39 @@ export class CarteraComponent implements OnInit{
  }
 
   onChangeInmueble(event: any){
-    let inmueble = event.value;
-    console.log('inmueble',inmueble);
+    let inmueble = event.value.id_inmueble;
     this.formCartera.get("demado")?.setValue(null);
     this.inmuebleXdemandado = [];
-
     this.inmueblesXdemandante.filter((i:any)=>{
       if(i.id_inmueble == inmueble){
         this.inmuebleXdemandado.push(i);
       }
     });
 
-    console.log('inmuebleXdemandado',this.inmuebleXdemandado);
+    if(this.inmuebleXdemandado.length == 0){
+      return;
+    }
 
     let demandado = this.inmuebleXdemandado[0]["id_demandado"];
-
     this.demandados.filter( (dem:any)=>{
       if (dem.id_demandado == demandado){
         this.formCartera.get("demado")?.setValue(dem.nombre_demandado);
-        console.log('dem==>',dem.nombre_demandado);
       }
     });
-
-    console.log('demandado',demandado);
 
   }
 
   limpiarDatos(){
     this.inmuebleXdemandado = [];
     this.inmueblesXdemandante = [];
-    this.formCartera.get("demado")?.setValue(null);
+    this.formCartera.get("demado")?.setValue('');
+    this.formCartera.get("inmueble")?.setValue('');
   }
   
-  getCopropiedad() {
-    this.gjService.getDemandantes().subscribe((resp:any)=>{
-      console.log("demandantes->",resp)
-      this.demandantes = resp;
-     }, error=>{
-      console.log(error)
-     });
-  }
   
-  getInmueble() {
-    this.gjService.getInmuebles().subscribe((resp:any)=>{
-      console.log("inmuebles->",resp)
-      this.inmuebles = resp;
-     }, error=>{
-      console.log(error)
-     });
-  }
-
-  getDemandados() {
-    this.gjService.getDemandados().subscribe((resp:any)=>{
-      console.log("demandados->",resp)
-      this.demandados = resp;
-     }, error=>{
-      console.log(error)
-     });
-  }
-
-  getEtapasDemandado() {
-    this.gjService.getEtapasDemandado().subscribe((resp:any)=>{
-      console.log("etapaDemado->",resp)
-      this.etapasDemandados = resp;
-     }, error=>{
-      console.log(error)
-     });
-  }
 
   separadorMiles(){
     const valor = this.formCartera.get('cartera')?.value;
-    //console.log('valor',typeof(String(valor)));
     
     if(!valor){
       console.log('valida')
@@ -175,8 +154,6 @@ export class CarteraComponent implements OnInit{
     }
 
     const miles = parseFloat(valor).toLocaleString("es-CO").toString();
-    console.log('miles',miles);
-
     this.formCartera.get('cartera')!.setValue(miles);
 
   }

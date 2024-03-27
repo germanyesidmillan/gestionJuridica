@@ -7,18 +7,13 @@
     <mat-card-content>
       <form [formGroup]="formAuto" (submit)="onSubmit()">
         <section>
-          <mat-form-field>
-            <mat-label>Radicado:</mat-label>
-            <input
-              matInput
-              formControlName="radicado"
-              (blur)="buscarNumRadicado($event)"
-            />
-            @if (formAuto.get('radicado')?.invalid &&
-            formAuto.get('radicado')?.touched) {
-            <small>Radicado requerido</small>
-            }
-          </mat-form-field>
+          
+          <app-input
+            label="Radicado:"  
+            [inputControl]= "formAuto.get('radicado')"
+            (blur)="buscarNumRadicado($event)"
+            msgError="Radicado requerido"
+          />
 
           <mat-form-field>
             <mat-label>Juzgado:</mat-label>
@@ -52,12 +47,13 @@
             <small>Numero de Juzgado requerido</small>
             }
           </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Copropiedad:</mat-label>
-            <input matInput readonly="readonly" formControlName="demate" />
-          </mat-form-field>
-
+          
+          <app-input
+            label="Copropiedad:"  
+            [inputControl]= "formAuto.get('demate')"
+            [readonly]=true
+          />
+      
           <mat-form-field>
             <mat-label>Inmueble:</mat-label>
             <mat-select formControlName="inmueble">
@@ -73,20 +69,18 @@
             }
           </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>Demandado:</mat-label>
-            <input matInput readonly="readonly" formControlName="demado" />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Auto:</mat-label>
-            <input matInput formControlName="auto" />
-            @if (formAuto.get('auto')?.invalid && formAuto.get('auto')?.touched)
-            {
-            <small>Auto requerido</small>
-            }
-          </mat-form-field>
-
+          <app-input
+            label="Demandado:"  
+            [inputControl]= "formAuto.get('demado')"
+            [readonly]=true
+          />
+       
+          <app-input
+            label="Auto:"  
+            [inputControl]= "formAuto.get('auto')"
+            msgError="Auto requerido"
+          />
+     
           <mat-form-field>
             <mat-label>Fecha Auto (dd/mm/yyyy):</mat-label>
             <input
@@ -94,7 +88,6 @@
               [matDatepicker]="picker"
               formControlName="fechaAuto"
             />
-            <!--  <mat-hint>MM/DD/YYYY</mat-hint> -->
             <mat-datepicker-toggle
               matIconSuffix
               [for]="picker"

@@ -17,6 +17,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
 import { UtilsService } from '../../../../shared/services/utils.service';
+import { InputComponent } from '@shared/components/input/input.component';
+import { StoreService } from '../../../../shared/services/store.service';
 
 @Component({
   selector: 'app-auto',
@@ -31,6 +33,7 @@ import { UtilsService } from '../../../../shared/services/utils.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatCardModule,
+    InputComponent,
   ],
   templateUrl: './auto.component.html',
   styleUrl: './auto.component.css',
@@ -39,14 +42,9 @@ export class AutoComponent implements OnInit {
   id_inmueble: any;
   id_demandante: any;
   id_demandado: any;
-  juzgados: any = [];
   radicados: any = [];
   formAuto: FormGroup;
-  demandantes: any = [];
-  inmuebles: any = [];
   inmuebleXJuzgado: any = [];
-  demandados: any = [];
-  numJuzgado: any = [];
   numJuzgadosPorRadicado: any = [];
   juzgadosXradicado:any = [];
   numJuzgadosXjuzgado:any =[];
@@ -60,7 +58,8 @@ export class AutoComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private gjService: GestionJuridicaService,
-    private utilService: UtilsService
+    private utilService: UtilsService,
+    private storeService: StoreService 
   ) {
     this.formAuto = this.fb.group({
       juzgado: ['', [Validators.required]],
@@ -73,13 +72,32 @@ export class AutoComponent implements OnInit {
       auto: ['', [Validators.required]],
     });
   }
+  
   ngOnInit(): void {
     this.getJuzgados();
     this.getNumJuzgado();
-    this.getCopropiedad();
-    this.getInmueble();
     this.getDemandados();
-    //this.radicados();
+  }
+
+  //signal
+  get juzgados(){
+    return this.storeService.juzgadosSignal()
+  }
+
+  get demandantes(){
+    return this.storeService.copropiedadesSignal();
+  }
+
+  get inmuebles(){
+    return this.storeService.inmueblesSignal();
+  }
+  
+  get numJuzgado(){
+    return this.storeService.numJuzgadosSignal();
+  }
+
+  get demandados(){
+    return this.storeService.demandadosSignal();
   }
   
   onSubmit(){
@@ -108,7 +126,7 @@ export class AutoComponent implements OnInit {
   }
 
   onChangeJuzgado(event: any) {
-    let juzgadoSel = event.value
+    let juzgadoSel = event.value;
   
     this.numJuzgadosPorRadicado.filter((n:any)=>{
       if (n.id_juzgado == juzgadoSel){
@@ -131,7 +149,6 @@ export class AutoComponent implements OnInit {
         this.id_demandante = i.id_demandante;
         this.id_demandado = i.id_demandado;
       }
-
     });
 
     this.demandantes.filter((dte:any)=>{
@@ -148,11 +165,6 @@ export class AutoComponent implements OnInit {
 
   }
   
-  onChangeRadicado($event: MatSelectChange) {
-    throw new Error('Method not implemented.');
-  }
-
-
   onChangeCopropiedad(event: any) {
     let demandante = event.value;
     this.limpiarDatos();
@@ -176,18 +188,14 @@ export class AutoComponent implements OnInit {
       }
     });
 
-    console.log('inmuebleXdemandado', this.inmuebleXdemandado);
-
     let demandado = this.inmuebleXdemandado[0]['id_demandado'];
 
     this.demandados.filter((dem: any) => {
       if (dem.id_demandado == demandado) {
         this.formAuto.get('demado')?.setValue(dem.nombre_demandado);
-        console.log('dem==>', dem.nombre_demandado);
       }
     });
 
-    console.log('demandado', demandado);
   }
 
   limpiarDatos() {
@@ -196,81 +204,50 @@ export class AutoComponent implements OnInit {
     this.formAuto.get('demado')?.setValue(null);
   }
 
-  getJuzgado() {
-    this.gjService.getDemandantes().subscribe(
-      (resp: any) => {
-        console.log('juzgado->', resp);
-        this.juzgados = resp;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
-
   getJuzgados() {
-    this.gjService.getJuzgados().subscribe(
-      (resp: any) => {
-        console.log('juzgado->', resp);
-        this.juzgados = resp;
-      },
-      (error) => {
+    
+    if(this.storeService.juzgadosSignal().length > 0){
+      return;
+    } 
+
+    this.gjService.getJuzgados().subscribe((resp: any) => {
+        this.storeService.juzgadosSignal.set(resp);
+      },(error) => {
         console.log(error);
       }
     );
-  }
+  } 
 
   getNumJuzgado() {
-    this.gjService.getNumJuzgados().subscribe(
-      (resp: any) => {
-        console.log('numJuzgado->', resp);
-        this.numJuzgado = resp;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
 
-  getCopropiedad() {
-    this.gjService.getDemandantes().subscribe(
-      (resp: any) => {
-        console.log('demandantes->', resp);
-        this.demandantes = resp;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
+    if(this.storeService.numJuzgadosSignal().length > 0){
+      return;
+    }
 
-  getInmueble() {
-    this.gjService.getInmuebles().subscribe(
-      (resp: any) => {
-        console.log('inmuebles->', resp);
-        this.inmuebles = resp;
-      },
-      (error) => {
+    this.gjService.getNumJuzgados().subscribe((resp: any) => {
+        this.storeService.numJuzgadosSignal.set(resp);
+      },(error) => {
         console.log(error);
       }
     );
-  }
+  } 
 
   getDemandados() {
-    this.gjService.getDemandados().subscribe(
-      (resp: any) => {
-        console.log('demandados->', resp);
-        this.demandados = resp;
-      },
-      (error) => {
+
+    if(this.storeService.demandadosSignal().length > 0){
+      return;
+    }
+
+    this.gjService.getDemandados().subscribe((resp: any) => {
+        this.storeService.demandadosSignal.set(resp);
+      },(error) => {
         console.log(error);
       }
     );
-  }
+  } 
 
 
   buscarNumRadicado(event: any){
-    console.log('event',event.target.value);
     const numRadicado = event.target.value;
     if (numRadicado == ''){
       this.utilService.showAlerta("Digite el número de radicado","Advertencia!","warning");
@@ -284,7 +261,6 @@ export class AutoComponent implements OnInit {
   }
 
   getNumRadicado(numRadicado:any) {
-
     this.radicados=[]; 
     this.numJuzgadosPorRadicado = [];
     this.formAuto.get('radicado')?.setValue(numRadicado)
@@ -307,7 +283,6 @@ export class AutoComponent implements OnInit {
           this.juzgados.filter((j:any)=>{
             this.numJuzgadosPorRadicado.filter((jr:any)=>{
               if(j.id_juzgado == jr.id_juzgado){
-                console.log('j',j);
                 this.juzgadosXradicado.push(j);
               }
             })
@@ -319,6 +294,7 @@ export class AutoComponent implements OnInit {
       },
       (error) => {
         console.log(error);
+        this.utilService.showAlerta(error.message,"Error!",'error')
       }
     );
   }

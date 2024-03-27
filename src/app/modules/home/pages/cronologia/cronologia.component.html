@@ -9,67 +9,54 @@
     <mat-card-content>
       <form [formGroup]="formCronologia" (submit)="onSubmit()">
         <section>
-          <mat-form-field>
-            <mat-label>Copropiedad:</mat-label>
-            <mat-select
-              formControlName="demate"
-              (selectionChange)="onChangeCopropiedad($event)"
-            >
-              @for (d of demandantes; track d.id_demandante) {
-              <mat-option [value]="d.id_demandante">{{
-                d.nombre_demandante
-              }}</mat-option>
-              }
-            </mat-select>
-            @if (formCronologia.get('demate')?.invalid &&
-            formCronologia.get('demate')?.touched) {
-            <small>Copropiedad requerido</small>
-            }
-          </mat-form-field>
+          
+          <app-autocompletar 
+            title="Copropiedad"
+            [options]="demandantes"
+            [myInputComplete]= "formCronologia.get('demate')"
+            (onChangeSelection)=" onChangeCopropiedad($event)"
+            optionId="id_demandante"
+            cmbDescripcion="nombre_demandante"
+            msgError="Copropiedad requerida"
+          />
 
-          <mat-form-field>
-            <mat-label>Inmueble:</mat-label>
-            <mat-select
-              formControlName="inmueble"
-              (selectionChange)="onChangeInmueble($event)"
-            >
-              @for (i of inmueblesXdemandante; track i.id_inmueble) {
-              <mat-option [value]="i.id_inmueble">{{
-                i.numero_inmueble
-              }}</mat-option>
-              }
-            </mat-select>
-            @if (formCronologia.get('inmueble')?.invalid &&
-            formCronologia.get('inmueble')?.touched) {
-            <small>Inmueble requerido</small>
-            }
-          </mat-form-field>
-        
-          <mat-form-field>
-            <mat-label>Demandado:</mat-label>
-            <input matInput readonly="readonly" formControlName="demado" />
-          </mat-form-field>
+          <app-autocompletar 
+            title="Inmueble"
+            [options]="inmueblesXdemandante"
+            [myInputComplete]= "formCronologia.get('inmueble')"
+            (onChangeSelection)=" onChangeInmueble($event)"
+            optionId="id_inmueble"
+            cmbDescripcion="numero_inmueble"
+            [seleccionado]="storeService.cancelInmueble()"
+            msgError="Inmueble requerido"
+          />
+          
+          <app-input
+            label="Demandado:"  
+            [inputControl]= "formCronologia.get('demado')"
+            [readonly]=true
+          />
 
-          <mat-form-field>
-            <mat-label>Etapa Demandado:</mat-label>
-            <input matInput readonly="readonly" formControlName="etapaDemado" />
-          </mat-form-field>
+          <app-input
+            label="Etapa Demandado:"  
+            [inputControl]= "formCronologia.get('etapaDemado')"
+            [readonly]=true
+          />
 
-          <mat-form-field>
-            <mat-label>Radicado:</mat-label>
-            <input matInput readonly="readonly" formControlName="radicado" />
-          </mat-form-field>
+          <app-input
+            label="Radicado:"  
+            [inputControl]= "formCronologia.get('radicado')"
+            [readonly]=true
+          />
 
-          <mat-form-field>
-            <mat-label>Cronologia:</mat-label>
-            <mat-select formControlName="cronologia">
-              @for (cr of cronologias; track cr.id_cronologia) {
-              <mat-option [value]="cr.id_cronologia">{{
-                cr.nombre_cronologia
-              }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+          <app-autocompletar 
+            title="Cronologia:"
+            [options]="cronologias"
+            [myInputComplete]= "formCronologia.get('cronologia')"
+            cmbDescripcion="nombre_cronologia"
+            optionId="id_cronologia"
+            msgError="Etapa Demandado requerida"
+          />
 
           <mat-form-field>
             <mat-label>Fecha Cronologia (dd/mm/yyyy):</mat-label>
@@ -78,7 +65,7 @@
               [matDatepicker]="picker"
               formControlName="fechaCronologia"
             />
-            <!--  <mat-hint>MM/DD/YYYY</mat-hint> -->
+            
             <mat-datepicker-toggle
               matIconSuffix
               [for]="picker"
@@ -89,15 +76,13 @@
             <small>Fecha Cronologia requerido</small>
             }
           </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Dias de Alerta:</mat-label>
-            <input matInput formControlName="diasalerta" />
-            @if (formCronologia.get('diasalerta')?.invalid &&
-            formCronologia.get('diasalerta')?.touched) {
-            <small>Dias de Alerta requerido</small>
-            }
-          </mat-form-field>
+          
+          <app-input
+            label="Dias de Alerta:"  
+            [inputControl]= "formCronologia.get('diasalerta')"
+            msgError="Dias de Alerta requerido"
+          />
+          
         </section>
 
         <div>

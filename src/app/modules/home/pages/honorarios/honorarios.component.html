@@ -7,64 +7,47 @@
         <mat-card-content>
           <form [formGroup]="formHonorarios" (submit)="onSubmit()">
             <section>
-              <mat-form-field>
-                <mat-label>Copropiedad:</mat-label>
-                <mat-select
-                  formControlName="demate"
-                  (selectionChange)="onChangeCopropiedad($event)"
-                >
-                  @for (d of demandantes; track d.id_demandante) {
-                  <mat-option [value]="d.id_demandante">{{
-                    d.nombre_demandante
-                  }}</mat-option>
-                  }
-                </mat-select>
-                @if (formHonorarios.get('demate')?.invalid &&
-                formHonorarios.get('demate')?.touched) {
-                <small>Copropiedad requerido</small>
-                }
-              </mat-form-field>
-  
-              <mat-form-field>
-                <mat-label>Inmueble:</mat-label>
-                <mat-select
-                  formControlName="inmueble"
-                  (selectionChange)="onChangeInmueble($event)"
-                >
-                  @for (i of inmueblesXdemandante; track i.id_inmueble) {
-                  <mat-option [value]="i.id_inmueble">{{
-                    i.numero_inmueble
-                  }}</mat-option>
-                  }
-                </mat-select>
-                @if (formHonorarios.get('inmueble')?.invalid &&
-                formHonorarios.get('inmueble')?.touched) {
-                <small>Inmueble requerido</small>
-                }
-              </mat-form-field>
-            
-              <mat-form-field>
-                <mat-label>Demandado:</mat-label>
-                <input matInput readonly="readonly" formControlName="demado" />
-              </mat-form-field>
-
-              <mat-form-field>
-                <mat-label>Cuenta de Cobro:</mat-label>
-                <input matInput formControlName="cuecobro" />
-                @if (formHonorarios.get('cuecobro')?.invalid &&
-                formHonorarios.get('cuecobro')?.touched) {
-                <small>Cuenta de Cobro requerido</small>
-                }
-              </mat-form-field>
-  
-              <mat-form-field>
-                <mat-label>Honorarios:</mat-label>
-                <input matInput formControlName="honorarios" type="number" />
-                @if (formHonorarios.get('honorarios')?.invalid &&
-                formHonorarios.get('honorarios')?.touched) {
-                <small>Honorarios requerido</small>
-                }
-              </mat-form-field>
+              
+              <app-autocompletar 
+                title="Copropiedad"
+                [options]="demandantes"
+                [myInputComplete]= "formHonorarios.get('demate')"
+                (onChangeSelection)=" onChangeCopropiedad($event)"
+                optionId="id_demandante"
+                cmbDescripcion="nombre_demandante"
+                msgError="Copropiedad requerida"
+              />
+              
+              <app-autocompletar 
+                title="Inmueble"
+                [options]="inmueblesXdemandante"
+                [myInputComplete]= "formHonorarios.get('inmueble')"
+                optionId="id_inmueble"
+                cmbDescripcion="numero_inmueble"
+                msgError="Inmueble requerido"
+                [seleccionado]="storeService.cancelInmueble()"
+                (onChangeSelection)=" onChangeInmueble($event)"
+              />
+              
+              <app-input
+                label="Demandado:"  
+                [inputControl]= "formHonorarios.get('demado')"
+                [readonly]=true 
+              />
+          
+              <app-input
+                label="Cuenta de Cobro:"  
+                [inputControl]= "formHonorarios.get('cuecobro')"
+                msgError="Cuenta de Cobro requerido"
+              />
+           
+              <app-input
+                label="Honorarios:"  
+                [inputControl]= "formHonorarios.get('honorarios')"
+                type="number"
+                msgError="Honorarios requerido"
+              />
+           
               <mat-form-field>
                 <mat-label>Fecha Honorarios (dd/mm/yyyy):</mat-label>
                 <input

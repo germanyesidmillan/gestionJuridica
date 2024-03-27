@@ -5,19 +5,22 @@ import {FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validat
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import {MatSelectChange, MatSelectModule} from '@angular/material/select';
+import { MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
-import { UtilsService } from '../../../../shared/services/utils.service';
+import { UtilsService } from '@shared/services/utils.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { InputComponent } from '@shared/components/input/input.component';
+import { AutocompletarComponent } from '@home/components/autocompletar/autocompletar.component';
+import { StoreService } from '@shared/services/store.service';
 
 @Component({
   selector: 'app-cronologia',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule ,MatFormFieldModule, MatInputModule, MatButtonModule,
-    MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule],
+    MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule, InputComponent, AutocompletarComponent],
   templateUrl: './cronologia.component.html',
   styleUrl: './cronologia.component.css'
 })
@@ -25,12 +28,7 @@ export class CronologiaComponent implements OnInit{
   
   formCronologia: FormGroup;  
   cronologia: any;  
-  demandantes:any = [];
-  inmuebles:any = [];
-  demandados:any = [];
-  etapaDemandados:any = [];
   radicados:any = [];
-  cronologias:any =[];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
   inmuebleXetapaDemandado:any = [];
@@ -39,7 +37,7 @@ export class CronologiaComponent implements OnInit{
   @ViewChild(FormGroupDirective) forDir!:FormGroupDirective;
 
   constructor(private fb: FormBuilder, private gjService: GestionJuridicaService,
-              private utilService:UtilsService   ){
+              private utilService:UtilsService, public storeService: StoreService   ){
     this.formCronologia = this.fb.group({
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
@@ -51,30 +49,45 @@ export class CronologiaComponent implements OnInit{
       diasalerta: ['', [Validators.required]],
     });
   }
+
+  get demandantes(){
+    return this.storeService.copropiedadesSignal(); 
+  }
+  
+  get demandados(){
+    return this.storeService.demandadosSignal(); 
+  }
+  
+  get inmuebles(){
+    return this.storeService.inmueblesSignal(); 
+  }
+  
+  get etapaDemandados(){
+    return this.storeService.etapasDemandadosSignal(); 
+  }
+  
+  get cronologias(){
+    return this.storeService.cronologiasSignal(); 
+  }
+
   ngOnInit(): void {
-    this.getCopropiedad();
-    this.getInmueble();
     this.getDemandados();
     this.getEtapasDemandado();
-    //this.getRadicados();
     this.getCronologias();
-    }
+  }
   
   
   onSubmit(){
-
 
     const fecha = new Date(this.formCronologia.get('fechaCronologia')?.value);
     const fecCrono = `${fecha.getFullYear()}-${fecha.getMonth()+1}-${fecha.getDate()}`; 
 
     const payload = {
-      id_cronologia: this.formCronologia.get('cronologia')?.value,
-      id_inmueble: this.formCronologia.get('inmueble')?.value,
+      id_cronologia: (this.formCronologia.get('cronologia')?.value).id_cronologia,
+      id_inmueble: (this.formCronologia.get('inmueble')?.value).id_inmueble,
       dias_alerta: parseInt(this.formCronologia.get('diasalerta')?.value),
       fecha_cronologia: fecCrono
     }
-    
-    console.log('payload',payload);
 
     this.gjService.crearCronologiaInmueble(payload).subscribe((resp:any)=>{
 
@@ -95,9 +108,9 @@ export class CronologiaComponent implements OnInit{
   }
 
   onChangeCopropiedad(event: any){
-    let demandante = event.value;
+    let demandante = event.value.id_demandante;
     this.limpiarDatos();
-    this.formCronologia.get("demado")?.setValue(null);
+  
     this.inmuebles.filter((inmueble:any)=>{
       if(inmueble.id_demandante == demandante){
         this.inmueblesXdemandante.push(inmueble)
@@ -106,10 +119,16 @@ export class CronologiaComponent implements OnInit{
  }
 
   onChangeInmueble(event: any){
-    let inmueble = event.value;
-    console.log('inmueble',inmueble);
+    let inmueble = event.value.id_inmueble;
+    this.storeService.cancelInmueble.set(true);
     this.formCronologia.get("demado")?.setValue(null);
+    this.formCronologia.get("etapaDemado")?.setValue(null);
+    this.formCronologia.get("radicado")?.setValue(null);
     this.inmuebleXdemandado = [];
+
+    if(!event.value.id_inmueble){
+      return;
+    }
 
     this.inmueblesXdemandante.filter((i:any)=>{
       if(i.id_inmueble == inmueble){
@@ -117,19 +136,14 @@ export class CronologiaComponent implements OnInit{
       }
     });
 
-    console.log('inmuebleXdemandado',this.inmuebleXdemandado);
     let demandado = this.inmuebleXdemandado[0]["id_demandado"];
-    
     let id_etapa = this.inmuebleXdemandado[0].id_etapa_demandado;
-
 
     this.etapaDemandados.filter((ed:any)=>{
       if(ed.id_etapa_demandado == id_etapa){
         this.formCronologia.get("etapaDemado")?.setValue(ed.nombre_etapa_demandado);
       }
     });
-    
-    console.log('id_etapa',this.inmuebleXdemandado[0].id_etapa_demandado);
 
     this.demandados.filter( (dem:any)=>{
       if (dem.id_demandado == demandado){
@@ -138,68 +152,64 @@ export class CronologiaComponent implements OnInit{
     });
 
     this.getRadicadosPorInmueble(inmueble);
-
   }
 
   limpiarDatos(){
+    this.storeService.cancelCopropiedad.set(false);
+    this.storeService.cancelInmueble.set(false);
+    
+    this.formCronologia.get("etapaDemado")?.setValue(null);
+    this.formCronologia.get("radicado")?.setValue(null);
+    this.formCronologia.get("inmueble")?.setValue(null);
+
     this.inmuebleXdemandado = [];
     this.inmueblesXdemandante = [];
     this.formCronologia.get("demado")?.setValue(null);
   }
   
-  getCopropiedad() {
-    this.gjService.getDemandantes().subscribe((resp:any)=>{
-    //  console.log("demandantes->",resp)
-      this.demandantes = resp;
-     }, error=>{
-      console.log(error)
-     });
-  }
-  
-  getInmueble() {
-    this.gjService.getInmuebles().subscribe((resp:any)=>{
-    //  console.log("inmuebles->",resp)
-      this.inmuebles = resp;
-     }, error=>{
-      console.log(error)
-     });
-  }
-
   getDemandados() {
+    
+    if(this.storeService.demandadosSignal().length > 0){
+      return;
+    }
+
     this.gjService.getDemandados().subscribe((resp:any)=>{
-    //  console.log("demandados->",resp)
-      this.demandados = resp;
-     }, error=>{
+      this.storeService.demandadosSignal.set(resp);
+    }, error=>{
       console.log(error)
-     });
+    });
   }
 
   getRadicadosPorInmueble(id_inmueble:any) {
     this.gjService.getRadicadosPorInmueble(id_inmueble).subscribe((resp:any)=>{
-     console.log("radicados->",resp)
       this.formCronologia.get("radicado")?.setValue(resp[0].num_radicado);
       this.radicados = resp;
-     }, error=>{
+    }, error=>{
       console.log(error)
-     });
+    });
   }
 
   getEtapasDemandado() {
+    if(this.storeService.etapasDemandadosSignal().length > 0){
+      return;
+    }
+
     this.gjService.getEtapasDemandado().subscribe((resp:any)=>{
-     console.log("etapaDemado->",resp)
-      this.etapaDemandados = resp;
-     }, error=>{
+      this.storeService.etapasDemandadosSignal.set(resp);
+    }, error=>{
       console.log(error)
-     });
+    });
   }
 
   getCronologias() {
+    if(this.storeService.cronologiasSignal().length > 0){
+      return;  
+    }
     this.gjService.getCronologias().subscribe((resp:any)=>{
-    //  console.log("cronologias->",resp)
-      this.cronologias = resp;
-     }, error=>{
+      this.storeService.cronologiasSignal.set(resp);
+    }, error=>{
       console.log(error)
-     });
+    });
   }
 
 }

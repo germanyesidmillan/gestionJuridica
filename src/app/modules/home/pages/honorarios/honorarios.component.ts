@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -11,28 +11,30 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { GestionJuridicaService } from '../../services/gestion-juridica.service';
 import { MatCardModule } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UtilsService } from '../../../../shared/services/utils.service';
+import { UtilsService } from '@shared/services/utils.service';
+import { StoreService } from '@shared/services/store.service';
+import { InputComponent } from '@shared/components/input/input.component';
+import { AutocompletarComponent } from '@home/components/autocompletar/autocompletar.component';
 
 @Component({
   selector: 'app-honorarios',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule ,MatFormFieldModule, MatInputModule, MatButtonModule,
-    MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule],
+            MatSelectModule,MatDatepickerModule, MatNativeDateModule, MatCardModule, 
+            InputComponent, AutocompletarComponent],
   templateUrl: './honorarios.component.html',
   styleUrl: './honorarios.component.css'
 })
-export class HonorariosComponent implements OnInit{
+export class HonorariosComponent {
 
   formHonorarios: FormGroup;
-  demandantes:any = [];
-  inmuebles:any = [];
-  demandados:any = [];
   inmueblesXdemandante:any = []; 
   inmuebleXdemandado:any = [];
 
   @ViewChild(FormGroupDirective) formDir!:FormGroupDirective
   
-  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService, private utilService: UtilsService){
+  constructor(private fb: FormBuilder, private gjService: GestionJuridicaService, 
+              private utilService: UtilsService, public storeService: StoreService){
     this.formHonorarios = this.fb.group({
       demate: ['', [Validators.required]],
       inmueble: ['', [Validators.required]],
@@ -42,10 +44,15 @@ export class HonorariosComponent implements OnInit{
       cuecobro: ['', [Validators.required]],
     });
   }
-  ngOnInit(): void {
-    this.getCopropiedad();
-    this.getInmueble();
-    this.getDemandados();
+ 
+  get demandantes(){
+    return this.storeService.copropiedadesSignal();  
+  }
+  get inmuebles(){
+    return this.storeService.inmueblesSignal();  
+  }
+  get demandados(){
+    return this.storeService.demandadosSignal();  
   }
 
   onSubmit(){
@@ -55,12 +62,12 @@ export class HonorariosComponent implements OnInit{
     const payload = {
       fecha_honorarios: fecHonorario,
       valor_honorarios: this.formHonorarios.get('honorarios')!.value,
-      id_inmueble: this.formHonorarios.get('inmueble')!.value,
+      id_inmueble: (this.formHonorarios.get('inmueble')!.value).id_inmueble,
       num_c_cobro: this.formHonorarios.get('cuecobro')!.value,
     }
 
     this.gjService.crearHonorario(payload).subscribe((resp:any)=>{
-      console.log('resp',resp);
+      
       if(resp.state){
         this.utilService.showAlerta(resp.message);
         this.formDir.resetForm();
@@ -74,7 +81,7 @@ export class HonorariosComponent implements OnInit{
   }
 
   onChangeCopropiedad(event: any){
-    let demandante = event.value;
+    let demandante = event.value.id_demandante;
     this.limpiarDatos();
     //this.formCartera.get("demado")?.setValue(null);
     this.inmuebles.filter((inmueble:any)=>{
@@ -85,8 +92,9 @@ export class HonorariosComponent implements OnInit{
  }
 
  onChangeInmueble(event: any){
-  let inmueble = event.value;
+  let inmueble = event.value.id_inmueble;
   console.log('inmueble',inmueble);
+  this.storeService.cancelInmueble.set(true);
   this.formHonorarios.get("demado")?.setValue(null);
   this.inmuebleXdemandado = [];
 
@@ -96,53 +104,24 @@ export class HonorariosComponent implements OnInit{
     }
   });
 
-  console.log('inmuebleXdemandado',this.inmuebleXdemandado);
-
   let demandado = this.inmuebleXdemandado[0]["id_demandado"];
 
   this.demandados.filter( (dem:any)=>{
     if (dem.id_demandado == demandado){
       this.formHonorarios.get("demado")?.setValue(dem.nombre_demandado);
-      console.log('dem==>',dem.nombre_demandado);
     }
   });
 
-  console.log('demandado',demandado);
-
 }
 
-limpiarDatos(){
-  this.inmuebleXdemandado = [];
-  this.inmueblesXdemandante = [];
-  this.formHonorarios.get("demado")?.setValue(null);
-}
+  limpiarDatos(){
+    this.inmuebleXdemandado = [];
+    this.inmueblesXdemandante = [];
+    this.storeService.cancelInmueble.set(false);
+    this.formHonorarios.get("demado")?.setValue(null);
+    this.formHonorarios.get("inmueble")?.setValue(null);
+  }
 
-getCopropiedad() {
-  this.gjService.getDemandantes().subscribe((resp:any)=>{
-    console.log("demandantes->",resp)
-    this.demandantes = resp;
-   }, error=>{
-    console.log(error)
-   });
-}
-
-getInmueble() {
-  this.gjService.getInmuebles().subscribe((resp:any)=>{
-    console.log("inmuebles->",resp)
-    this.inmuebles = resp;
-   }, error=>{
-    console.log(error)
-   });
-}
-
-getDemandados() {
-  this.gjService.getDemandados().subscribe((resp:any)=>{
-    console.log("demandados->",resp)
-    this.demandados = resp;
-   }, error=>{
-    console.log(error)
-   });
-}
 
 }
 
